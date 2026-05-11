@@ -57,6 +57,7 @@ export const GET: APIRoute = async (context) => {
     .eq('addon_id', addon.id)
     .eq('review_status', 'approved')
     .eq('storage_status', 'active')
+    .in('safety_status', ['pass', 'warning'])
     .order('created_at', { ascending: false })
     .limit(1)
     .maybeSingle();

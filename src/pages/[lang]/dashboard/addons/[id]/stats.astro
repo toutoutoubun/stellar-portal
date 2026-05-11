@@ -129,6 +129,7 @@ function formatDate(value: string | null) {
               <div class="flex gap-2 font-mono text-xs uppercase">
                 <span class="border border-stellar-border px-2 py-1">{asset.review_status}</span>
                 <span class="border border-stellar-border px-2 py-1">{asset.storage_status}</span>
+                <span class="border border-stellar-border px-2 py-1">safety: {asset.safety_status ?? 'unchecked'}</span>
               </div>
             </div>
 

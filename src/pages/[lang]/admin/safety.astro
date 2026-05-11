@@ -1,0 +1,283 @@
+---
+import DashboardLayout from '@/layouts/DashboardLayout.astro';
+import PageHeader from '@/components/PageHeader.astro';
+import AdminAssetSafetyScan from '@/components/AdminAssetSafetyScan';
+import AdminAssetReviewForm from '@/components/AdminAssetReviewForm';
+import { normalizeLang } from '@/lib/i18n';
+import { requireAdminPage } from '@/lib/admin';
+
+export const prerender = false;
+
+const lang = normalizeLang(Astro.params.lang);
+const guard = await requireAdminPage(Astro, lang);
+
+if (!guard.ok) {
+  return Astro.redirect(guard.redirect);
+}
+
+const filter = Astro.url.searchParams.get('filter') ?? 'attention';
+
+let query = guard.admin
+  .from('addon_assets')
+  .select(`
+    id,
+    addon_id,
+    version,
+    file_name,
+    object_key,
+    content_type,
+    byte_size,
+    checksum,
+    review_status,
+    safety_status,
+    safety_summary,
+    safety_checked_at,
+    storage_status,
+    created_at,
+    addons (
+      id,
+      name,
+      slug,
+      review_status,
+      risk_level
+    )
+  `)
+  .order('created_at', { ascending: false })
+  .limit(100);
+
+if (filter === 'unchecked') {
+  query = query.eq('safety_status', 'unchecked');
+} else if (filter === 'failed') {
+  query = query.in('safety_status', ['fail', 'error']);
+} else if (filter === 'warning') {
+  query = query.eq('safety_status', 'warning');
+} else if (filter === 'passed') {
+  query = query.eq('safety_status', 'pass');
+} else if (filter === 'attention') {
+  query = query.in('safety_status', ['unchecked', 'fail', 'error', 'warning']);
+}
+
+const { data: assets } = await query;
+
+const { data: recentChecks } = await guard.admin
+  .from('addon_safety_checks')
+  .select(`
+    id,
+    addon_id,
+    asset_id,
+    scanner_version,
+    status,
+    risk_level,
+    summary,
+    findings,
+    created_at,
+    addon_assets (
+      id,
+      file_name,
+      version
+    ),
+    addons (
+      id,
+      name,
+      slug
+    )
+  `)
+  .order('created_at', { ascending: false })
+  .limit(20);
+
+function firstRelation<T>(value: T | T[] | null | undefined): T | null {
+  if (Array.isArray(value)) return value[0] ?? null;
+  return value ?? null;
+}
+
+function formatDate(value: string | null) {
+  if (!value) return '—';
+  return new Date(value).toLocaleString('ja-JP');
+}
+
+function statusClass(value: string | null) {
+  if (value === 'pass') return 'border-stellar-accent text-stellar-accent';
+  if (value === 'warning') return 'border-stellar-accent text-stellar-accent';
+  if (value === 'fail' || value === 'error') return 'border-stellar-danger text-stellar-danger';
+  return 'border-stellar-border text-stellar-muted';
+}
+---
+
+<DashboardLayout title="Safety Center">
+  <PageHeader
+    eyebrow="safety center"
+    title="Addon Safety Center"
+    description="Run static checks, review findings, and prevent unchecked assets from being distributed."
+  />
+
+  <div class="mb-5 flex flex-wrap gap-2">
+    {[
+      ['attention', 'Needs attention'],
+      ['unchecked', 'Unchecked'],
+      ['failed', 'Failed'],
+      ['warning', 'Warnings'],
+      ['passed', 'Passed'],
+      ['all', 'All']
+    ].map(([key, label]) => (
+      <a
+        class={`btn ${filter === key ? 'btn-primary' : ''}`}
+        href={`/${lang}/admin/safety?filter=${key}`}
+      >
+        {label}
+      </a>
+    ))}
+  </div>
+
+  <section class="grid gap-5">
+    {(assets ?? []).length === 0 && (
+      <div class="terminal-panel p-5 text-stellar-muted">
+        対象アセットはありません。
+      </div>
+    )}
+
+    {(assets ?? []).map((asset) => {
+      const addon = firstRelation(asset.addons);
+
+      return (
+        <article class="terminal-panel grid gap-5 p-5 xl:grid-cols-[1fr_380px]">
+          <div>
+            <div class="flex flex-wrap gap-2">
+              <span class={`border px-2 py-1 font-mono text-xs uppercase ${statusClass(asset.safety_status)}`}>
+                safety: {asset.safety_status ?? 'unchecked'}
+              </span>
+              <span class="border border-stellar-border px-2 py-1 font-mono text-xs uppercase text-stellar-muted">
+                review: {asset.review_status}
+              </span>
+              <span class="border border-stellar-border px-2 py-1 font-mono text-xs uppercase text-stellar-muted">
+                storage: {asset.storage_status ?? 'active'}
+              </span>
+            </div>
+
+            <h2 class="mt-4 text-xl text-stellar-text">
+              {asset.file_name}
+            </h2>
+
+            <p class="mt-1 font-mono text-xs text-stellar-muted">
+              version: {asset.version}
+            </p>
+
+            <p class="mt-3 text-stellar-muted">
+              Addon:
+              {' '}
+              <a class="text-stellar-accent hover:underline" href={`/${lang}/admin/addons/${asset.addon_id}`}>
+                {addon?.name ?? asset.addon_id}
+              </a>
+            </p>
+
+            <dl class="mt-4 grid gap-3 text-sm">
+              <div>
+                <dt class="font-mono text-xs uppercase tracking-[.18em] text-stellar-muted">Safety summary</dt>
+                <dd class="mt-1 text-stellar-text">{asset.safety_summary ?? 'No safety check has been run yet.'}</dd>
+              </div>
+
+              <div>
+                <dt class="font-mono text-xs uppercase tracking-[.18em] text-stellar-muted">Checked at</dt>
+                <dd class="mt-1 text-stellar-muted">{formatDate(asset.safety_checked_at)}</dd>
+              </div>
+
+              <div>
+                <dt class="font-mono text-xs uppercase tracking-[.18em] text-stellar-muted">Checksum</dt>
+                <dd class="mt-1 break-all font-mono text-xs text-stellar-text">{asset.checksum}</dd>
+              </div>
+            </dl>
+          </div>
+
+          <div class="grid gap-4">
+            <AdminAssetSafetyScan
+              client:load
+              assetId={asset.id}
+              initialSafetyStatus={asset.safety_status ?? 'unchecked'}
+              initialSafetySummary={asset.safety_summary ?? null}
+            />
+
+            <AdminAssetReviewForm
+              client:load
+              assetId={asset.id}
+              initialStatus={asset.review_status}
+            />
+          </div>
+        </article>
+      );
+    })}
+  </section>
+
+  <section class="terminal-panel mt-8 p-5">
+    <p class="font-mono text-xs uppercase tracking-[.22em] text-stellar-muted">
+      recent safety checks
+    </p>
+
+    <div class="mt-4 grid gap-3">
+      {(recentChecks ?? []).length === 0 && (
+        <p class="text-stellar-muted">安全性チェック履歴はまだありません。</p>
+      )}
+
+      {(recentChecks ?? []).map((check) => {
+        const addon = firstRelation(check.addons);
+        const asset = firstRelation(check.addon_assets);
+        const findings = Array.isArray(check.findings) ? check.findings : [];
+
+        return (
+          <div class="border border-stellar-border bg-stellar-panel2 p-4">
+            <div class="flex flex-wrap items-center justify-between gap-3">
+              <div class="flex flex-wrap gap-2">
+                <span class={`border px-2 py-1 font-mono text-xs uppercase ${statusClass(check.status)}`}>
+                  {check.status}
+                </span>
+                <span class="border border-stellar-border px-2 py-1 font-mono text-xs uppercase text-stellar-muted">
+                  {check.risk_level}
+                </span>
+              </div>
+
+              <p class="font-mono text-xs text-stellar-muted">
+                {formatDate(check.created_at)}
+              </p>
+            </div>
+
+            <p class="mt-3 text-stellar-text">
+              {addon?.name ?? check.addon_id}
+            </p>
+
+            <p class="mt-1 font-mono text-xs text-stellar-muted">
+              {asset?.file_name ?? check.asset_id}
+            </p>
+
+            <p class="mt-3 text-stellar-muted">
+              {check.summary}
+            </p>
+
+            {findings.length > 0 && (
+              <details class="mt-3">
+                <summary class="cursor-pointer font-mono text-xs uppercase tracking-[.18em] text-stellar-accent">
+                  findings: {findings.length}
+                </summary>
+
+                <div class="mt-3 grid gap-2">
+                  {findings.slice(0, 8).map((finding: any) => (
+                    <div class="border border-stellar-border p-2">
+                      <p class="font-mono text-xs uppercase text-stellar-accent">
+                        {finding.severity} / {finding.code}
+                      </p>
+                      <p class="mt-1 text-sm text-stellar-text">
+                        {finding.message}
+                      </p>
+                      {finding.file && (
+                        <p class="mt-1 break-all font-mono text-xs text-stellar-muted">
+                          {finding.file}
+                        </p>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </details>
+            )}
+          </div>
+        );
+      })}
+    </div>
+  </section>
+</DashboardLayout>

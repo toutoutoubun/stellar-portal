@@ -23,6 +23,8 @@ const [
   developersResult,
   reportsResult,
   pendingAssetsResult,
+  uncheckedSafetyResult,
+  failedSafetyResult,
   recentPendingResult,
   recentLogsResult,
   highRiskResult
@@ -34,6 +36,8 @@ const [
   admin.from('profiles').select('id', { count: 'exact', head: true }).in('role', ['developer', 'reviewer', 'admin']),
   admin.from('reports').select('id', { count: 'exact', head: true }).eq('status', 'open'),
   admin.from('addon_assets').select('id', { count: 'exact', head: true }).eq('review_status', 'pending'),
+  admin.from('addon_assets').select('id', { count: 'exact', head: true }).eq('safety_status', 'unchecked'),
+  admin.from('addon_assets').select('id', { count: 'exact', head: true }).in('safety_status', ['fail', 'error']),
   admin
     .from('addons')
     .select('id, name, slug, review_status, official_status, risk_level, created_at, repo_url, release_url')
@@ -60,7 +64,9 @@ const stats = [
   { label: 'Users', value: usersResult.count ?? 0, href: `/${lang}/admin/users`, note: '登録ユーザー' },
   { label: 'Developers', value: developersResult.count ?? 0, href: `/${lang}/admin/users`, note: 'Developer以上' },
   { label: 'Open reports', value: reportsResult.count ?? 0, href: `/${lang}/admin/reports`, note: '未対応通報' },
-  { label: 'Pending assets', value: pendingAssetsResult.count ?? 0, href: `/${lang}/admin/assets`, note: '承認待ちファイル' }
+  { label: 'Pending assets', value: pendingAssetsResult.count ?? 0, href: `/${lang}/admin/assets`, note: '承認待ちファイル' },
+  { label: 'Unchecked safety', value: uncheckedSafetyResult.count ?? 0, href: `/${lang}/admin/safety?filter=unchecked`, note: '未検査ファイル' },
+  { label: 'Failed safety', value: failedSafetyResult.count ?? 0, href: `/${lang}/admin/safety?filter=failed`, note: '危険判定' }
 ];
 
 const recentPending = recentPendingResult.data ?? [];
@@ -142,6 +148,7 @@ function formatDate(value: string | null) {
           <a class="btn justify-start" href={`/${lang}/admin/users`}>Users</a>
           <a class="btn justify-start" href={`/${lang}/admin/reports`}>Reports</a>
           <a class="btn justify-start" href={`/${lang}/admin/assets`}>Asset review</a>
+          <a class="btn justify-start" href={`/${lang}/admin/safety`}>Safety center</a>
           <a class="btn justify-start" href={`/${lang}/safety`}>Safety policy</a>
         </div>
       </div>
