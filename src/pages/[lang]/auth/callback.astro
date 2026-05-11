@@ -1,0 +1,53 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { normalizeLang } from '@/lib/i18n';
+import { createSupabaseServer } from '@/lib/supabaseServer';
+
+export const prerender = false;
+
+const lang = normalizeLang(Astro.params.lang);
+const code = Astro.url.searchParams.get('code');
+const error = Astro.url.searchParams.get('error');
+const errorDescription = Astro.url.searchParams.get('error_description');
+
+if (error) {
+  console.error('Supabase auth callback error:', error, errorDescription);
+}
+
+if (code) {
+  const supabase = createSupabaseServer(Astro);
+  const { error: exchangeError } = await supabase.auth.exchangeCodeForSession(code);
+
+  if (!exchangeError) {
+    return Astro.redirect(`/${lang}/dashboard`);
+  }
+
+  console.error('Supabase exchangeCodeForSession error:', exchangeError.message);
+}
+---
+
+<BaseLayout title="Login callback">
+  <section class="terminal-panel mx-auto max-w-2xl p-6">
+    <p class="font-mono text-xs uppercase tracking-[.22em] text-stellar-muted">
+      auth callback
+    </p>
+
+    <h1 class="mt-3 text-2xl text-stellar-text">
+      Login could not be completed
+    </h1>
+
+    <p class="mt-4 text-stellar-muted">
+      ログインリンクの処理に失敗しました。リンクの有効期限が切れたか、すでに使用済みの可能性があります。
+    </p>
+
+    {errorDescription && (
+      <p class="mt-3 text-stellar-danger">
+        {errorDescription}
+      </p>
+    )}
+
+    <a class="btn mt-6 inline-flex" href={`/${lang}/login`}>
+      Send a new login link
+    </a>
+  </section>
+</BaseLayout>
