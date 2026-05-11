@@ -2,10 +2,40 @@
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import PageHeader from '@/components/PageHeader.astro';
 import LoginForm from '@/components/LoginForm';
-import { normalizeLang, t } from '@/lib/i18n';
+import { normalizeLang } from '@/lib/i18n';
+import { getEnv } from '@/lib/env';
+
 const lang = normalizeLang(Astro.params.lang);
+const env = getEnv();
+
+const supabaseUrl = env.PUBLIC_SUPABASE_URL;
+const supabaseAnonKey = env.PUBLIC_SUPABASE_ANON_KEY;
 ---
-<BaseLayout title="Login" lang={lang}>
-  <PageHeader eyebrow="auth" title="Email Login" description={t(lang, 'loginHint')} />
-  <div class="max-w-xl"><LoginForm client:load lang={lang} /></div>
+
+<BaseLayout title="Login">
+  <PageHeader
+    eyebrow="access terminal"
+    title="Login"
+    description="Sign in with an email magic link."
+  />
+
+  {!supabaseUrl || !supabaseAnonKey ? (
+    <div class="terminal-panel border border-stellar-danger/60 bg-stellar-danger/10 p-6 text-stellar-text">
+      <p class="font-mono text-xs uppercase tracking-[.22em] text-stellar-danger">
+        Supabase is not configured
+      </p>
+      <p class="mt-3">
+        PUBLIC_SUPABASE_URL または PUBLIC_SUPABASE_ANON_KEY が本番環境に設定されていません。
+      </p>
+    </div>
+  ) : (
+    <div class="max-w-xl">
+      <LoginForm
+        client:load
+        lang={lang}
+        supabaseUrl={supabaseUrl}
+        supabaseAnonKey={supabaseAnonKey}
+      />
+    </div>
+  )}
 </BaseLayout>
