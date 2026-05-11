@@ -1,0 +1,176 @@
+---
+import DashboardLayout from '@/layouts/DashboardLayout.astro';
+import PageHeader from '@/components/PageHeader.astro';
+import { normalizeLang } from '@/lib/i18n';
+import { getViewer } from '@/lib/access';
+import { createSupabaseAdmin } from '@/lib/supabaseServer';
+
+export const prerender = false;
+
+const lang = normalizeLang(Astro.params.lang);
+const id = Astro.params.id;
+
+const viewer = await getViewer(Astro);
+
+if (!viewer.user) {
+  return Astro.redirect(`/${lang}/login`);
+}
+
+if (!id) {
+  return Astro.redirect(`/${lang}/dashboard/addons`);
+}
+
+const admin = createSupabaseAdmin();
+
+const { data: addon } = await admin
+  .from('addons')
+  .select('*')
+  .eq('id', id)
+  .single();
+
+if (!addon) {
+  return Astro.redirect(`/${lang}/dashboard/addons`);
+}
+
+const role = viewer.profile?.role ?? 'free_user';
+const canView = addon.author_id === viewer.user.id || role === 'admin' || role === 'reviewer';
+
+if (!canView) {
+  return Astro.redirect(`/${lang}/dashboard/addons`);
+}
+
+const [
+  assetsResult,
+  downloadEventsResult,
+  purchasesResult,
+  paidPurchasesResult
+] = await Promise.all([
+  admin
+    .from('addon_assets')
+    .select('*')
+    .eq('addon_id', addon.id)
+    .order('created_at', { ascending: false }),
+
+  admin
+    .from('addon_download_events')
+    .select('id, asset_id, user_id, created_at')
+    .eq('addon_id', addon.id)
+    .order('created_at', { ascending: false })
+    .limit(100),
+
+  admin
+    .from('addon_purchases')
+    .select('*')
+    .eq('addon_id', addon.id)
+    .order('created_at', { ascending: false })
+    .limit(100),
+
+  admin
+    .from('addon_purchases')
+    .select('amount_total')
+    .eq('addon_id', addon.id)
+    .eq('status', 'paid')
+]);
+
+const assets = assetsResult.data ?? [];
+const downloadEvents = downloadEventsResult.data ?? [];
+const purchases = purchasesResult.data ?? [];
+const paidPurchases = paidPurchasesResult.data ?? [];
+
+const totalDownloads = assets.reduce((sum, asset) => sum + Number(asset.download_count ?? 0), 0);
+const paidCount = paidPurchases.length;
+const grossRevenue = paidPurchases.reduce((sum, purchase) => sum + Number(purchase.amount_total ?? 0), 0);
+
+function formatDate(value: string | null) {
+  if (!value) return '—';
+  return new Date(value).toLocaleString('ja-JP');
+}
+---
+
+<DashboardLayout title="Addon stats">
+  <PageHeader
+    eyebrow="distribution ledger"
+    title={`Stats: ${addon.name}`}
+    description="Downloads, purchases, asset status, and distribution records for this addon."
+  />
+
+  <section class="grid gap-4 md:grid-cols-3">
+    <div class="terminal-panel p-5">
+      <p class="font-mono text-xs uppercase tracking-[.22em] text-stellar-muted">downloads</p>
+      <p class="mt-4 font-mono text-4xl text-stellar-text">{totalDownloads}</p>
+    </div>
+
+    <div class="terminal-panel p-5">
+      <p class="font-mono text-xs uppercase tracking-[.22em] text-stellar-muted">paid purchases</p>
+      <p class="mt-4 font-mono text-4xl text-stellar-text">{paidCount}</p>
+    </div>
+
+    <div class="terminal-panel p-5">
+      <p class="font-mono text-xs uppercase tracking-[.22em] text-stellar-muted">gross revenue</p>
+      <p class="mt-4 font-mono text-4xl text-stellar-text">¥{grossRevenue.toLocaleString('ja-JP')}</p>
+      <p class="mt-2 text-sm text-stellar-muted">Stripe手数料・税・分配前</p>
+    </div>
+  </section>
+
+  <section class="mt-8 grid gap-6 xl:grid-cols-2">
+    <div class="terminal-panel p-5">
+      <p class="font-mono text-xs uppercase tracking-[.22em] text-stellar-muted">assets</p>
+
+      <div class="mt-4 grid gap-3">
+        {assets.length === 0 && <p class="text-stellar-muted">アセットはありません。</p>}
+
+        {assets.map((asset) => (
+          <div class="border border-stellar-border bg-stellar-panel2 p-4">
+            <div class="flex flex-wrap items-center justify-between gap-3">
+              <div>
+                <p class="text-stellar-text">{asset.file_name}</p>
+                <p class="font-mono text-xs text-stellar-muted">{asset.version}</p>
+              </div>
+              <div class="flex gap-2 font-mono text-xs uppercase">
+                <span class="border border-stellar-border px-2 py-1">{asset.review_status}</span>
+                <span class="border border-stellar-border px-2 py-1">{asset.storage_status}</span>
+              </div>
+            </div>
+
+            <p class="mt-3 font-mono text-xs text-stellar-muted">
+              downloads: {asset.download_count ?? 0}
+            </p>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <div class="terminal-panel p-5">
+      <p class="font-mono text-xs uppercase tracking-[.22em] text-stellar-muted">recent downloads</p>
+
+      <div class="mt-4 grid gap-3">
+        {downloadEvents.length === 0 && <p class="text-stellar-muted">ダウンロード記録はありません。</p>}
+
+        {downloadEvents.map((event) => (
+          <div class="border border-stellar-border bg-stellar-panel2 p-3">
+            <p class="font-mono text-xs text-stellar-muted">{formatDate(event.created_at)}</p>
+            <p class="mt-1 font-mono text-xs text-stellar-text">asset: {event.asset_id ?? 'legacy'}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="terminal-panel mt-8 p-5">
+    <p class="font-mono text-xs uppercase tracking-[.22em] text-stellar-muted">purchases</p>
+
+    <div class="mt-4 grid gap-3">
+      {purchases.length === 0 && <p class="text-stellar-muted">購入記録はありません。</p>}
+
+      {purchases.map((purchase) => (
+        <div class="border border-stellar-border bg-stellar-panel2 p-4">
+          <div class="flex flex-wrap items-center justify-between gap-3">
+            <p class="font-mono text-xs uppercase text-stellar-accent">{purchase.status}</p>
+            <p class="font-mono text-xs text-stellar-muted">{formatDate(purchase.purchased_at ?? purchase.created_at)}</p>
+          </div>
+          <p class="mt-2 text-stellar-text">¥{Number(purchase.amount_total ?? 0).toLocaleString('ja-JP')}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+</DashboardLayout>

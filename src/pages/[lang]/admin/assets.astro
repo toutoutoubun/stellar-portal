@@ -3,6 +3,7 @@ import DashboardLayout from '@/layouts/DashboardLayout.astro';
 import PageHeader from '@/components/PageHeader.astro';
 import AdminAssetReviewForm from '@/components/AdminAssetReviewForm';
 import AdminAssetStorageActions from '@/components/AdminAssetStorageActions';
+import AdminAssetSafetyScan from '@/components/AdminAssetSafetyScan';
 import { normalizeLang } from '@/lib/i18n';
 import { requireAdminPage } from '@/lib/admin';
 
@@ -33,6 +34,9 @@ let query = guard.admin
     review_note,
     reviewed_at,
     storage_status,
+    safety_status,
+    safety_summary,
+    safety_checked_at,
     deleted_at,
     deleted_reason,
     created_at,
@@ -153,6 +157,13 @@ function firstRelation<T>(value: T | T[] | null | undefined): T | null {
         </div>
 
         <div class="grid gap-4">
+          <AdminAssetSafetyScan
+            client:load
+            assetId={asset.id}
+            initialSafetyStatus={asset.safety_status ?? 'unchecked'}
+            initialSafetySummary={asset.safety_summary ?? null}
+          />
+
           <AdminAssetReviewForm
             client:load
             assetId={asset.id}

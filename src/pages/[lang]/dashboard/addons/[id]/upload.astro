@@ -3,6 +3,7 @@ import DashboardLayout from '@/layouts/DashboardLayout.astro';
 import PageHeader from '@/components/PageHeader.astro';
 import AddonAssetUpload from '@/components/AddonAssetUpload';
 import AddonSalesSettings from '@/components/AddonSalesSettings';
+import AddonManifestImport from '@/components/AddonManifestImport';
 import { normalizeLang } from '@/lib/i18n';
 import { getViewer } from '@/lib/access';
 import { createSupabaseAdmin } from '@/lib/supabaseServer';
@@ -74,6 +75,11 @@ function formatDate(value: string | null) {
         initialIsPaid={Boolean(addon.is_paid)}
         initialPriceJpy={addon.price_jpy ?? null}
         initialSalesStatus={addon.sales_status ?? 'not_for_sale'}
+      />
+
+      <AddonManifestImport
+        client:load
+        addonId={addon.id}
       />
     </div>
 

@@ -3,6 +3,8 @@ import DashboardLayout from '@/layouts/DashboardLayout.astro';
 import PageHeader from '@/components/PageHeader.astro';
 import AdminAddonReviewForm from '@/components/AdminAddonReviewForm';
 import AdminAssetReviewForm from '@/components/AdminAssetReviewForm';
+import AdminAssetStorageActions from '@/components/AdminAssetStorageActions';
+import AdminAssetSafetyScan from '@/components/AdminAssetSafetyScan';
 import { normalizeLang } from '@/lib/i18n';
 import { requireAdminPage } from '@/lib/admin';
 
@@ -220,11 +222,26 @@ function formatYen(value: number | null) {
                 </dl>
               </div>
 
-              <AdminAssetReviewForm
-                client:load
-                assetId={asset.id}
-                initialStatus={asset.review_status}
-              />
+              <div class="grid gap-4">
+                <AdminAssetSafetyScan
+                  client:load
+                  assetId={asset.id}
+                  initialSafetyStatus={asset.safety_status ?? 'unchecked'}
+                  initialSafetySummary={asset.safety_summary ?? null}
+                />
+
+                <AdminAssetReviewForm
+                  client:load
+                  assetId={asset.id}
+                  initialStatus={asset.review_status}
+                />
+
+                <AdminAssetStorageActions
+                  client:load
+                  assetId={asset.id}
+                  storageStatus={asset.storage_status ?? 'active'}
+                />
+              </div>
             </div>
           ))}
         </div>

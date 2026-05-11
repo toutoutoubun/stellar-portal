@@ -19,6 +19,7 @@
     "@supabase/ssr": "latest",
     "@supabase/supabase-js": "latest",
     "astro": "latest",
+    "fflate": "^0.8.2",
     "react": "latest",
     "react-dom": "latest",
     "stripe": "latest"
