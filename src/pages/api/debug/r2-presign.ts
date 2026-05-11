@@ -1,13 +1,14 @@
 import type { APIRoute } from 'astro';
-import { createPresignedUploadUrl } from '@/lib/r2';
 
 export const prerender = false;
 
 export const GET: APIRoute = async () => {
   try {
+    const mod = await import('@/lib/r2');
+
     const objectKey = `debug/${crypto.randomUUID()}.txt`;
 
-    const uploadUrl = await createPresignedUploadUrl({
+    const uploadUrl = await mod.createPresignedUploadUrl({
       objectKey,
       contentType: 'text/plain'
     });
@@ -22,9 +23,12 @@ export const GET: APIRoute = async () => {
     return Response.json(
       {
         ok: false,
-        error: error instanceof Error ? error.message : 'Unknown R2 presign error'
+        error: error instanceof Error ? error.message : String(error),
+        stack: error instanceof Error ? error.stack?.slice(0, 1200) : null
       },
-      { status: 500 }
+      {
+        status: 500
+      }
     );
   }
 };

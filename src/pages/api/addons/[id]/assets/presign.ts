@@ -1,7 +1,6 @@
 import type { APIRoute } from 'astro';
 import { requireAdminApi } from '@/lib/admin';
 import { createSupabaseServer, createSupabaseAdmin } from '@/lib/supabaseServer';
-import { createPresignedUploadUrl } from '@/lib/r2';
 import { getEnv } from '@/lib/env';
 
 export const prerender = false;
@@ -120,7 +119,9 @@ export const POST: APIRoute = async (context) => {
       );
     }
 
-    const uploadUrl = await createPresignedUploadUrl({
+    const r2 = await import('@/lib/r2');
+
+    const uploadUrl = await r2.createPresignedUploadUrl({
       objectKey,
       contentType
     });
