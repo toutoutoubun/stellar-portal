@@ -11,6 +11,10 @@ export type AppEnv = {
   STRIPE_SECRET_KEY: string;
   STRIPE_WEBHOOK_SECRET: string;
   STRIPE_DEVELOPER_PRICE_ID: string;
+  R2_ACCOUNT_ID: string;
+  R2_BUCKET_NAME: string;
+  R2_ACCESS_KEY_ID: string;
+  R2_SECRET_ACCESS_KEY: string;
 };
 
 function readEnv(name: string, fallback = ''): string {
@@ -28,6 +32,10 @@ export function getEnv(_context?: unknown): AppEnv {
     SUPABASE_SERVICE_ROLE_KEY: readEnv('SUPABASE_SERVICE_ROLE_KEY'),
     STRIPE_SECRET_KEY: readEnv('STRIPE_SECRET_KEY'),
     STRIPE_WEBHOOK_SECRET: readEnv('STRIPE_WEBHOOK_SECRET'),
-    STRIPE_DEVELOPER_PRICE_ID: readEnv('STRIPE_DEVELOPER_PRICE_ID')
+    STRIPE_DEVELOPER_PRICE_ID: readEnv('STRIPE_DEVELOPER_PRICE_ID'),
+    R2_ACCOUNT_ID: readEnv('R2_ACCOUNT_ID'),
+    R2_BUCKET_NAME: readEnv('R2_BUCKET_NAME', 'stellar-addon-assets'),
+    R2_ACCESS_KEY_ID: readEnv('R2_ACCESS_KEY_ID'),
+    R2_SECRET_ACCESS_KEY: readEnv('R2_SECRET_ACCESS_KEY')
   };
 }

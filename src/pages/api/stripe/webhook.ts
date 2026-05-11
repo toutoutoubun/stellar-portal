@@ -68,6 +68,50 @@ async function syncSubscription(subscription: Stripe.Subscription) {
     );
 }
 
+async function markAddonPurchasePaid(session: Stripe.Checkout.Session) {
+  const admin = createSupabaseAdmin();
+
+  const addonId = session.metadata?.addon_id;
+  const userId = session.metadata?.user_id ?? session.client_reference_id;
+
+  if (!addonId || !userId) return;
+
+  await admin
+    .from('addon_purchases')
+    .upsert(
+      {
+        user_id: userId,
+        addon_id: addonId,
+        stripe_checkout_session_id: session.id,
+        stripe_payment_intent_id:
+          typeof session.payment_intent === 'string'
+            ? session.payment_intent
+            : session.payment_intent?.id ?? null,
+        amount_total: session.amount_total ?? null,
+        currency: session.currency ?? 'jpy',
+        status: session.payment_status === 'paid' ? 'paid' : session.payment_status ?? 'unknown',
+        purchased_at: session.payment_status === 'paid' ? new Date().toISOString() : null,
+        updated_at: new Date().toISOString()
+      },
+      {
+        onConflict: 'stripe_checkout_session_id'
+      }
+    );
+
+  await admin.from('audit_logs').insert({
+    actor_id: userId,
+    action: 'addon.purchase.completed',
+    target_type: 'addon',
+    target_id: addonId,
+    metadata: {
+      checkout_session_id: session.id,
+      payment_intent: session.payment_intent,
+      amount_total: session.amount_total,
+      currency: session.currency
+    }
+  });
+}
+
 export const POST: APIRoute = async (context) => {
   const env = getEnv();
 
@@ -105,6 +149,11 @@ export const POST: APIRoute = async (context) => {
     switch (event.type) {
       case 'checkout.session.completed': {
         const session = event.data.object as Stripe.Checkout.Session;
+
+        if (session.metadata?.type === 'addon_purchase') {
+          await markAddonPurchasePaid(session);
+          break;
+        }
 
         const userId =
           session.metadata?.supabase_user_id ??
