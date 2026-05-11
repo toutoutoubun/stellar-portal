@@ -9,6 +9,19 @@ type Props = {
 
 const statuses = ['not_for_sale', 'for_sale', 'paused'];
 
+async function readJsonResponse(res: Response) {
+  const text = await res.text();
+
+  try {
+    return JSON.parse(text);
+  } catch {
+    return {
+      error: `Expected JSON but received ${res.status} ${res.statusText}`,
+      raw: text.slice(0, 300)
+    };
+  }
+}
+
 export default function AddonSalesSettings({
   addonId,
   initialIsPaid,
@@ -38,7 +51,7 @@ export default function AddonSalesSettings({
         })
       });
 
-      const json = await res.json().catch(() => null);
+      const json = await readJsonResponse(res);
 
       if (!res.ok) {
         setState('error');

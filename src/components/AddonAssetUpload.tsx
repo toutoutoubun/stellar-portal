@@ -5,6 +5,19 @@ type Props = {
   defaultVersion?: string;
 };
 
+async function readJsonResponse(res: Response) {
+  const text = await res.text();
+
+  try {
+    return JSON.parse(text);
+  } catch {
+    return {
+      error: `Expected JSON but received ${res.status} ${res.statusText}`,
+      raw: text.slice(0, 300)
+    };
+  }
+}
+
 export default function AddonAssetUpload({ addonId, defaultVersion = '0.1.0' }: Props) {
   const [file, setFile] = useState<File | null>(null);
   const [version, setVersion] = useState(defaultVersion);
@@ -43,7 +56,7 @@ export default function AddonAssetUpload({ addonId, defaultVersion = '0.1.0' }: 
         })
       });
 
-      const presign = await presignRes.json();
+      const presign = await readJsonResponse(presignRes);
 
       if (!presignRes.ok) {
         setState('error');
@@ -77,7 +90,7 @@ export default function AddonAssetUpload({ addonId, defaultVersion = '0.1.0' }: 
         })
       });
 
-      const complete = await completeRes.json().catch(() => null);
+      const complete = await readJsonResponse(completeRes);
 
       if (!completeRes.ok) {
         setState('error');
