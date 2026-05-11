@@ -1,24 +1,156 @@
 ---
 import DashboardLayout from '@/layouts/DashboardLayout.astro';
 import PageHeader from '@/components/PageHeader.astro';
-import StatusBadge from '@/components/StatusBadge.astro';
 import { normalizeLang } from '@/lib/i18n';
-import { requireUser, hasDeveloperAccess } from '@/lib/access';
-import { createSupabaseServer } from '@/lib/supabaseServer';
+import { getViewer, hasDeveloperAccess } from '@/lib/access';
+import { createSupabaseAdmin } from '@/lib/supabaseServer';
+
+export const prerender = false;
+
 const lang = normalizeLang(Astro.params.lang);
-const viewer = await requireUser(Astro);
-if ('redirect' in viewer) return viewer.redirect;
-const supabase = createSupabaseServer(Astro);
-const { data: addons } = await supabase.from('addons').select('*').eq('author_id', viewer.user.id).order('updated_at', { ascending: false });
+const viewer = await getViewer(Astro);
+
+if (!viewer.user) {
+  return Astro.redirect(`/${lang}/login`);
+}
+
+if (!hasDeveloperAccess(viewer.profile)) {
+  return Astro.redirect(`/${lang}/dashboard/subscription`);
+}
+
+const admin = createSupabaseAdmin();
+
+const { data: addons } = await admin
+  .from('addons')
+  .select(`
+    id,
+    name,
+    slug,
+    short_description,
+    review_status,
+    official_status,
+    risk_level,
+    current_version,
+    is_paid,
+    price_jpy,
+    sales_status,
+    created_at,
+    updated_at
+  `)
+  .eq('author_id', viewer.user.id)
+  .order('updated_at', { ascending: false });
+
+function formatDate(value: string | null) {
+  if (!value) return '—';
+  return new Date(value).toLocaleString('ja-JP');
+}
+
+function priceLabel(isPaid: boolean | null, priceJpy: number | null) {
+  if (!isPaid) return 'free';
+  if (!priceJpy) return 'paid';
+  return `¥${priceJpy.toLocaleString('ja-JP')}`;
+}
+
+function statusClass(status: string | null) {
+  if (status === 'approved') return 'border-stellar-accent text-stellar-accent';
+  if (status === 'pending') return 'border-stellar-accent/70 text-stellar-text';
+  if (status === 'needs_changes') return 'border-stellar-accent text-stellar-accent';
+  if (status === 'rejected' || status === 'suspended') return 'border-stellar-danger text-stellar-danger';
+  return 'border-stellar-border text-stellar-muted';
+}
 ---
-<DashboardLayout title="My Addons">
-  <PageHeader eyebrow="developer console" title="My Addons" description="Your submissions and review status." />
-  {hasDeveloperAccess(viewer.profile) ? <a class="btn btn-primary mb-5" href={`/${lang}/dashboard/addons/new`}>New addon</a> : <a class="btn btn-primary mb-5" href={`/${lang}/pricing`}>Activate Developer Plan</a>}
-  <div class="grid gap-3">
+
+<DashboardLayout title="My addons">
+  <PageHeader
+    eyebrow="developer desk"
+    title="My Addons"
+    description="Manage addon submissions, upload release files, configure sales, and inspect distribution records."
+  />
+
+  <div class="mb-6 flex flex-wrap gap-3">
+    <a class="btn btn-primary" href={`/${lang}/dashboard/addons/new`}>
+      New addon
+    </a>
+
+    <a class="btn" href={`/${lang}/developers`}>
+      Developer guide
+    </a>
+  </div>
+
+  <div class="grid gap-4">
+    {(addons ?? []).length === 0 && (
+      <div class="terminal-panel p-6">
+        <p class="text-stellar-muted">
+          まだアドオンがありません。
+        </p>
+
+        <a class="btn btn-primary mt-4 inline-flex" href={`/${lang}/dashboard/addons/new`}>
+          Submit first addon
+        </a>
+      </div>
+    )}
+
     {(addons ?? []).map((addon) => (
-      <article class="terminal-panel flex flex-wrap items-center justify-between gap-3 p-4">
-        <div><a class="font-mono text-lg" href={`/${lang}/dashboard/addons/${addon.id}/edit`}>{addon.name}</a><p class="text-sm text-stellar-muted">{addon.slug}</p></div>
-        <div class="flex gap-2"><StatusBadge status={addon.review_status} lang={lang} /><StatusBadge status={addon.official_status} lang={lang} /></div>
+      <article class="terminal-panel grid gap-5 p-5 xl:grid-cols-[1fr_auto]">
+        <div>
+          <div class="flex flex-wrap gap-2">
+            <span class={`border px-2 py-1 font-mono text-xs uppercase ${statusClass(addon.review_status)}`}>
+              {addon.review_status}
+            </span>
+
+            <span class="border border-stellar-border px-2 py-1 font-mono text-xs uppercase text-stellar-muted">
+              {addon.official_status}
+            </span>
+
+            <span class="border border-stellar-border px-2 py-1 font-mono text-xs uppercase text-stellar-muted">
+              risk: {addon.risk_level}
+            </span>
+
+            <span class="border border-stellar-border px-2 py-1 font-mono text-xs uppercase text-stellar-muted">
+              {priceLabel(Boolean(addon.is_paid), addon.price_jpy)}
+            </span>
+
+            {addon.sales_status && (
+              <span class="border border-stellar-border px-2 py-1 font-mono text-xs uppercase text-stellar-muted">
+                sales: {addon.sales_status}
+              </span>
+            )}
+          </div>
+
+          <h2 class="mt-4 text-2xl text-stellar-text">
+            {addon.name}
+          </h2>
+
+          <p class="mt-2 text-stellar-muted">
+            {addon.short_description}
+          </p>
+
+          <div class="mt-4 grid gap-1 font-mono text-xs text-stellar-muted">
+            <p>slug: {addon.slug}</p>
+            <p>version: {addon.current_version ?? '—'}</p>
+            <p>updated: {formatDate(addon.updated_at ?? addon.created_at)}</p>
+          </div>
+        </div>
+
+        <div class="flex flex-wrap items-start gap-2 xl:w-72 xl:flex-col">
+          <a class="btn w-full justify-center" href={`/${lang}/dashboard/addons/${addon.id}/edit`}>
+            Edit metadata
+          </a>
+
+          <a class="btn btn-primary w-full justify-center" href={`/${lang}/dashboard/addons/${addon.id}/upload`}>
+            Upload / sales
+          </a>
+
+          <a class="btn w-full justify-center" href={`/${lang}/dashboard/addons/${addon.id}/stats`}>
+            Stats
+          </a>
+
+          {addon.review_status === 'approved' && (
+            <a class="btn w-full justify-center" href={`/${lang}/addons/${addon.slug}`}>
+              Public page
+            </a>
+          )}
+        </div>
       </article>
     ))}
   </div>
