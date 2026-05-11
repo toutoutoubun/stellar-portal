@@ -31,7 +31,7 @@ export const POST: APIRoute = async (context) => {
 
   const { data: addon, error: addonError } = await admin
     .from('addons')
-    .select('id, name, slug, short_description, review_status, is_paid, price_jpy, currency')
+    .select('id, name, slug, short_description, review_status, is_paid, price_jpy, currency, sales_status')
     .eq('id', addonId)
     .single();
 
@@ -45,6 +45,10 @@ export const POST: APIRoute = async (context) => {
 
   if (!addon.is_paid) {
     return Response.json({ error: 'This addon is free.' }, { status: 400 });
+  }
+
+  if (addon.sales_status !== 'for_sale') {
+    return Response.json({ error: 'This addon is not currently for sale.' }, { status: 403 });
   }
 
   const amount = Number(addon.price_jpy ?? 0);

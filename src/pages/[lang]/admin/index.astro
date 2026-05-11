@@ -22,6 +22,7 @@ const [
   usersResult,
   developersResult,
   reportsResult,
+  pendingAssetsResult,
   recentPendingResult,
   recentLogsResult,
   highRiskResult
@@ -32,6 +33,7 @@ const [
   admin.from('profiles').select('id', { count: 'exact', head: true }),
   admin.from('profiles').select('id', { count: 'exact', head: true }).in('role', ['developer', 'reviewer', 'admin']),
   admin.from('reports').select('id', { count: 'exact', head: true }).eq('status', 'open'),
+  admin.from('addon_assets').select('id', { count: 'exact', head: true }).eq('review_status', 'pending'),
   admin
     .from('addons')
     .select('id, name, slug, review_status, official_status, risk_level, created_at, repo_url, release_url')
@@ -57,7 +59,8 @@ const stats = [
   { label: 'Suspended addons', value: suspendedAddonsResult.count ?? 0, href: `/${lang}/admin/review`, note: '停止中' },
   { label: 'Users', value: usersResult.count ?? 0, href: `/${lang}/admin/users`, note: '登録ユーザー' },
   { label: 'Developers', value: developersResult.count ?? 0, href: `/${lang}/admin/users`, note: 'Developer以上' },
-  { label: 'Open reports', value: reportsResult.count ?? 0, href: `/${lang}/admin/reports`, note: '未対応通報' }
+  { label: 'Open reports', value: reportsResult.count ?? 0, href: `/${lang}/admin/reports`, note: '未対応通報' },
+  { label: 'Pending assets', value: pendingAssetsResult.count ?? 0, href: `/${lang}/admin/assets`, note: '承認待ちファイル' }
 ];
 
 const recentPending = recentPendingResult.data ?? [];
@@ -138,6 +141,7 @@ function formatDate(value: string | null) {
           <a class="btn justify-start" href={`/${lang}/admin/review`}>Review queue</a>
           <a class="btn justify-start" href={`/${lang}/admin/users`}>Users</a>
           <a class="btn justify-start" href={`/${lang}/admin/reports`}>Reports</a>
+          <a class="btn justify-start" href={`/${lang}/admin/assets`}>Asset review</a>
           <a class="btn justify-start" href={`/${lang}/safety`}>Safety policy</a>
         </div>
       </div>
