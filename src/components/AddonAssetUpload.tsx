@@ -22,7 +22,7 @@ export default function AddonAssetUpload({ addonId, defaultVersion = '0.1.0' }: 
   const [file, setFile] = useState<File | null>(null);
   const [version, setVersion] = useState(defaultVersion);
   const [checksum, setChecksum] = useState('');
-  const [state, setState] = useState<'idle' | 'presigning' | 'uploading' | 'done' | 'error'>('idle');
+  const [state, setState] = useState<'idle' | 'uploading' | 'done' | 'error'>('idle');
   const [message, setMessage] = useState('');
 
   async function upload() {
@@ -38,68 +38,30 @@ export default function AddonAssetUpload({ addonId, defaultVersion = '0.1.0' }: 
       return;
     }
 
-    setState('presigning');
+    setState('uploading');
     setMessage('');
 
     try {
-      const presignRes = await fetch(`/api/addons/${addonId}/assets/presign`, {
+      const form = new FormData();
+      form.append('file', file);
+      form.append('version', version);
+      form.append('checksum', checksum);
+
+      const res = await fetch(`/api/addons/${addonId}/assets/upload`, {
         method: 'POST',
-        headers: {
-          'content-type': 'application/json'
-        },
-        body: JSON.stringify({
-          file_name: file.name,
-          content_type: file.type || 'application/octet-stream',
-          byte_size: file.size,
-          version,
-          checksum
-        })
+        body: form
       });
 
-      const presign = await readJsonResponse(presignRes);
+      const json = await readJsonResponse(res);
 
-      if (!presignRes.ok) {
+      if (!res.ok) {
         setState('error');
-        setMessage(presign.error ?? 'presignに失敗しました。');
-        return;
-      }
-
-      setState('uploading');
-
-      const uploadRes = await fetch(presign.upload_url, {
-        method: 'PUT',
-        headers: {
-          'content-type': file.type || 'application/octet-stream'
-        },
-        body: file
-      });
-
-      if (!uploadRes.ok) {
-        setState('error');
-        setMessage(`R2 upload failed: ${uploadRes.status}`);
-        return;
-      }
-
-      const completeRes = await fetch(`/api/addons/${addonId}/assets/complete`, {
-        method: 'POST',
-        headers: {
-          'content-type': 'application/json'
-        },
-        body: JSON.stringify({
-          asset_id: presign.asset_id
-        })
-      });
-
-      const complete = await readJsonResponse(completeRes);
-
-      if (!completeRes.ok) {
-        setState('error');
-        setMessage(complete?.error ?? 'completeに失敗しました。');
+        setMessage(json?.error ?? `Upload failed: ${res.status}`);
         return;
       }
 
       setState('done');
-      setMessage('アップロードしました。管理者承認後に配布対象になります。');
+      setMessage('アップロードしました。安全性チェックと管理者承認後に配布対象になります。');
     } catch (error) {
       setState('error');
       setMessage(error instanceof Error ? error.message : 'アップロードに失敗しました。');
@@ -126,11 +88,12 @@ export default function AddonAssetUpload({ addonId, defaultVersion = '0.1.0' }: 
 
       <label className="grid gap-2">
         <span className="font-mono text-xs uppercase tracking-[.18em] text-stellar-muted">
-          File
+          ZIP file
         </span>
         <input
           className="field"
           type="file"
+          accept=".zip,application/zip,application/x-zip-compressed"
           onChange={(event) => setFile(event.target.files?.[0] ?? null)}
         />
       </label>
@@ -147,8 +110,8 @@ export default function AddonAssetUpload({ addonId, defaultVersion = '0.1.0' }: 
         />
       </label>
 
-      <button className="btn btn-primary w-fit" onClick={upload} disabled={state === 'presigning' || state === 'uploading'}>
-        {state === 'presigning' ? 'Preparing...' : state === 'uploading' ? 'Uploading...' : 'Upload addon file'}
+      <button className="btn btn-primary w-fit" onClick={upload} disabled={state === 'uploading'}>
+        {state === 'uploading' ? 'Uploading...' : 'Upload addon file'}
       </button>
 
       {message && (

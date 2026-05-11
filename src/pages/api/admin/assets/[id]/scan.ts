@@ -1,6 +1,6 @@
 import type { APIRoute } from 'astro';
 import { requireAdminApi } from '@/lib/admin';
-import { createPresignedDownloadUrl } from '@/lib/r2';
+import { getR2Object } from '@/lib/r2';
 import { getScannerVersion, scanAddonZip } from '@/lib/addonSafety';
 
 export const prerender = false;
@@ -67,21 +67,16 @@ export const POST: APIRoute = async (context) => {
     return Response.json(result);
   }
 
-  const downloadUrl = await createPresignedDownloadUrl({
-    objectKey: asset.object_key,
-    fileName: asset.file_name
-  });
+  const object = await getR2Object(asset.object_key);
 
-  const fileRes = await fetch(downloadUrl);
-
-  if (!fileRes.ok) {
+  if (!object) {
     return Response.json(
-      { error: `Failed to fetch asset from R2: ${fileRes.status}` },
-      { status: 500 }
+      { error: 'R2 object not found.' },
+      { status: 404 }
     );
   }
 
-  const bytes = await fileRes.arrayBuffer();
+  const bytes = await new Response(object.body).arrayBuffer();
   const result = scanAddonZip({ bytes });
 
   await guard.admin.from('addon_safety_checks').insert({

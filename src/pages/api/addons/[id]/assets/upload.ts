@@ -1,7 +1,7 @@
 import type { APIRoute } from 'astro';
 import { requireAdminApi } from '@/lib/admin';
-import { createSupabaseServer, createSupabaseAdmin } from '@/lib/supabaseServer';
-import { getEnv } from '@/lib/env';
+import { createSupabaseAdmin, createSupabaseServer } from '@/lib/supabaseServer';
+import { putR2Object } from '@/lib/r2';
 
 export const prerender = false;
 
@@ -12,27 +12,8 @@ function safeFileName(name: string) {
     .slice(0, 160);
 }
 
-function requireR2Env() {
-  const env = getEnv();
-
-  const missing = [
-    ['R2_ACCOUNT_ID', env.R2_ACCOUNT_ID],
-    ['R2_BUCKET_NAME', env.R2_BUCKET_NAME],
-    ['R2_ACCESS_KEY_ID', env.R2_ACCESS_KEY_ID],
-    ['R2_SECRET_ACCESS_KEY', env.R2_SECRET_ACCESS_KEY]
-  ]
-    .filter(([, value]) => !value)
-    .map(([name]) => name);
-
-  if (missing.length > 0) {
-    throw new Error(`Missing R2 environment variables: ${missing.join(', ')}`);
-  }
-}
-
 export const POST: APIRoute = async (context) => {
   try {
-    requireR2Env();
-
     const supabase = createSupabaseServer(context);
     const admin = createSupabaseAdmin();
 
@@ -47,16 +28,18 @@ export const POST: APIRoute = async (context) => {
     const addonId = context.params.id;
 
     if (!addonId) {
-      return Response.json({ error: 'Missing addon id' }, { status: 400 });
+      return Response.json({ error: 'Missing addon id.' }, { status: 400 });
     }
 
-    const body = await context.request.json().catch(() => ({}));
+    const form = await context.request.formData();
 
-    const fileName = safeFileName(String(body.file_name ?? 'addon.zip'));
-    const contentType = String(body.content_type ?? 'application/octet-stream');
-    const byteSize = Number(body.byte_size ?? 0);
-    const version = String(body.version ?? '0.1.0').trim();
-    const checksum = String(body.checksum ?? '').trim();
+    const file = form.get('file');
+    const version = String(form.get('version') ?? '').trim();
+    const checksum = String(form.get('checksum') ?? '').trim();
+
+    if (!(file instanceof File)) {
+      return Response.json({ error: 'File is required.' }, { status: 400 });
+    }
 
     if (!version) {
       return Response.json({ error: 'Version is required.' }, { status: 400 });
@@ -66,17 +49,20 @@ export const POST: APIRoute = async (context) => {
       return Response.json({ error: 'Checksum is required.' }, { status: 400 });
     }
 
-    if (!Number.isFinite(byteSize) || byteSize <= 0) {
+    if (file.size <= 0) {
       return Response.json({ error: 'Invalid file size.' }, { status: 400 });
     }
 
-    if (byteSize > 100 * 1024 * 1024) {
-      return Response.json({ error: 'File is too large. Current limit is 100MB.' }, { status: 400 });
+    if (file.size > 25 * 1024 * 1024) {
+      return Response.json(
+        { error: 'Current Worker upload limit is 25MB for this MVP route.' },
+        { status: 400 }
+      );
     }
 
     const { data: addon, error: addonError } = await admin
       .from('addons')
-      .select('id, author_id, review_status')
+      .select('id, author_id')
       .eq('id', addonId)
       .single();
 
@@ -92,7 +78,21 @@ export const POST: APIRoute = async (context) => {
       return Response.json({ error: 'Forbidden' }, { status: 403 });
     }
 
+    const fileName = safeFileName(file.name || 'addon.zip');
     const objectKey = `addons/${addonId}/${version}/${crypto.randomUUID()}-${fileName}`;
+    const contentType = file.type || 'application/octet-stream';
+
+    await putR2Object({
+      objectKey,
+      body: await file.arrayBuffer(),
+      contentType,
+      metadata: {
+        addon_id: addonId,
+        uploader_id: user.id,
+        version,
+        checksum
+      }
+    });
 
     const { data: asset, error: assetError } = await admin
       .from('addon_assets')
@@ -103,39 +103,39 @@ export const POST: APIRoute = async (context) => {
         file_name: fileName,
         object_key: objectKey,
         content_type: contentType,
-        byte_size: byteSize,
+        byte_size: file.size,
         checksum,
         review_status: 'pending',
         safety_status: 'unchecked',
         storage_status: 'active'
       })
-      .select('id, object_key')
+      .select('id')
       .single();
 
     if (assetError || !asset) {
       return Response.json(
-        { error: assetError?.message ?? 'Failed to create asset.' },
+        { error: assetError?.message ?? 'Failed to create asset record.' },
         { status: 400 }
       );
     }
 
-    const r2 = await import('@/lib/r2');
-
-    const uploadUrl = await r2.createPresignedUploadUrl({
-      objectKey,
-      contentType
+    await admin.from('moderation_logs').insert({
+      target_type: 'addon_asset',
+      target_id: asset.id,
+      moderator_id: user.id,
+      action: 'asset_uploaded',
+      note: 'Developer uploaded a new addon asset. Asset remains pending until review.'
     });
 
     return Response.json({
+      ok: true,
       asset_id: asset.id,
-      object_key: objectKey,
-      upload_url: uploadUrl,
-      method: 'PUT'
+      object_key: objectKey
     });
   } catch (error) {
     return Response.json(
       {
-        error: error instanceof Error ? error.message : 'Presign failed.'
+        error: error instanceof Error ? error.message : 'Upload failed.'
       },
       { status: 500 }
     );

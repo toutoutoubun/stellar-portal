@@ -1,6 +1,6 @@
 import type { APIRoute } from 'astro';
 import { createSupabaseAdmin, createSupabaseServer } from '@/lib/supabaseServer';
-import { createPresignedDownloadUrl } from '@/lib/r2';
+import { getR2Object } from '@/lib/r2';
 
 export const prerender = false;
 
@@ -53,7 +53,7 @@ export const GET: APIRoute = async (context) => {
 
   const { data: asset } = await admin
     .from('addon_assets')
-    .select('id, object_key, file_name, download_count')
+    .select('id, object_key, file_name, content_type, download_count')
     .eq('addon_id', addon.id)
     .eq('review_status', 'approved')
     .eq('storage_status', 'active')
@@ -63,6 +63,12 @@ export const GET: APIRoute = async (context) => {
     .maybeSingle();
 
   if (asset?.object_key) {
+    const object = await getR2Object(asset.object_key);
+
+    if (!object) {
+      return Response.json({ error: 'R2 object not found.' }, { status: 404 });
+    }
+
     await admin.from('addon_download_events').insert({
       addon_id: addon.id,
       asset_id: asset.id,
@@ -84,12 +90,13 @@ export const GET: APIRoute = async (context) => {
         .eq('id', asset.id);
     }
 
-    const url = await createPresignedDownloadUrl({
-      objectKey: asset.object_key,
-      fileName: asset.file_name
+    return new Response(object.body, {
+      headers: {
+        'content-type': asset.content_type ?? object.httpMetadata?.contentType ?? 'application/octet-stream',
+        'content-disposition': `attachment; filename="${encodeURIComponent(asset.file_name ?? 'addon.zip')}"`,
+        'cache-control': 'private, max-age=0'
+      }
     });
-
-    return Response.redirect(url, 302);
   }
 
   if (addon.release_url) {

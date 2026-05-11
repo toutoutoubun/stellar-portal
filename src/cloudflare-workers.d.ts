@@ -1,3 +1,6 @@
 declare module 'cloudflare:workers' {
-  export const env: Record<string, string | undefined>;
+  export const env: {
+    ADDON_BUCKET?: R2Bucket;
+    [key: string]: string | R2Bucket | undefined;
+  };
 }
