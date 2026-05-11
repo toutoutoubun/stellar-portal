@@ -1,42 +1,88 @@
 import type { APIRoute } from 'astro';
-import { createSupabaseAdmin, createSupabaseServer } from '@/lib/supabaseServer';
-import { isReviewerOrAdmin, isAdmin } from '@/lib/access';
+import { requireAdminApi } from '@/lib/admin';
 
 export const prerender = false;
 
-const reviewStatuses = ['pending','needs_changes','approved','rejected','suspended'];
-const risks = ['low','medium','high','unknown'];
-const officialStatuses = ['official','reviewed','community','unreviewed'];
+const reviewStatuses = ['pending', 'needs_changes', 'approved', 'rejected', 'suspended'];
+const riskLevels = ['low', 'medium', 'high', 'unknown'];
+const officialStatuses = ['official', 'reviewed', 'community', 'unreviewed'];
 
-export const POST: APIRoute = async (context) => {
-  const supabase = createSupabaseServer(context);
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) return Response.json({ error: 'Unauthorized' }, { status: 401 });
-  const { data: profile } = await supabase.from('profiles').select('*').eq('id', user.id).single();
-  if (!isReviewerOrAdmin(profile as any)) return Response.json({ error: 'Forbidden' }, { status: 403 });
+export const PATCH: APIRoute = async (context) => {
+  const guard = await requireAdminApi(context, true);
+  if (!guard.ok) return guard.response;
 
-  const body = await context.request.json();
-  const review_status = reviewStatuses.includes(body.review_status) ? body.review_status : 'pending';
-  const risk_level = risks.includes(body.risk_level) ? body.risk_level : 'unknown';
-  let official_status = officialStatuses.includes(body.official_status) ? body.official_status : 'unreviewed';
-  if (official_status === 'official' && !isAdmin(profile as any)) return Response.json({ error: 'Only admin can mark official.' }, { status: 403 });
-  if (review_status === 'approved' && official_status === 'unreviewed') official_status = 'community';
+  const id = context.params.id;
+  if (!id) {
+    return Response.json({ error: 'Missing addon id' }, { status: 400 });
+  }
 
-  const admin = createSupabaseAdmin();
-  const { error } = await admin.from('addons').update({
-    review_status,
-    risk_level,
-    official_status,
-    published_at: review_status === 'approved' ? new Date().toISOString() : null
-  }).eq('id', context.params.id);
-  if (error) return Response.json({ error: error.message }, { status: 400 });
+  const body = await context.request.json().catch(() => ({}));
 
-  await admin.from('moderation_logs').insert({
+  const reviewStatus = String(body.review_status ?? '');
+  const riskLevel = String(body.risk_level ?? '');
+  const officialStatus = String(body.official_status ?? '');
+  const note = String(body.note ?? '').trim();
+
+  if (!reviewStatuses.includes(reviewStatus)) {
+    return Response.json({ error: 'Invalid review_status' }, { status: 400 });
+  }
+
+  if (!riskLevels.includes(riskLevel)) {
+    return Response.json({ error: 'Invalid risk_level' }, { status: 400 });
+  }
+
+  if (!officialStatuses.includes(officialStatus)) {
+    return Response.json({ error: 'Invalid official_status' }, { status: 400 });
+  }
+
+  if (officialStatus === 'official' && guard.profile.role !== 'admin') {
+    return Response.json({ error: 'Only admin can mark official addons.' }, { status: 403 });
+  }
+
+  const now = new Date().toISOString();
+
+  const update: Record<string, unknown> = {
+    review_status: reviewStatus,
+    risk_level: riskLevel,
+    official_status: officialStatus,
+    updated_at: now
+  };
+
+  if (reviewStatus === 'approved') {
+    update.published_at = now;
+  }
+
+  if (reviewStatus === 'suspended' || reviewStatus === 'rejected') {
+    update.published_at = null;
+  }
+
+  const { error } = await guard.admin
+    .from('addons')
+    .update(update)
+    .eq('id', id);
+
+  if (error) {
+    return Response.json({ error: error.message }, { status: 400 });
+  }
+
+  await guard.admin.from('moderation_logs').insert({
     target_type: 'addon',
-    target_id: context.params.id,
-    moderator_id: user.id,
-    action: body.action ?? review_status,
-    note: body.note ? String(body.note).slice(0, 2000) : null
+    target_id: id,
+    moderator_id: guard.user.id,
+    action: reviewStatus,
+    note: note || null
+  });
+
+  await guard.admin.from('audit_logs').insert({
+    actor_id: guard.user.id,
+    action: 'admin.addon.review',
+    target_type: 'addon',
+    target_id: id,
+    metadata: {
+      review_status: reviewStatus,
+      risk_level: riskLevel,
+      official_status: officialStatus
+    }
   });
 
   return Response.json({ ok: true });

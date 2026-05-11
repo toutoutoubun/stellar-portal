@@ -2,25 +2,18 @@
 import DashboardLayout from '@/layouts/DashboardLayout.astro';
 import PageHeader from '@/components/PageHeader.astro';
 import { normalizeLang } from '@/lib/i18n';
-import { getViewer } from '@/lib/access';
-import { createSupabaseAdmin } from '@/lib/supabaseServer';
+import { requireAdminPage } from '@/lib/admin';
 
 export const prerender = false;
 
 const lang = normalizeLang(Astro.params.lang);
-const viewer = await getViewer(Astro);
+const guard = await requireAdminPage(Astro, lang);
 
-const role = viewer.profile?.role ?? 'free_user';
-
-if (!viewer.user) {
-  return Astro.redirect(`/${lang}/login`);
+if (!guard.ok) {
+  return Astro.redirect(guard.redirect);
 }
 
-if (role !== 'admin' && role !== 'reviewer') {
-  return Astro.redirect(`/${lang}/dashboard`);
-}
-
-const admin = createSupabaseAdmin();
+const admin = guard.admin;
 
 const [
   pendingAddonsResult,
@@ -41,7 +34,7 @@ const [
   admin.from('reports').select('id', { count: 'exact', head: true }).eq('status', 'open'),
   admin
     .from('addons')
-    .select('id, name, slug, review_status, official_status, risk_level, created_at, author_id, repo_url, release_url')
+    .select('id, name, slug, review_status, official_status, risk_level, created_at, repo_url, release_url')
     .eq('review_status', 'pending')
     .order('created_at', { ascending: false })
     .limit(6),
@@ -59,42 +52,12 @@ const [
 ]);
 
 const stats = [
-  {
-    label: 'Pending addons',
-    value: pendingAddonsResult.count ?? 0,
-    href: `/${lang}/admin/review`,
-    note: '審査待ち'
-  },
-  {
-    label: 'Published addons',
-    value: approvedAddonsResult.count ?? 0,
-    href: `/${lang}/addons`,
-    note: '公開中'
-  },
-  {
-    label: 'Suspended addons',
-    value: suspendedAddonsResult.count ?? 0,
-    href: `/${lang}/admin/review`,
-    note: '停止中'
-  },
-  {
-    label: 'Users',
-    value: usersResult.count ?? 0,
-    href: `/${lang}/admin/users`,
-    note: '登録ユーザー'
-  },
-  {
-    label: 'Developers',
-    value: developersResult.count ?? 0,
-    href: `/${lang}/admin/users`,
-    note: 'Developer以上'
-  },
-  {
-    label: 'Open reports',
-    value: reportsResult.count ?? 0,
-    href: `/${lang}/admin/reports`,
-    note: '未対応通報'
-  }
+  { label: 'Pending addons', value: pendingAddonsResult.count ?? 0, href: `/${lang}/admin/review`, note: '審査待ち' },
+  { label: 'Published addons', value: approvedAddonsResult.count ?? 0, href: `/${lang}/addons`, note: '公開中' },
+  { label: 'Suspended addons', value: suspendedAddonsResult.count ?? 0, href: `/${lang}/admin/review`, note: '停止中' },
+  { label: 'Users', value: usersResult.count ?? 0, href: `/${lang}/admin/users`, note: '登録ユーザー' },
+  { label: 'Developers', value: developersResult.count ?? 0, href: `/${lang}/admin/users`, note: 'Developer以上' },
+  { label: 'Open reports', value: reportsResult.count ?? 0, href: `/${lang}/admin/reports`, note: '未対応通報' }
 ];
 
 const recentPending = recentPendingResult.data ?? [];
@@ -103,26 +66,7 @@ const highRiskAddons = highRiskResult.data ?? [];
 
 function formatDate(value: string | null) {
   if (!value) return '—';
-  return new Date(value).toLocaleString('ja-JP', {
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
-    hour: '2-digit',
-    minute: '2-digit'
-  });
-}
-
-function statusClass(status: string | null) {
-  if (status === 'approved') return 'border-stellar-accent text-stellar-accent';
-  if (status === 'pending') return 'border-stellar-accent/60 text-stellar-text';
-  if (status === 'suspended' || status === 'rejected') return 'border-stellar-danger text-stellar-danger';
-  return 'border-stellar-border text-stellar-muted';
-}
-
-function riskClass(risk: string | null) {
-  if (risk === 'high') return 'border-stellar-danger text-stellar-danger';
-  if (risk === 'medium' || risk === 'unknown') return 'border-stellar-accent text-stellar-accent';
-  return 'border-stellar-border text-stellar-muted';
+  return new Date(value).toLocaleString('ja-JP');
 }
 ---
 
@@ -130,24 +74,15 @@ function riskClass(risk: string | null) {
   <PageHeader
     eyebrow="control room"
     title="Admin Dashboard"
-    description="Review submissions, monitor risk signals, and keep the Stellar addon catalog separate from official documentation."
+    description="Review submissions, monitor risk signals, and keep community addons separate from official documentation."
   />
 
   <section class="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
     {stats.map((stat) => (
-      <a
-        href={stat.href}
-        class="terminal-panel block p-5 transition hover:border-stellar-accent"
-      >
-        <p class="font-mono text-xs uppercase tracking-[.22em] text-stellar-muted">
-          {stat.label}
-        </p>
-        <p class="mt-4 font-mono text-4xl text-stellar-text">
-          {stat.value}
-        </p>
-        <p class="mt-2 text-sm text-stellar-muted">
-          {stat.note}
-        </p>
+      <a href={stat.href} class="terminal-panel block p-5 transition hover:border-stellar-accent">
+        <p class="font-mono text-xs uppercase tracking-[.22em] text-stellar-muted">{stat.label}</p>
+        <p class="mt-4 font-mono text-4xl text-stellar-text">{stat.value}</p>
+        <p class="mt-2 text-sm text-stellar-muted">{stat.note}</p>
       </a>
     ))}
   </section>
@@ -156,182 +91,73 @@ function riskClass(risk: string | null) {
     <div class="terminal-panel p-5">
       <div class="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <p class="font-mono text-xs uppercase tracking-[.22em] text-stellar-muted">
-            review queue
-          </p>
-          <h2 class="mt-2 text-2xl text-stellar-text">
-            Pending addon submissions
-          </h2>
+          <p class="font-mono text-xs uppercase tracking-[.22em] text-stellar-muted">review queue</p>
+          <h2 class="mt-2 text-2xl text-stellar-text">Pending addon submissions</h2>
         </div>
-
-        <a class="btn" href={`/${lang}/admin/review`}>
-          Open review desk
-        </a>
+        <a class="btn" href={`/${lang}/admin/review`}>Open review desk</a>
       </div>
 
-      <div class="mt-5 overflow-x-auto">
-        <table class="w-full min-w-[720px] border-collapse text-left text-sm">
-          <thead class="border-b border-stellar-border font-mono text-xs uppercase tracking-[.18em] text-stellar-muted">
-            <tr>
-              <th class="py-3 pr-4">Addon</th>
-              <th class="py-3 pr-4">Risk</th>
-              <th class="py-3 pr-4">Status</th>
-              <th class="py-3 pr-4">Submitted</th>
-              <th class="py-3 pr-4">Links</th>
-            </tr>
-          </thead>
-          <tbody>
-            {recentPending.length === 0 && (
-              <tr>
-                <td class="py-5 text-stellar-muted" colspan="5">
-                  審査待ちのアドオンはありません。
-                </td>
-              </tr>
-            )}
-
-            {recentPending.map((addon) => (
-              <tr class="border-b border-stellar-border/70">
-                <td class="py-4 pr-4">
-                  <a
-                    href={`/${lang}/admin/addons/${addon.id}`}
-                    class="text-stellar-text hover:text-stellar-accent"
-                  >
-                    {addon.name}
-                  </a>
-                  <p class="mt-1 font-mono text-xs text-stellar-muted">
-                    {addon.slug}
-                  </p>
-                </td>
-
-                <td class="py-4 pr-4">
-                  <span class={`inline-flex border px-2 py-1 font-mono text-xs uppercase ${riskClass(addon.risk_level)}`}>
-                    {addon.risk_level ?? 'unknown'}
-                  </span>
-                </td>
-
-                <td class="py-4 pr-4">
-                  <span class={`inline-flex border px-2 py-1 font-mono text-xs uppercase ${statusClass(addon.review_status)}`}>
-                    {addon.review_status}
-                  </span>
-                </td>
-
-                <td class="py-4 pr-4 text-stellar-muted">
-                  {formatDate(addon.created_at)}
-                </td>
-
-                <td class="py-4 pr-4">
-                  <div class="flex gap-2 font-mono text-xs">
-                    {addon.repo_url && (
-                      <a class="text-stellar-accent hover:underline" href={addon.repo_url} target="_blank">
-                        repo
-                      </a>
-                    )}
-                    {addon.release_url && (
-                      <a class="text-stellar-accent hover:underline" href={addon.release_url} target="_blank">
-                        release
-                      </a>
-                    )}
-                  </div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+      <div class="mt-5 grid gap-3">
+        {recentPending.length === 0 && <p class="text-stellar-muted">審査待ちはありません。</p>}
+        {recentPending.map((addon) => (
+          <a href={`/${lang}/admin/addons/${addon.id}`} class="block border border-stellar-border bg-stellar-panel2 p-4 hover:border-stellar-accent">
+            <div class="flex flex-wrap items-center justify-between gap-3">
+              <div>
+                <p class="text-stellar-text">{addon.name}</p>
+                <p class="font-mono text-xs text-stellar-muted">{addon.slug}</p>
+              </div>
+              <div class="flex gap-2 font-mono text-xs uppercase">
+                <span class="border border-stellar-border px-2 py-1">{addon.review_status}</span>
+                <span class="border border-stellar-border px-2 py-1">{addon.risk_level}</span>
+              </div>
+            </div>
+            <p class="mt-2 text-sm text-stellar-muted">{formatDate(addon.created_at)}</p>
+          </a>
+        ))}
       </div>
     </div>
 
     <aside class="grid gap-6">
       <div class="terminal-panel p-5">
-        <p class="font-mono text-xs uppercase tracking-[.22em] text-stellar-muted">
-          risk watch
-        </p>
-        <h2 class="mt-2 text-xl text-stellar-text">
-          High / unknown risk
-        </h2>
-
+        <p class="font-mono text-xs uppercase tracking-[.22em] text-stellar-muted">risk watch</p>
+        <h2 class="mt-2 text-xl text-stellar-text">High / unknown risk</h2>
         <div class="mt-4 grid gap-3">
-          {highRiskAddons.length === 0 && (
-            <p class="text-sm text-stellar-muted">
-              高リスクまたは未判定のアドオンはありません。
-            </p>
-          )}
-
+          {highRiskAddons.length === 0 && <p class="text-sm text-stellar-muted">高リスクまたは未判定のアドオンはありません。</p>}
           {highRiskAddons.map((addon) => (
-            <a
-              href={`/${lang}/admin/addons/${addon.id}`}
-              class="block border border-stellar-border bg-stellar-panel2 p-3 hover:border-stellar-accent"
-            >
+            <a href={`/${lang}/admin/addons/${addon.id}`} class="block border border-stellar-border bg-stellar-panel2 p-3 hover:border-stellar-accent">
               <p class="text-stellar-text">{addon.name}</p>
-              <div class="mt-2 flex gap-2">
-                <span class={`border px-2 py-1 font-mono text-[11px] uppercase ${riskClass(addon.risk_level)}`}>
-                  {addon.risk_level}
-                </span>
-                <span class={`border px-2 py-1 font-mono text-[11px] uppercase ${statusClass(addon.review_status)}`}>
-                  {addon.review_status}
-                </span>
-              </div>
+              <p class="mt-1 font-mono text-xs text-stellar-muted">{addon.risk_level} / {addon.review_status}</p>
             </a>
           ))}
         </div>
       </div>
 
       <div class="terminal-panel p-5">
-        <p class="font-mono text-xs uppercase tracking-[.22em] text-stellar-muted">
-          admin routes
-        </p>
+        <p class="font-mono text-xs uppercase tracking-[.22em] text-stellar-muted">admin routes</p>
         <div class="mt-4 grid gap-2">
-          <a class="btn justify-start" href={`/${lang}/admin/review`}>
-            Review queue
-          </a>
-          <a class="btn justify-start" href={`/${lang}/admin/users`}>
-            Users
-          </a>
-          <a class="btn justify-start" href={`/${lang}/admin/reports`}>
-            Reports
-          </a>
-          <a class="btn justify-start" href={`/${lang}/safety`}>
-            Safety policy
-          </a>
+          <a class="btn justify-start" href={`/${lang}/admin/review`}>Review queue</a>
+          <a class="btn justify-start" href={`/${lang}/admin/users`}>Users</a>
+          <a class="btn justify-start" href={`/${lang}/admin/reports`}>Reports</a>
+          <a class="btn justify-start" href={`/${lang}/safety`}>Safety policy</a>
         </div>
       </div>
     </aside>
   </section>
 
   <section class="terminal-panel mt-8 p-5">
-    <p class="font-mono text-xs uppercase tracking-[.22em] text-stellar-muted">
-      moderation log
-    </p>
-    <h2 class="mt-2 text-2xl text-stellar-text">
-      Recent actions
-    </h2>
+    <p class="font-mono text-xs uppercase tracking-[.22em] text-stellar-muted">moderation log</p>
+    <h2 class="mt-2 text-2xl text-stellar-text">Recent actions</h2>
 
     <div class="mt-5 grid gap-3">
-      {recentLogs.length === 0 && (
-        <p class="text-stellar-muted">
-          まだ審査ログはありません。
-        </p>
-      )}
-
+      {recentLogs.length === 0 && <p class="text-stellar-muted">まだ審査ログはありません。</p>}
       {recentLogs.map((log) => (
         <div class="border border-stellar-border bg-stellar-panel2 p-4">
           <div class="flex flex-wrap items-center justify-between gap-3">
-            <p class="font-mono text-xs uppercase tracking-[.18em] text-stellar-accent">
-              {log.action}
-            </p>
-            <p class="font-mono text-xs text-stellar-muted">
-              {formatDate(log.created_at)}
-            </p>
+            <p class="font-mono text-xs uppercase tracking-[.18em] text-stellar-accent">{log.action}</p>
+            <p class="font-mono text-xs text-stellar-muted">{formatDate(log.created_at)}</p>
           </div>
-
-          <p class="mt-2 text-sm text-stellar-muted">
-            {log.target_type} / {log.target_id}
-          </p>
-
-          {log.note && (
-            <p class="mt-3 text-stellar-text">
-              {log.note}
-            </p>
-          )}
+          <p class="mt-2 text-sm text-stellar-muted">{log.target_type} / {log.target_id}</p>
+          {log.note && <p class="mt-3 text-stellar-text">{log.note}</p>}
         </div>
       ))}
     </div>

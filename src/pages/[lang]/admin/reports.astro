@@ -1,14 +1,85 @@
 ---
-import AdminLayout from '@/layouts/AdminLayout.astro';
+import DashboardLayout from '@/layouts/DashboardLayout.astro';
 import PageHeader from '@/components/PageHeader.astro';
+import ReportActions from '@/components/ReportActions';
 import { normalizeLang } from '@/lib/i18n';
-import { requireUser, isReviewerOrAdmin } from '@/lib/access';
+import { requireAdminPage } from '@/lib/admin';
+
+export const prerender = false;
+
 const lang = normalizeLang(Astro.params.lang);
-const viewer = await requireUser(Astro);
-if ('redirect' in viewer) return viewer.redirect;
-if (!isReviewerOrAdmin(viewer.profile)) return new Response('Forbidden', { status: 403 });
+const guard = await requireAdminPage(Astro, lang);
+
+if (!guard.ok) {
+  return Astro.redirect(guard.redirect);
+}
+
+const { data: reports } = await guard.admin
+  .from('reports')
+  .select('*')
+  .order('created_at', { ascending: false })
+  .limit(100);
+
+function formatDate(value: string | null) {
+  if (!value) return '—';
+  return new Date(value).toLocaleString('ja-JP');
+}
 ---
-<AdminLayout title="Reports">
-  <PageHeader eyebrow="moderation desk" title="Reports" description="Report queue placeholder; functional report intake is Phase 7." />
-  <div class="terminal-panel p-6 text-stellar-muted">MVP placeholder. The route and access control are present.</div>
-</AdminLayout>
+
+<DashboardLayout title="Reports">
+  <PageHeader
+    eyebrow="incident desk"
+    title="Reports"
+    description="Handle reports related to addon listings, unsafe links, policy violations, and misleading metadata."
+  />
+
+  <div class="grid gap-4">
+    {(reports ?? []).length === 0 && (
+      <div class="terminal-panel p-5 text-stellar-muted">
+        通報はありません。
+      </div>
+    )}
+
+    {(reports ?? []).map((report) => (
+      <article class="terminal-panel grid gap-4 p-5 xl:grid-cols-[1fr_320px]">
+        <div>
+          <div class="flex flex-wrap items-center gap-2">
+            <span class="border border-stellar-border px-2 py-1 font-mono text-xs uppercase text-stellar-muted">
+              {report.status}
+            </span>
+            <span class="border border-stellar-border px-2 py-1 font-mono text-xs uppercase text-stellar-muted">
+              {report.target_type}
+            </span>
+          </div>
+
+          <h2 class="mt-4 text-xl text-stellar-text">
+            {report.reason}
+          </h2>
+
+          <dl class="mt-4 grid gap-3 text-sm">
+            <div>
+              <dt class="font-mono text-xs uppercase tracking-[.18em] text-stellar-muted">Target</dt>
+              <dd class="mt-1 font-mono text-stellar-text">{report.target_id}</dd>
+            </div>
+
+            <div>
+              <dt class="font-mono text-xs uppercase tracking-[.18em] text-stellar-muted">Reporter</dt>
+              <dd class="mt-1 font-mono text-stellar-text">{report.reporter_id ?? 'anonymous'}</dd>
+            </div>
+
+            <div>
+              <dt class="font-mono text-xs uppercase tracking-[.18em] text-stellar-muted">Created</dt>
+              <dd class="mt-1 text-stellar-text">{formatDate(report.created_at)}</dd>
+            </div>
+          </dl>
+        </div>
+
+        <ReportActions
+          client:load
+          reportId={report.id}
+          initialStatus={report.status}
+        />
+      </article>
+    ))}
+  </div>
+</DashboardLayout>
