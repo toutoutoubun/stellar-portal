@@ -53,14 +53,36 @@ export const GET: APIRoute = async (context) => {
 
   const { data: asset } = await admin
     .from('addon_assets')
-    .select('id, object_key, file_name')
+    .select('id, object_key, file_name, download_count')
     .eq('addon_id', addon.id)
     .eq('review_status', 'approved')
+    .eq('storage_status', 'active')
     .order('created_at', { ascending: false })
     .limit(1)
     .maybeSingle();
 
   if (asset?.object_key) {
+    await admin.from('addon_download_events').insert({
+      addon_id: addon.id,
+      asset_id: asset.id,
+      user_id: user?.id ?? null,
+      source: 'portal'
+    });
+
+    const { error: incrementError } = await admin.rpc('increment_asset_download_count', {
+      asset_id_input: asset.id
+    });
+
+    if (incrementError) {
+      await admin
+        .from('addon_assets')
+        .update({
+          download_count: Number(asset.download_count ?? 0) + 1,
+          updated_at: new Date().toISOString()
+        })
+        .eq('id', asset.id);
+    }
+
     const url = await createPresignedDownloadUrl({
       objectKey: asset.object_key,
       fileName: asset.file_name
