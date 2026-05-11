@@ -1,0 +1,28 @@
+---
+import { t, type Lang } from '@/lib/i18n';
+const { lang } = Astro.props as { lang: Lang };
+---
+<section class="terminal-panel scanline grid gap-8 p-6 sm:p-10 lg:grid-cols-[1.15fr_.85fr]">
+  <div>
+    <p class="mb-4 font-mono text-xs uppercase tracking-[.28em] text-stellar-accent">{t(lang, 'coordinate')}</p>
+    <h1 class="font-mono text-4xl tracking-[.16em] text-stellar-text sm:text-6xl">{t(lang, 'portal')}</h1>
+    <p class="mt-5 max-w-2xl font-serif text-xl leading-9 text-stellar-text">{t(lang, 'tagline')}</p>
+    <p class="mt-6 font-mono text-lg text-stellar-accent">{t(lang, 'readThinkWrite')}</p>
+    <div class="mt-8 flex flex-wrap gap-3">
+      <a class="btn btn-primary" href={`/${lang}/wiki`}>Open Wiki</a>
+      <a class="btn" href={`/${lang}/addons`}>Browse Addons</a>
+      <a class="btn" href={`/${lang}/developers`}>Developer Portal</a>
+      <a class="btn" href="https://github.com/toutoutoubun/stellar">GitHub</a>
+    </div>
+  </div>
+  <div class="border border-stellar-border bg-stellar-bg p-4 font-mono text-xs leading-7 text-stellar-muted">
+    <p class="text-stellar-accent">SYSTEM LOG</p>
+    <p>&gt; mode: local-first</p>
+    <p>&gt; domain: papers / notes / highlights / graphs</p>
+    <p>&gt; portal: wiki + reviewed addons</p>
+    <p>&gt; publication: gated by review</p>
+    <p>&gt; developer access: subscription required</p>
+    <p>&gt; direct file upload: disabled in MVP</p>
+    <p>&gt; release source: GitHub Releases URL</p>
+  </div>
+</section>

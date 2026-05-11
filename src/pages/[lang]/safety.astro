@@ -1,0 +1,13 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import PageHeader from '@/components/PageHeader.astro';
+import { normalizeLang } from '@/lib/i18n';
+const lang = normalizeLang(Astro.params.lang);
+---
+<BaseLayout title="Addon Safety" lang={lang}>
+  <PageHeader eyebrow="stellar portal" title="Addon Safety" description="Safety, permissions, review, suspension, and publication rules." />
+  <div class="terminal-panel prose-stellar p-6">
+    <p>Addons must declare permissions, license, checksum, compatible Stellar version, repository URL, and release URL. network_access, external_command, database_access, and ai_api_access require extra attention.</p>
+    <p>Reviewed listing is not the same as official maintenance. Admins can suspend dangerous or misleading addons.</p>
+  </div>
+</BaseLayout>

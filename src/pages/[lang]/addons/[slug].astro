@@ -1,0 +1,48 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import PageHeader from '@/components/PageHeader.astro';
+import StatusBadge from '@/components/StatusBadge.astro';
+import RiskBadge from '@/components/RiskBadge.astro';
+import ShareButtons from '@/components/ShareButtons';
+import { normalizeLang } from '@/lib/i18n';
+import { createSupabaseServer } from '@/lib/supabaseServer';
+import { getEnv } from '@/lib/env';
+const lang = normalizeLang(Astro.params.lang);
+const slug = Astro.params.slug!;
+const supabase = createSupabaseServer(Astro);
+const { data: addon } = await supabase.from('addons').select('*, developer_profiles(handle, display_name, github_url, website_url)').eq('slug', slug).eq('review_status', 'approved').single();
+if (!addon) return new Response('Not found', { status: 404 });
+const env = getEnv(Astro);
+const url = new URL(Astro.url.pathname, env.PUBLIC_SITE_URL).toString();
+---
+<BaseLayout title={addon.name} description={addon.short_description} lang={lang}>
+  <PageHeader eyebrow="addon detail" title={addon.name} description={addon.short_description} />
+  <div class="grid gap-6 lg:grid-cols-[1fr_320px]">
+    <article class="terminal-panel p-6">
+      <div class="mb-5 flex flex-wrap gap-2"><StatusBadge status={addon.official_status} lang={lang} /><RiskBadge risk={addon.risk_level} lang={lang} /></div>
+      <p class="leading-8 text-stellar-text">{addon.description}</p>
+      {addon.official_status !== 'official' && (
+        <p class="mt-6 border border-stellar-border bg-stellar-bg p-4 leading-7 text-stellar-muted">
+          This addon is community-submitted and reviewed for listing, but not officially maintained by the Stellar core project.<br />
+          このアドオンはコミュニティ投稿です。掲載前審査は行われていますが、Stellar本体の公式保守対象ではありません。
+        </p>
+      )}
+      <div class="mt-6"><ShareButtons client:load title={addon.name} url={url} /></div>
+    </article>
+    <aside class="terminal-panel h-fit p-5 font-mono text-sm">
+      <dl class="grid gap-3">
+        <div><dt class="text-stellar-muted">Author</dt><dd>{addon.developer_profiles?.display_name ?? 'Unknown'}</dd></div>
+        <div><dt class="text-stellar-muted">Version</dt><dd>{addon.current_version}</dd></div>
+        <div><dt class="text-stellar-muted">Compatible</dt><dd>{addon.compatible_stellar_version}</dd></div>
+        <div><dt class="text-stellar-muted">License</dt><dd>{addon.license}</dd></div>
+        <div><dt class="text-stellar-muted">Checksum</dt><dd class="break-all">{addon.checksum}</dd></div>
+        <div><dt class="text-stellar-muted">Permissions</dt><dd class="mt-1 flex flex-wrap gap-1">{(addon.permissions ?? []).map((p: string) => <span class="badge">{p}</span>)}</dd></div>
+      </dl>
+      <div class="mt-5 grid gap-2">
+        <a class="btn" href={addon.release_url}>Release</a>
+        {addon.repo_url && <a class="btn" href={addon.repo_url}>Repository</a>}
+        {addon.documentation_url && <a class="btn" href={addon.documentation_url}>Documentation</a>}
+      </div>
+    </aside>
+  </div>
+</BaseLayout>

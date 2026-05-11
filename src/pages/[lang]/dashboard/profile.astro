@@ -1,0 +1,18 @@
+---
+import DashboardLayout from '@/layouts/DashboardLayout.astro';
+import PageHeader from '@/components/PageHeader.astro';
+import DeveloperProfileForm from '@/components/DeveloperProfileForm';
+import { normalizeLang } from '@/lib/i18n';
+import { requireUser, hasDeveloperAccess } from '@/lib/access';
+import { createSupabaseServer } from '@/lib/supabaseServer';
+const lang = normalizeLang(Astro.params.lang);
+const viewer = await requireUser(Astro);
+if ('redirect' in viewer) return viewer.redirect;
+if (!hasDeveloperAccess(viewer.profile)) return Astro.redirect(`/${lang}/pricing`);
+const supabase = createSupabaseServer(Astro);
+const { data: developerProfile } = await supabase.from('developer_profiles').select('*').eq('user_id', viewer.user.id).maybeSingle();
+---
+<DashboardLayout title="Developer Profile">
+  <PageHeader eyebrow="developer console" title="Developer Profile" description="Public author profile shown next to reviewed addons." />
+  <DeveloperProfileForm client:load profile={developerProfile} />
+</DashboardLayout>

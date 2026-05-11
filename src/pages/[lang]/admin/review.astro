@@ -1,0 +1,28 @@
+---
+import AdminLayout from '@/layouts/AdminLayout.astro';
+import PageHeader from '@/components/PageHeader.astro';
+import StatusBadge from '@/components/StatusBadge.astro';
+import { normalizeLang } from '@/lib/i18n';
+import { requireUser, isReviewerOrAdmin } from '@/lib/access';
+import { createSupabaseAdmin } from '@/lib/supabaseServer';
+const lang = normalizeLang(Astro.params.lang);
+const viewer = await requireUser(Astro);
+if ('redirect' in viewer) return viewer.redirect;
+if (!isReviewerOrAdmin(viewer.profile)) return new Response('Forbidden', { status: 403 });
+const admin = createSupabaseAdmin(Astro);
+const { data: addons } = await admin.from('addons').select('*, developer_profiles(display_name, handle)').in('review_status', ['pending','needs_changes']).order('updated_at', { ascending: true });
+---
+<AdminLayout title="Review Queue">
+  <PageHeader eyebrow="moderation desk" title="Review Queue" description="Pending and returned submissions." />
+  <div class="grid gap-3">
+    {(addons ?? []).map((addon) => (
+      <article class="terminal-panel flex flex-wrap items-center justify-between gap-3 p-4">
+        <div>
+          <a class="font-mono text-lg" href={`/${lang}/admin/addons/${addon.id}`}>{addon.name}</a>
+          <p class="text-sm text-stellar-muted">{addon.developer_profiles?.display_name ?? 'unknown'} / {addon.release_url}</p>
+        </div>
+        <div class="flex gap-2"><StatusBadge status={addon.review_status} lang={lang} /><StatusBadge status={addon.risk_level} lang={lang} /></div>
+      </article>
+    ))}
+  </div>
+</AdminLayout>

@@ -1,0 +1,15 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import PageHeader from '@/components/PageHeader.astro';
+import { normalizeLang } from '@/lib/i18n';
+import BillingButtons from '@/components/BillingButtons';
+const lang = normalizeLang(Astro.params.lang);
+---
+<BaseLayout title="Pricing" lang={lang}>
+  <PageHeader eyebrow="stellar portal" title="Pricing" description="The initial paid plan is for addon submission rights only." />
+  <div class="terminal-panel grid gap-5 p-6">
+    <h2 class="font-mono text-2xl">Developer Plan</h2>
+    <p class="leading-8 text-stellar-muted">Paid Developer registration enables addon submission and update requests. It does not grant automatic publication. All submissions enter pending review.</p>
+    <BillingButtons client:load lang={lang} mode="checkout" />
+  </div>
+</BaseLayout>

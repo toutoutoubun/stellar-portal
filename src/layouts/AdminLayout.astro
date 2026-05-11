@@ -1,0 +1,23 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import { normalizeLang } from '@/lib/i18n';
+const lang = normalizeLang(Astro.params.lang);
+const { title = 'Admin' } = Astro.props;
+const items = [
+  ['admin home', `/${lang}/admin`],
+  ['review queue', `/${lang}/admin/review`],
+  ['users', `/${lang}/admin/users`],
+  ['reports', `/${lang}/admin/reports`]
+];
+---
+<BaseLayout title={title} lang={lang}>
+  <div class="grid gap-6 lg:grid-cols-[240px_1fr]">
+    <aside class="terminal-panel h-fit p-4 font-mono text-sm">
+      <p class="mb-4 text-xs uppercase tracking-[.22em] text-stellar-muted">moderation desk</p>
+      <nav class="grid gap-2">
+        {items.map(([label, href]) => <a class="border border-stellar-border px-3 py-2 hover:border-stellar-accent" href={href}>{label}</a>)}
+      </nav>
+    </aside>
+    <section><slot /></section>
+  </div>
+</BaseLayout>

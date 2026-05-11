@@ -1,0 +1,24 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import PageHeader from '@/components/PageHeader.astro';
+import AddonCard from '@/components/AddonCard.astro';
+import { normalizeLang, t } from '@/lib/i18n';
+import { createSupabaseServer } from '@/lib/supabaseServer';
+const lang = normalizeLang(Astro.params.lang);
+const filter = Astro.url.searchParams.get('filter') ?? 'all';
+const supabase = createSupabaseServer(Astro);
+let query = supabase.from('addons').select('*').eq('review_status', 'approved').order('updated_at', { ascending: false });
+if (['official','reviewed','community'].includes(filter)) query = query.eq('official_status', filter);
+if (['low','medium','high'].includes(filter)) query = query.eq('risk_level', filter);
+const { data: addons } = await query;
+const filters = ['all','official','reviewed','community','low','medium','high'];
+---
+<BaseLayout title="Addons" lang={lang}>
+  <PageHeader eyebrow="reviewed registry" title="Addons" description="Official, reviewed, and community addons are separated. MVP distribution uses GitHub Releases URLs." />
+  <nav class="mb-6 flex flex-wrap gap-2 font-mono text-xs uppercase tracking-[.12em]">
+    {filters.map((f) => <a class:list={['border px-3 py-2', filter === f ? 'border-stellar-accent text-stellar-accent' : 'border-stellar-border text-stellar-muted']} href={`/${lang}/addons?filter=${f}`}>{f}</a>)}
+  </nav>
+  <div class="grid gap-4">
+    {(addons ?? []).length ? addons?.map((addon) => <AddonCard addon={addon} />) : <p class="text-stellar-muted">{t(lang, 'noAddons')}</p>}
+  </div>
+</BaseLayout>

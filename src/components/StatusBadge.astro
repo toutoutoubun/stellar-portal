@@ -1,0 +1,6 @@
+---
+import { statusLabel } from '@/lib/status';
+const { status, lang = 'en' } = Astro.props;
+const tone = status === 'approved' || status === 'official' || status === 'low' ? 'text-stellar-accent border-stellar-accent/60' : status === 'suspended' || status === 'rejected' || status === 'high' ? 'text-red-200 border-stellar-danger/80' : 'text-stellar-muted border-stellar-border';
+---
+<span class={`badge ${tone}`}>{statusLabel(status, lang)}</span>

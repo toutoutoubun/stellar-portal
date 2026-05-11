@@ -1,0 +1,17 @@
+---
+import DashboardLayout from '@/layouts/DashboardLayout.astro';
+import PageHeader from '@/components/PageHeader.astro';
+import BillingButtons from '@/components/BillingButtons';
+import { normalizeLang } from '@/lib/i18n';
+import { requireUser } from '@/lib/access';
+const lang = normalizeLang(Astro.params.lang);
+const viewer = await requireUser(Astro);
+if ('redirect' in viewer) return viewer.redirect;
+---
+<DashboardLayout title="Subscription">
+  <PageHeader eyebrow="developer console" title="Subscription" description="Developer Plan state is synchronized from Stripe Webhooks." />
+  <div class="terminal-panel grid gap-3 p-6 font-mono text-sm">
+    <p>subscription_status: {viewer.profile?.subscription_status}</p>
+    <BillingButtons client:load lang={lang} mode="portal" />
+  </div>
+</DashboardLayout>

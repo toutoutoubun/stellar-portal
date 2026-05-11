@@ -1,0 +1,62 @@
+---
+import DashboardLayout from '@/layouts/DashboardLayout.astro';
+import PageHeader from '@/components/PageHeader.astro';
+import { normalizeLang } from '@/lib/i18n';
+import { getViewer, hasDeveloperAccess } from '@/lib/access';
+
+const lang = normalizeLang(Astro.params.lang);
+
+let viewer = {
+  user: null as any,
+  profile: null as any
+};
+
+let authError = '';
+
+try {
+  viewer = await getViewer(Astro);
+} catch (error) {
+  authError = error instanceof Error ? error.message : 'Unknown auth error';
+}
+---
+<DashboardLayout title="Dashboard">
+  <PageHeader
+    eyebrow="developer console"
+    title="Dashboard"
+    description="Developer registration is required before addon submission becomes available."
+  />
+
+  <div class="terminal-panel grid gap-4 p-6 font-mono text-sm">
+    {authError && (
+      <div class="border border-stellar-danger/60 bg-stellar-danger/10 p-4 text-stellar-text">
+        <p class="mb-2 text-xs uppercase tracking-[.22em] text-stellar-danger">auth not connected</p>
+        <p>Supabase接続またはCookie認証がまだ完了していません。</p>
+        <p class="mt-2 text-stellar-muted">{authError}</p>
+      </div>
+    )}
+
+    {!viewer.user && !authError && (
+      <div class="border border-stellar-border bg-stellar-panel2 p-4">
+        <p class="mb-2 text-xs uppercase tracking-[.22em] text-stellar-muted">not signed in</p>
+        <p>まだログインしていません。アドオン投稿や課金状態の確認にはSupabase Authが必要です。</p>
+        <a class="btn mt-4 inline-flex w-fit" href={`/${lang}/login`}>Login</a>
+      </div>
+    )}
+
+    {viewer.user && (
+      <>
+        <p>user: {viewer.user.email}</p>
+        <p>role: {viewer.profile?.role ?? 'none'}</p>
+        <p>subscription: {viewer.profile?.subscription_status ?? 'none'}</p>
+        <p>developer access: {hasDeveloperAccess(viewer.profile) ? 'enabled' : 'disabled'}</p>
+        <a class="btn mt-3 w-fit" href={`/${lang}/dashboard/addons`}>Open addon desk</a>
+      </>
+    )}
+
+    <div class="border border-stellar-border p-4 text-stellar-muted">
+      <p class="mb-2 text-xs uppercase tracking-[.22em]">setup note</p>
+      <p>このページが表示されれば、Astroのダッシュボード画面自体は動いています。</p>
+      <p>次にSupabaseを接続すると、ログイン・プロフィール・Developer権限が使えるようになります。</p>
+    </div>
+  </div>
+</DashboardLayout>

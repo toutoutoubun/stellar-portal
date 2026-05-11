@@ -1,0 +1,15 @@
+---
+import DashboardLayout from '@/layouts/DashboardLayout.astro';
+import PageHeader from '@/components/PageHeader.astro';
+import AddonForm from '@/components/AddonForm';
+import { normalizeLang } from '@/lib/i18n';
+import { requireUser, hasDeveloperAccess } from '@/lib/access';
+const lang = normalizeLang(Astro.params.lang);
+const viewer = await requireUser(Astro);
+if ('redirect' in viewer) return viewer.redirect;
+if (!hasDeveloperAccess(viewer.profile)) return Astro.redirect(`/${lang}/pricing`);
+---
+<DashboardLayout title="Submit Addon">
+  <PageHeader eyebrow="submission" title="Submit Addon" description="Initial MVP uses GitHub Releases URLs. Direct file upload is intentionally disabled." />
+  <AddonForm client:load lang={lang} />
+</DashboardLayout>

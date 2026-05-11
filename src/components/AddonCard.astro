@@ -1,0 +1,25 @@
+---
+import StatusBadge from './StatusBadge.astro';
+import RiskBadge from './RiskBadge.astro';
+import { normalizeLang } from '@/lib/i18n';
+const { addon } = Astro.props;
+const lang = normalizeLang(Astro.params.lang);
+---
+<article class="terminal-panel p-5">
+  <div class="flex flex-wrap items-start justify-between gap-3">
+    <div>
+      <a href={`/${lang}/addons/${addon.slug}`} class="font-mono text-xl tracking-[.06em] text-stellar-text hover:text-stellar-accent">{addon.name}</a>
+      <p class="mt-2 leading-7 text-stellar-muted">{addon.short_description}</p>
+    </div>
+    <div class="flex flex-wrap gap-2">
+      <StatusBadge status={addon.official_status} lang={lang} />
+      <RiskBadge risk={addon.risk_level} lang={lang} />
+    </div>
+  </div>
+  <div class="mt-5 flex flex-wrap gap-2 text-xs text-stellar-muted">
+    <span class="badge">Stellar {addon.compatible_stellar_version}</span>
+    <span class="badge">v{addon.current_version}</span>
+    <span class="badge">{addon.license}</span>
+    {(addon.permissions ?? []).slice(0, 4).map((p: string) => <span class="badge">{p}</span>)}
+  </div>
+</article>

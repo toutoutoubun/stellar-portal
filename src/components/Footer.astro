@@ -1,0 +1,16 @@
+---
+import { type Lang } from '@/lib/i18n';
+const { lang } = Astro.props as { lang: Lang };
+---
+<footer class="border-t border-stellar-border py-8 text-sm text-stellar-muted">
+  <div class="mx-auto grid max-w-7xl gap-4 px-4 sm:px-6 lg:grid-cols-3 lg:px-8">
+    <p class="font-mono uppercase tracking-[.18em]">Stellar Portal / local-first archive console</p>
+    <p>Official Wiki and reviewed community addon listing are separated by design.</p>
+    <nav class="flex flex-wrap gap-3 font-mono text-xs uppercase tracking-[.12em]">
+      <a href={`/${lang}/legal/terms`}>Terms</a>
+      <a href={`/${lang}/legal/privacy`}>Privacy</a>
+      <a href={`/${lang}/legal/addon-policy`}>Addon Policy</a>
+      <a href="https://github.com/toutoutoubun/stellar">GitHub</a>
+    </nav>
+  </div>
+</footer>

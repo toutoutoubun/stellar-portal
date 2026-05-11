@@ -1,0 +1,25 @@
+---
+import DashboardLayout from '@/layouts/DashboardLayout.astro';
+import PageHeader from '@/components/PageHeader.astro';
+import StatusBadge from '@/components/StatusBadge.astro';
+import { normalizeLang } from '@/lib/i18n';
+import { requireUser, hasDeveloperAccess } from '@/lib/access';
+import { createSupabaseServer } from '@/lib/supabaseServer';
+const lang = normalizeLang(Astro.params.lang);
+const viewer = await requireUser(Astro);
+if ('redirect' in viewer) return viewer.redirect;
+const supabase = createSupabaseServer(Astro);
+const { data: addons } = await supabase.from('addons').select('*').eq('author_id', viewer.user.id).order('updated_at', { ascending: false });
+---
+<DashboardLayout title="My Addons">
+  <PageHeader eyebrow="developer console" title="My Addons" description="Your submissions and review status." />
+  {hasDeveloperAccess(viewer.profile) ? <a class="btn btn-primary mb-5" href={`/${lang}/dashboard/addons/new`}>New addon</a> : <a class="btn btn-primary mb-5" href={`/${lang}/pricing`}>Activate Developer Plan</a>}
+  <div class="grid gap-3">
+    {(addons ?? []).map((addon) => (
+      <article class="terminal-panel flex flex-wrap items-center justify-between gap-3 p-4">
+        <div><a class="font-mono text-lg" href={`/${lang}/dashboard/addons/${addon.id}/edit`}>{addon.name}</a><p class="text-sm text-stellar-muted">{addon.slug}</p></div>
+        <div class="flex gap-2"><StatusBadge status={addon.review_status} lang={lang} /><StatusBadge status={addon.official_status} lang={lang} /></div>
+      </article>
+    ))}
+  </div>
+</DashboardLayout>

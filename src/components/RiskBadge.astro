@@ -1,0 +1,5 @@
+---
+import StatusBadge from './StatusBadge.astro';
+const { risk, lang = 'en' } = Astro.props;
+---
+<StatusBadge status={risk} lang={lang} />

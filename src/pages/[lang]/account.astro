@@ -1,0 +1,14 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import PageHeader from '@/components/PageHeader.astro';
+import AccountForm from '@/components/AccountForm';
+import { normalizeLang } from '@/lib/i18n';
+import { requireUser } from '@/lib/access';
+const lang = normalizeLang(Astro.params.lang);
+const viewer = await requireUser(Astro);
+if ('redirect' in viewer) return viewer.redirect;
+---
+<BaseLayout title="Account" lang={lang}>
+  <PageHeader eyebrow="account" title="Account" description="Manage your basic profile. Role and subscription fields are server-controlled." />
+  <div class="max-w-2xl"><AccountForm client:load profile={viewer.profile} /></div>
+</BaseLayout>

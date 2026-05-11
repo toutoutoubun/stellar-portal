@@ -1,0 +1,14 @@
+---
+import AdminLayout from '@/layouts/AdminLayout.astro';
+import PageHeader from '@/components/PageHeader.astro';
+import { normalizeLang } from '@/lib/i18n';
+import { requireUser, isReviewerOrAdmin } from '@/lib/access';
+const lang = normalizeLang(Astro.params.lang);
+const viewer = await requireUser(Astro);
+if ('redirect' in viewer) return viewer.redirect;
+if (!isReviewerOrAdmin(viewer.profile)) return new Response('Forbidden', { status: 403 });
+---
+<AdminLayout title="Reports">
+  <PageHeader eyebrow="moderation desk" title="Reports" description="Report queue placeholder; functional report intake is Phase 7." />
+  <div class="terminal-panel p-6 text-stellar-muted">MVP placeholder. The route and access control are present.</div>
+</AdminLayout>

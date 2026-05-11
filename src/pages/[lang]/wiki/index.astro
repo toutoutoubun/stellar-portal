@@ -1,0 +1,20 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import PageHeader from '@/components/PageHeader.astro';
+import { normalizeLang } from '@/lib/i18n';
+import { createSupabaseServer } from '@/lib/supabaseServer';
+const lang = normalizeLang(Astro.params.lang);
+const supabase = createSupabaseServer(Astro);
+const { data: pages } = await supabase.from('wiki_pages').select('slug,title,body,updated_at').eq('locale', lang).eq('status', 'published').order('slug');
+---
+<BaseLayout title="Wiki" lang={lang}>
+  <PageHeader eyebrow="official documentation" title="Wiki" description="Official Stellar documentation. Community addon listings are intentionally kept separate." />
+  <div class="grid gap-4 md:grid-cols-2">
+    {(pages ?? []).map((page) => (
+      <article class="terminal-panel p-5">
+        <a href={`/${lang}/wiki/${page.slug}`} class="font-mono text-xl hover:text-stellar-accent">{page.title}</a>
+        <p class="mt-3 line-clamp-3 leading-7 text-stellar-muted">{page.body}</p>
+      </article>
+    ))}
+  </div>
+</BaseLayout>

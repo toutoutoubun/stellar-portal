@@ -1,0 +1,23 @@
+---
+import LanguageSwitcher from './LanguageSwitcher.astro';
+import { t, type Lang } from '@/lib/i18n';
+const { lang } = Astro.props as { lang: Lang };
+const nav = [
+  [t(lang, 'wiki'), `/${lang}/wiki`],
+  [t(lang, 'addons'), `/${lang}/addons`],
+  [t(lang, 'developers'), `/${lang}/developers`],
+  [t(lang, 'pricing'), `/${lang}/pricing`],
+  [t(lang, 'safety'), `/${lang}/safety`]
+];
+---
+<header class="border-b border-stellar-border bg-stellar-bg/85 backdrop-blur">
+  <div class="mx-auto flex max-w-7xl flex-col gap-4 px-4 py-4 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8">
+    <a href={`/${lang}`} class="font-mono text-sm tracking-[.28em] text-stellar-text hover:text-stellar-accent">STELLAR PORTAL</a>
+    <nav class="flex flex-wrap items-center gap-2 font-mono text-xs uppercase tracking-[.12em] text-stellar-muted">
+      {nav.map(([label, href]) => <a href={href} class="border border-transparent px-2 py-1 hover:border-stellar-border">{label}</a>)}
+      <a href={`/${lang}/dashboard`} class="border border-stellar-border px-2 py-1">{t(lang, 'dashboard')}</a>
+      <a href={`/${lang}/login`} class="border border-stellar-border px-2 py-1">{t(lang, 'login')}</a>
+      <LanguageSwitcher lang={lang} />
+    </nav>
+  </div>
+</header>

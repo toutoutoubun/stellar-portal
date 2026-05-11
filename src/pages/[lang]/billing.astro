@@ -1,0 +1,14 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import PageHeader from '@/components/PageHeader.astro';
+import BillingButtons from '@/components/BillingButtons';
+import { normalizeLang } from '@/lib/i18n';
+import { requireUser } from '@/lib/access';
+const lang = normalizeLang(Astro.params.lang);
+const viewer = await requireUser(Astro);
+if ('redirect' in viewer) return viewer.redirect;
+---
+<BaseLayout title="Billing" lang={lang}>
+  <PageHeader eyebrow="billing" title="Billing" description="Open Stripe Billing Portal to manage the Developer Plan." />
+  <BillingButtons client:load lang={lang} mode="portal" />
+</BaseLayout>

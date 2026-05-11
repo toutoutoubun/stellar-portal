@@ -1,0 +1,41 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import ConsoleHero from '@/components/ConsoleHero.astro';
+import PageHeader from '@/components/PageHeader.astro';
+import AddonCard from '@/components/AddonCard.astro';
+import { normalizeLang, t } from '@/lib/i18n';
+import { createSupabaseServer } from '@/lib/supabaseServer';
+const lang = normalizeLang(Astro.params.lang);
+const supabase = createSupabaseServer(Astro);
+const { data: addons } = await supabase.from('addons').select('*').eq('review_status', 'approved').order('updated_at', { ascending: false }).limit(3);
+const { data: wiki } = await supabase.from('wiki_pages').select('slug,title,body').eq('locale', lang).eq('status', 'published').limit(3);
+---
+<BaseLayout title="Home" lang={lang} description={t(lang, 'tagline')}>
+  <ConsoleHero lang={lang} />
+  <section class="mt-10 grid gap-6 lg:grid-cols-3">
+    <div class="terminal-panel p-5">
+      <p class="font-mono text-xs uppercase tracking-[.18em] text-stellar-accent">official wiki</p>
+      <h2 class="mt-3 font-mono text-2xl">{t(lang, 'officialWiki')}</h2>
+      <p class="mt-3 leading-7 text-stellar-muted">Install, operate, and extend Stellar without mixing official documentation with community submissions.</p>
+      <a class="mt-5 inline-flex btn" href={`/${lang}/wiki`}>Open</a>
+    </div>
+    <div class="terminal-panel p-5">
+      <p class="font-mono text-xs uppercase tracking-[.18em] text-stellar-accent">addon registry</p>
+      <h2 class="mt-3 font-mono text-2xl">{t(lang, 'reviewedAddons')}</h2>
+      <p class="mt-3 leading-7 text-stellar-muted">Community addon submissions are listed only after review. Official, reviewed, and community labels remain separate.</p>
+      <a class="mt-5 inline-flex btn" href={`/${lang}/addons`}>Browse</a>
+    </div>
+    <div class="terminal-panel p-5">
+      <p class="font-mono text-xs uppercase tracking-[.18em] text-stellar-accent">developer access</p>
+      <h2 class="mt-3 font-mono text-2xl">{t(lang, 'developerPlan')}</h2>
+      <p class="mt-3 leading-7 text-stellar-muted">Paid registration grants submission rights, not publication rights. Every addon enters the review queue.</p>
+      <a class="mt-5 inline-flex btn" href={`/${lang}/pricing`}>Register</a>
+    </div>
+  </section>
+  <section class="mt-12">
+    <PageHeader eyebrow="latest reviewed" title="Addons" description="A small window into the reviewed addon catalog." />
+    <div class="grid gap-4">
+      {(addons ?? []).length ? addons?.map((addon) => <AddonCard addon={addon} />) : <p class="text-stellar-muted">{t(lang, 'noAddons')}</p>}
+    </div>
+  </section>
+</BaseLayout>
