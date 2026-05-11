@@ -16,7 +16,7 @@ export const GET: APIRoute = async () => {
       ok: true,
       objectKey,
       hasUploadUrl: Boolean(uploadUrl),
-      uploadUrlStartsWith: uploadUrl.slice(0, 60)
+      uploadUrlStartsWith: uploadUrl.slice(0, 80)
     });
   } catch (error) {
     return Response.json(
