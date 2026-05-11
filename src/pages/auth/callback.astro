@@ -2,5 +2,6 @@
 export const prerender = false;
 
 const query = Astro.url.search;
-return Astro.redirect(`/ja/auth/callback${query}`);
+const hash = Astro.url.hash;
+return Astro.redirect(`/ja/auth/callback${query}${hash}`);
 ---

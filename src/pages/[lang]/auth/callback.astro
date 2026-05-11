@@ -1,11 +1,15 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
+import AuthCallbackClient from '@/components/AuthCallbackClient';
 import { normalizeLang } from '@/lib/i18n';
 import { createSupabaseServer } from '@/lib/supabaseServer';
+import { getEnv } from '@/lib/env';
 
 export const prerender = false;
 
 const lang = normalizeLang(Astro.params.lang);
+const env = getEnv();
+
 const code = Astro.url.searchParams.get('code');
 const error = Astro.url.searchParams.get('error');
 const errorDescription = Astro.url.searchParams.get('error_description');
@@ -33,11 +37,11 @@ if (code) {
     </p>
 
     <h1 class="mt-3 text-2xl text-stellar-text">
-      Login could not be completed
+      Completing login
     </h1>
 
     <p class="mt-4 text-stellar-muted">
-      ログインリンクの処理に失敗しました。リンクの有効期限が切れたか、すでに使用済みの可能性があります。
+      ログインリンクを処理しています。数秒後にダッシュボードへ移動します。
     </p>
 
     {errorDescription && (
@@ -45,6 +49,13 @@ if (code) {
         {errorDescription}
       </p>
     )}
+
+    <AuthCallbackClient
+      client:load
+      lang={lang}
+      supabaseUrl={env.PUBLIC_SUPABASE_URL}
+      supabaseAnonKey={env.PUBLIC_SUPABASE_ANON_KEY}
+    />
 
     <a class="btn mt-6 inline-flex" href={`/${lang}/login`}>
       Send a new login link
