@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import type { FormEvent } from 'react';
-import { createClient } from '@supabase/supabase-js';
+import { createBrowserClient } from '@supabase/ssr';
 
 type Props = {
   lang: string;
@@ -29,12 +29,14 @@ export default function LoginForm({
         return;
       }
 
-      const supabase = createClient(supabaseUrl, supabaseAnonKey);
+      const supabase = createBrowserClient(supabaseUrl, supabaseAnonKey);
+
+      const redirectTo = `${window.location.origin}/${lang}/auth/callback`;
 
       const { error } = await supabase.auth.signInWithOtp({
         email,
         options: {
-          emailRedirectTo: `${window.location.origin}/${lang}/auth/callback`
+          emailRedirectTo: redirectTo
         }
       });
 
@@ -45,7 +47,7 @@ export default function LoginForm({
       }
 
       setStatus('sent');
-      setMessage('ログインメールを送信しました。受信箱と迷惑メールを確認してください。');
+      setMessage('ログインメールを送信しました。新しく届いたメールのリンクを開いてください。');
     } catch (error) {
       setStatus('error');
       setMessage(error instanceof Error ? error.message : '送信に失敗しました。');
