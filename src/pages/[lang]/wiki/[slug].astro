@@ -10,7 +10,7 @@ const slug = Astro.params.slug!;
 const supabase = createSupabaseServer(Astro);
 const { data: page } = await supabase.from('wiki_pages').select('*').eq('locale', lang).eq('slug', slug).eq('status', 'published').single();
 if (!page) return new Response('Not found', { status: 404 });
-const env = getEnv(Astro);
+const env = getEnv();
 const url = new URL(Astro.url.pathname, env.PUBLIC_SITE_URL).toString();
 ---
 <BaseLayout title={page.title} description={page.body.slice(0, 150)} lang={lang}>

@@ -12,8 +12,8 @@ export const POST: APIRoute = async (context) => {
   if (!user) return Response.json({ error: 'Unauthorized' }, { status: 401 });
   const body = await context.request.json().catch(() => ({}));
   const lang = normalizeLang(body.lang);
-  const env = getEnv(context);
-  const admin = createSupabaseAdmin(context);
+  const env = getEnv();
+  const admin = createSupabaseAdmin();
   const { data: profile } = await admin.from('profiles').select('stripe_customer_id').eq('id', user.id).single();
   if (!profile?.stripe_customer_id) return Response.json({ error: 'No Stripe customer found.' }, { status: 400 });
   const stripe = createStripe(context);

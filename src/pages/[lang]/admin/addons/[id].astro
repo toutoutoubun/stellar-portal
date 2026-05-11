@@ -10,7 +10,7 @@ const lang = normalizeLang(Astro.params.lang);
 const viewer = await requireUser(Astro);
 if ('redirect' in viewer) return viewer.redirect;
 if (!isReviewerOrAdmin(viewer.profile)) return new Response('Forbidden', { status: 403 });
-const admin = createSupabaseAdmin(Astro);
+const admin = createSupabaseAdmin();
 const { data: addon } = await admin.from('addons').select('*, developer_profiles(*), profiles!addons_author_id_fkey(email, subscription_status, role)').eq('id', Astro.params.id).single();
 const { data: logs } = await admin.from('moderation_logs').select('*').eq('target_type', 'addon').eq('target_id', Astro.params.id).order('created_at', { ascending: false });
 if (!addon) return new Response('Not found', { status: 404 });

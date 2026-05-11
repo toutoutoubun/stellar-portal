@@ -20,7 +20,7 @@ export const POST: APIRoute = async (context) => {
   const validation = validateAddonPayload(body);
   if (!validation.ok) return Response.json({ errors: validation.errors }, { status: 400 });
 
-  const admin = createSupabaseAdmin(context);
+  const admin = createSupabaseAdmin();
   const slug = body.slug ? slugify(body.slug) : slugify(body.name);
   const { data, error } = await admin.from('addons').insert({
     author_id: user.id,

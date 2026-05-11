@@ -12,7 +12,7 @@ export const PATCH: APIRoute = async (context) => {
   const { data: profile } = await supabase.from('profiles').select('*').eq('id', user.id).single();
   if (!hasDeveloperAccess(profile as any)) return Response.json({ error: 'Developer Plan is required.' }, { status: 403 });
 
-  const admin = createSupabaseAdmin(context);
+  const admin = createSupabaseAdmin();
   const { data: existing } = await admin.from('addons').select('*').eq('id', context.params.id).single();
   if (!existing || existing.author_id !== user.id) return Response.json({ error: 'Not found.' }, { status: 404 });
   if (['approved', 'suspended'].includes(existing.review_status) && profile?.role !== 'admin' && profile?.role !== 'reviewer') {

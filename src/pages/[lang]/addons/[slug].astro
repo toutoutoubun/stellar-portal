@@ -12,7 +12,7 @@ const slug = Astro.params.slug!;
 const supabase = createSupabaseServer(Astro);
 const { data: addon } = await supabase.from('addons').select('*, developer_profiles(handle, display_name, github_url, website_url)').eq('slug', slug).eq('review_status', 'approved').single();
 if (!addon) return new Response('Not found', { status: 404 });
-const env = getEnv(Astro);
+const env = getEnv();
 const url = new URL(Astro.url.pathname, env.PUBLIC_SITE_URL).toString();
 ---
 <BaseLayout title={addon.name} description={addon.short_description} lang={lang}>

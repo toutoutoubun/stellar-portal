@@ -13,7 +13,7 @@ interface Props {
   image?: string;
 }
 
-const env = getEnv(Astro);
+const env = getEnv();
 const lang = Astro.props.lang ?? normalizeLang(Astro.params.lang);
 const title = Astro.props.title ? `${Astro.props.title} / Stellar Portal` : 'Stellar Portal';
 const description = Astro.props.description ?? 'A local-first research portal for Stellar: wiki, addons, developer registration, and reviewed community extensions.';

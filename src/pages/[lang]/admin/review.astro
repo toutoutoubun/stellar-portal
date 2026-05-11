@@ -9,7 +9,7 @@ const lang = normalizeLang(Astro.params.lang);
 const viewer = await requireUser(Astro);
 if ('redirect' in viewer) return viewer.redirect;
 if (!isReviewerOrAdmin(viewer.profile)) return new Response('Forbidden', { status: 403 });
-const admin = createSupabaseAdmin(Astro);
+const admin = createSupabaseAdmin();
 const { data: addons } = await admin.from('addons').select('*, developer_profiles(display_name, handle)').in('review_status', ['pending','needs_changes']).order('updated_at', { ascending: true });
 ---
 <AdminLayout title="Review Queue">

@@ -22,7 +22,7 @@ export const POST: APIRoute = async (context) => {
   if (official_status === 'official' && !isAdmin(profile as any)) return Response.json({ error: 'Only admin can mark official.' }, { status: 403 });
   if (review_status === 'approved' && official_status === 'unreviewed') official_status = 'community';
 
-  const admin = createSupabaseAdmin(context);
+  const admin = createSupabaseAdmin();
   const { error } = await admin.from('addons').update({
     review_status,
     risk_level,
