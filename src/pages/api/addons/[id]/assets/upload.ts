@@ -12,6 +12,14 @@ function safeFileName(name: string) {
     .slice(0, 160);
 }
 
+export const GET: APIRoute = async () => {
+  return Response.json({
+    ok: true,
+    route: '/api/addons/[id]/assets/upload',
+    method: 'POST'
+  });
+};
+
 export const POST: APIRoute = async (context) => {
   try {
     const supabase = createSupabaseServer(context);
