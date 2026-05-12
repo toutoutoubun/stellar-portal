@@ -5,8 +5,10 @@ import WikiEditorForm from '@/components/WikiEditorForm';
 import { getViewer, hasWikiEditAccess } from '@/lib/access';
 import { normalizeLang } from '@/lib/i18n';
 import { createSupabaseServer } from '@/lib/supabaseServer';
+import { getWikiUi } from '@/lib/wiki';
 
 const lang = normalizeLang(Astro.params.lang);
+const ui = getWikiUi(lang);
 type EditableWikiPage = {
   slug: string;
   locale: string;
@@ -39,36 +41,36 @@ try {
   authError = error instanceof Error ? error.message : 'Unknown auth error';
 }
 ---
-<DashboardLayout title="Wiki Editor">
+<DashboardLayout title={ui.editor.title}>
   <PageHeader
-    eyebrow="developer console"
-    title="Wiki Editor"
-    description="Active paid users can create and update DB-backed Wiki pages for all four locales."
+    eyebrow={ui.editor.eyebrow}
+    title={ui.editor.title}
+    description={ui.editor.description}
   />
 
   {authError && (
     <div class="terminal-panel mb-6 border-stellar-danger/60 p-5 text-stellar-text">
-      <p class="mb-2 font-mono text-xs uppercase tracking-[.18em] text-stellar-danger">auth not connected</p>
+      <p class="mb-2 font-mono text-xs uppercase tracking-[.18em] text-stellar-danger">{ui.editor.authNotConnected}</p>
       <p>{authError}</p>
     </div>
   )}
 
   {!viewer.user && !authError && (
     <div class="terminal-panel p-5">
-      <p class="text-stellar-muted">Wiki編集にはログインが必要です。</p>
-      <a class="btn mt-4 inline-flex" href={`/${lang}/login`}>Login</a>
+      <p class="text-stellar-muted">{ui.editor.loginRequired}</p>
+      <a class="btn mt-4 inline-flex" href={`/${lang}/login`}>{ui.editor.loginAction}</a>
     </div>
   )}
 
   {viewer.user && !hasWikiEditAccess(viewer.profile) && (
     <div class="terminal-panel p-5">
-      <p class="font-mono text-xs uppercase tracking-[.18em] text-stellar-accent">Developer Plan required</p>
-      <p class="mt-3 leading-7 text-stellar-muted">課金状態がactiveまたはtrialingのユーザー、またはDeveloper/Reviewer/Admin roleのユーザーだけがWikiを編集できます。</p>
-      <a class="btn mt-4 inline-flex" href={`/${lang}/pricing`}>Open pricing</a>
+      <p class="font-mono text-xs uppercase tracking-[.18em] text-stellar-accent">{ui.editor.planRequired}</p>
+      <p class="mt-3 leading-7 text-stellar-muted">{ui.editor.planMessage}</p>
+      <a class="btn mt-4 inline-flex" href={`/${lang}/pricing`}>{ui.editor.pricingAction}</a>
     </div>
   )}
 
   {viewer.user && hasWikiEditAccess(viewer.profile) && (
-    <WikiEditorForm client:load lang={lang} pages={pages} />
+    <WikiEditorForm client:load lang={lang} pages={pages} copy={ui.editor.form} />
   )}
 </DashboardLayout>

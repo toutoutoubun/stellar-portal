@@ -3,9 +3,10 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 import PageHeader from '@/components/PageHeader.astro';
 import { normalizeLang } from '@/lib/i18n';
 import { createSupabaseServer } from '@/lib/supabaseServer';
-import { getWikiPage, getWikiPages, mergeWikiPages, wikiPageFromRecord, type WikiPage, type WikiPageRecord } from '@/lib/wiki';
+import { getWikiPage, getWikiPages, getWikiUi, mergeWikiPages, wikiPageFromRecord, type WikiPage, type WikiPageRecord } from '@/lib/wiki';
 const lang = normalizeLang(Astro.params.lang);
 const basePages = getWikiPages(lang);
+const ui = getWikiUi(lang);
 let editedPages: WikiPage[] = [];
 
 try {
@@ -25,37 +26,55 @@ try {
 
 const pages = mergeWikiPages(basePages, editedPages);
 const categories = Array.from(new Set(pages.map((page) => page.category)));
+const categoryCounts = categories.map((category) => ({
+  category,
+  count: pages.filter((page) => page.category === category).length
+}));
 ---
-<BaseLayout title="Wiki" lang={lang} description="Official Stellar documentation for installation, research workflows, analysis, data safety, troubleshooting, and contribution.">
-  <PageHeader
-    eyebrow="official documentation"
-    title="Wiki"
-    description="Official Stellar documentation. Practical guidance for installing, learning, troubleshooting, and contributing to the local-first desktop app."
-  />
-
-  <section class="mb-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-    {categories.map((category) => (
-      <div class="border border-stellar-border bg-stellar-panel/70 p-4">
-        <p class="font-mono text-xs uppercase tracking-[.14em] text-stellar-accent">{category}</p>
-        <p class="mt-2 text-sm text-stellar-muted">
-          {pages.filter((page) => page.category === category).length} docs
-        </p>
-      </div>
-    ))}
+<BaseLayout title={ui.title} lang={lang} description={ui.layoutDescription}>
+  <section class="mb-8 border-y border-stellar-border py-4 font-mono text-xs uppercase tracking-[.16em] text-stellar-muted">
+    <div class="grid gap-3 md:grid-cols-3 md:items-center">
+      <p>{ui.transmission}</p>
+      <p class="text-stellar-accent md:text-center">○ {ui.status}</p>
+      <p class="md:text-right">{pages.length.toString().padStart(2, '0')} / {pages.length.toString().padStart(2, '0')}</p>
+    </div>
   </section>
 
-  <div class="grid gap-4 md:grid-cols-2">
-    {pages.map((page) => (
-      <article class="terminal-panel flex min-h-56 flex-col p-5">
-        <div class="flex items-start justify-between gap-4">
-          <p class="font-mono text-xs uppercase tracking-[.14em] text-stellar-accent">{page.category}</p>
-          <time class="font-mono text-xs text-stellar-muted" datetime={page.updatedAt}>{page.updatedAt}</time>
+  <PageHeader
+    eyebrow={ui.eyebrow}
+    title={ui.title}
+    description={ui.description}
+  />
+
+  <section class="mb-8 border-y border-stellar-border py-5">
+    <p class="mb-4 font-mono text-xs uppercase tracking-[.18em] text-stellar-accent">{ui.categoryHeading}</p>
+    <div class="flex flex-wrap gap-2">
+      {categoryCounts.map(({ category, count }) => (
+        <span class="border border-stellar-border px-3 py-2 font-mono text-xs uppercase tracking-[.12em] text-stellar-muted">
+          {category} / {count} {ui.docsLabel}
+        </span>
+      ))}
+    </div>
+  </section>
+
+  <div class="border-y border-stellar-border">
+    {pages.map((page, index) => (
+      <article class="grid gap-4 border-b border-stellar-border py-6 last:border-b-0 lg:grid-cols-[96px_minmax(0,1fr)_170px] lg:items-start">
+        <div class="font-mono text-stellar-muted">
+          <p class="text-3xl text-stellar-text">{String(index + 1).padStart(2, '0')}</p>
+          <p class="mt-2 text-xs uppercase tracking-[.14em] text-stellar-accent">{page.category}</p>
         </div>
-        <a href={`/${lang}/wiki/${page.slug}`} class="mt-4 font-mono text-xl leading-8 hover:text-stellar-accent">{page.title}</a>
-        <p class="mt-3 line-clamp-3 leading-7 text-stellar-muted">{page.summary}</p>
-        <a class="mt-auto pt-5 font-mono text-xs uppercase tracking-[.14em] text-stellar-accent" href={`/${lang}/wiki/${page.slug}`}>
-          Read document
-        </a>
+        <div>
+          <a href={`/${lang}/wiki/${page.slug}`} class="font-mono text-2xl leading-9 text-stellar-text hover:text-stellar-accent">{page.title}</a>
+          <p class="mt-3 max-w-3xl leading-8 text-stellar-muted">{page.summary}</p>
+          <p class="mt-4 break-all font-mono text-xs uppercase tracking-[.12em] text-stellar-muted">/{page.slug}</p>
+        </div>
+        <div class="flex flex-wrap gap-2 lg:justify-end">
+          <time class="border border-stellar-border px-3 py-2 font-mono text-xs text-stellar-muted" datetime={page.updatedAt}>{page.updatedAt}</time>
+          <a class="border border-stellar-border px-3 py-2 font-mono text-xs uppercase tracking-[.12em] text-stellar-accent hover:border-stellar-accent" href={`/${lang}/wiki/${page.slug}`}>
+            {ui.readDocument}
+          </a>
+        </div>
       </article>
     ))}
   </div>

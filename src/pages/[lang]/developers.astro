@@ -2,11 +2,13 @@
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import PageHeader from '@/components/PageHeader.astro';
 import { normalizeLang } from '@/lib/i18n';
+import { getPublicCopy } from '@/lib/publicCopy';
 const lang = normalizeLang(Astro.params.lang);
+const copy = getPublicCopy(lang);
 ---
-<BaseLayout title="Developers" lang={lang}>
-  <PageHeader eyebrow="stellar portal" title="Developers" description="Developer registration grants submission rights for reviewed community addons." />
+<BaseLayout title={copy.developers.title} lang={lang} description={copy.developers.description}>
+  <PageHeader eyebrow={copy.portalEyebrow} title={copy.developers.title} description={copy.developers.description} />
   <div class="terminal-panel prose-stellar p-6">
-    <p>Developer registration grants submission rights for reviewed community addons.</p>
+    <p>{copy.developers.body}</p>
   </div>
 </BaseLayout>

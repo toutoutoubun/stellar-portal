@@ -2,12 +2,14 @@
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import PageHeader from '@/components/PageHeader.astro';
 import { normalizeLang } from '@/lib/i18n';
+import { getPublicCopy } from '@/lib/publicCopy';
 const lang = normalizeLang(Astro.params.lang);
+const copy = getPublicCopy(lang);
 ---
-<BaseLayout title="Privacy Policy" lang={lang}>
-  <PageHeader eyebrow="legal" title="Privacy Policy" description="MVP placeholder. Replace with reviewed legal text before public launch." />
+<BaseLayout title={copy.legal.privacyTitle} lang={lang} description={copy.legal.commonDescription}>
+  <PageHeader eyebrow={copy.legal.eyebrow} title={copy.legal.privacyTitle} description={copy.legal.commonDescription} />
   <article class="terminal-panel prose-stellar p-6">
-    <p>This is a placeholder for Privacy Policy. Before launch, replace this page with jurisdiction-appropriate legal text.</p>
-    <p>Addon publication is reviewed. Developer registration does not guarantee approval, ranking, or official status.</p>
+    <p>{copy.legal.commonBody}</p>
+    <p>{copy.legal.reviewNotice}</p>
   </article>
 </BaseLayout>

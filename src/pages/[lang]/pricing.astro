@@ -2,14 +2,16 @@
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import PageHeader from '@/components/PageHeader.astro';
 import { normalizeLang } from '@/lib/i18n';
+import { getPublicCopy } from '@/lib/publicCopy';
 import BillingButtons from '@/components/BillingButtons';
 const lang = normalizeLang(Astro.params.lang);
+const copy = getPublicCopy(lang);
 ---
-<BaseLayout title="Pricing" lang={lang}>
-  <PageHeader eyebrow="stellar portal" title="Pricing" description="The initial paid plan is for addon submission rights only." />
+<BaseLayout title={copy.pricing.title} lang={lang} description={copy.pricing.description}>
+  <PageHeader eyebrow={copy.portalEyebrow} title={copy.pricing.title} description={copy.pricing.description} />
   <div class="terminal-panel grid gap-5 p-6">
-    <h2 class="font-mono text-2xl">Developer Plan</h2>
-    <p class="leading-8 text-stellar-muted">Paid Developer registration enables addon submission and update requests. It does not grant automatic publication. All submissions enter pending review.</p>
+    <h2 class="font-mono text-2xl">{copy.pricing.planTitle}</h2>
+    <p class="leading-8 text-stellar-muted">{copy.pricing.body}</p>
     <BillingButtons client:load lang={lang} mode="checkout" />
   </div>
 </BaseLayout>

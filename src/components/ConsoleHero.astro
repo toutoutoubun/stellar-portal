@@ -1,6 +1,61 @@
 ---
 import { t, type Lang } from '@/lib/i18n';
 const { lang } = Astro.props as { lang: Lang };
+
+const copy = {
+  ja: {
+    actions: ['Wikiを開く', 'アドオンを見る', '開発者ポータル', 'GitHub', 'リリース'],
+    logTitle: 'システムログ',
+    logs: [
+      '> モード: ローカルファースト',
+      '> 領域: 論文 / ノート / ハイライト / グラフ',
+      '> ポータル: Wiki + 審査済みアドオン',
+      '> 公開: レビュー後に反映',
+      '> 開発者権限: 課金状態を確認',
+      '> 直接ファイルアップロード: MVPでは無効',
+      '> リリース元: GitHub Releases URL'
+    ]
+  },
+  en: {
+    actions: ['Open Wiki', 'Browse Addons', 'Developer Portal', 'GitHub', 'Releases'],
+    logTitle: 'SYSTEM LOG',
+    logs: [
+      '> mode: local-first',
+      '> domain: papers / notes / highlights / graphs',
+      '> portal: wiki + reviewed addons',
+      '> publication: gated by review',
+      '> developer access: subscription required',
+      '> direct file upload: disabled in MVP',
+      '> release source: GitHub Releases URL'
+    ]
+  },
+  fr: {
+    actions: ['Ouvrir le Wiki', 'Voir les extensions', 'Portail développeur', 'GitHub', 'Versions'],
+    logTitle: 'JOURNAL SYSTÈME',
+    logs: [
+      '> mode : local',
+      '> domaine : articles / notes / surlignages / graphes',
+      '> portail : wiki + extensions examinées',
+      '> publication : après revue',
+      '> accès développeur : abonnement requis',
+      '> téléversement direct : désactivé dans le MVP',
+      '> source des versions : GitHub Releases URL'
+    ]
+  },
+  af: {
+    actions: ['Maak Wiki oop', 'Blaai deur byvoegings', 'Ontwikkelaarsportaal', 'GitHub', 'Vrystellings'],
+    logTitle: 'STELSELLOG',
+    logs: [
+      '> modus: plaaslik-eerste',
+      '> domein: artikels / notas / hoogtepunte / grafieke',
+      '> portaal: wiki + gekeurde byvoegings',
+      '> publikasie: ná keuring',
+      '> ontwikkelaartoegang: intekening vereis',
+      '> direkte lêeroplaai: afgeskakel in MVP',
+      '> vrystellingsbron: GitHub Releases URL'
+    ]
+  }
+}[lang];
 ---
 <section class="terminal-panel scanline grid gap-8 p-6 sm:p-10 lg:grid-cols-[1.15fr_.85fr]">
   <div>
@@ -9,21 +64,15 @@ const { lang } = Astro.props as { lang: Lang };
     <p class="mt-5 max-w-2xl font-serif text-xl leading-9 text-stellar-text">{t(lang, 'tagline')}</p>
     <p class="mt-6 font-mono text-lg text-stellar-accent">{t(lang, 'readThinkWrite')}</p>
     <div class="mt-8 flex flex-wrap gap-3">
-      <a class="btn btn-primary" href={`/${lang}/wiki`}>Open Wiki</a>
-      <a class="btn" href={`/${lang}/addons`}>Browse Addons</a>
-      <a class="btn" href={`/${lang}/developers`}>Developer Portal</a>
-      <a class="btn" href="https://github.com/toutoutoubun/stellar">GitHub</a>
-      <a class="btn" href="https://github.com/toutoutoubun/stellar/releases" target="_blank" rel="noreferrer">Releases</a>
+      <a class="btn btn-primary" href={`/${lang}/wiki`}>{copy.actions[0]}</a>
+      <a class="btn" href={`/${lang}/addons`}>{copy.actions[1]}</a>
+      <a class="btn" href={`/${lang}/developers`}>{copy.actions[2]}</a>
+      <a class="btn" href="https://github.com/toutoutoubun/stellar">{copy.actions[3]}</a>
+      <a class="btn" href="https://github.com/toutoutoubun/stellar/releases" target="_blank" rel="noreferrer">{copy.actions[4]}</a>
     </div>
   </div>
   <div class="border border-stellar-border bg-stellar-bg p-4 font-mono text-xs leading-7 text-stellar-muted">
-    <p class="text-stellar-accent">SYSTEM LOG</p>
-    <p>&gt; mode: local-first</p>
-    <p>&gt; domain: papers / notes / highlights / graphs</p>
-    <p>&gt; portal: wiki + reviewed addons</p>
-    <p>&gt; publication: gated by review</p>
-    <p>&gt; developer access: subscription required</p>
-    <p>&gt; direct file upload: disabled in MVP</p>
-    <p>&gt; release source: GitHub Releases URL</p>
+    <p class="text-stellar-accent">{copy.logTitle}</p>
+    {copy.logs.map((line) => <p>{line}</p>)}
   </div>
 </section>

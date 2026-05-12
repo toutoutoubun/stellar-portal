@@ -1,12 +1,48 @@
 import { useState } from 'react';
 import type { FormEvent } from 'react';
 import { createBrowserClient } from '@supabase/ssr';
+import { isLang, type Lang } from '@/lib/i18n';
 
 type Props = {
   lang: string;
   supabaseUrl: string;
   supabaseAnonKey: string;
 };
+
+const copy = {
+  ja: {
+    email: 'メールアドレス',
+    sending: '送信中...',
+    submit: 'ログインリンクを送る',
+    sent: 'ログインメールを送信しました。新しく届いたメールのリンクを開いてください。',
+    missingConfig: 'Supabase URLまたはanon keyがありません。',
+    failed: '送信に失敗しました。'
+  },
+  en: {
+    email: 'Email',
+    sending: 'Sending...',
+    submit: 'Send login link',
+    sent: 'Login email sent. Open the link in the newest email.',
+    missingConfig: 'Supabase URL or anon key is missing.',
+    failed: 'Failed to send.'
+  },
+  fr: {
+    email: 'Email',
+    sending: 'Envoi...',
+    submit: 'Envoyer le lien de connexion',
+    sent: 'Email de connexion envoyé. Ouvrez le lien du dernier email reçu.',
+    missingConfig: 'L’URL Supabase ou la clé anon manque.',
+    failed: 'Échec de l’envoi.'
+  },
+  af: {
+    email: 'E-pos',
+    sending: 'Stuur...',
+    submit: 'Stuur aanmeldskakel',
+    sent: 'Aanmeld-e-pos gestuur. Maak die skakel in die nuutste e-pos oop.',
+    missingConfig: 'Supabase-URL of anon-sleutel ontbreek.',
+    failed: 'Kon nie stuur nie.'
+  }
+} satisfies Record<Lang, Record<string, string>>;
 
 export default function LoginForm({
   lang,
@@ -16,6 +52,7 @@ export default function LoginForm({
   const [email, setEmail] = useState('');
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
   const [message, setMessage] = useState('');
+  const text = copy[isLang(lang) ? lang : 'ja'];
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -25,7 +62,7 @@ export default function LoginForm({
     try {
       if (!supabaseUrl || !supabaseAnonKey) {
         setStatus('error');
-        setMessage('Supabase URL or anon key is missing.');
+        setMessage(text.missingConfig);
         return;
       }
 
@@ -47,10 +84,10 @@ export default function LoginForm({
       }
 
       setStatus('sent');
-      setMessage('ログインメールを送信しました。新しく届いたメールのリンクを開いてください。');
+      setMessage(text.sent);
     } catch (error) {
       setStatus('error');
-      setMessage(error instanceof Error ? error.message : '送信に失敗しました。');
+      setMessage(error instanceof Error ? error.message : text.failed);
     }
   }
 
@@ -58,7 +95,7 @@ export default function LoginForm({
     <form onSubmit={onSubmit} className="terminal-panel grid gap-4 p-6">
       <label className="grid gap-2">
         <span className="font-mono text-xs uppercase tracking-[.22em] text-stellar-muted">
-          Email
+          {text.email}
         </span>
         <input
           className="field"
@@ -71,7 +108,7 @@ export default function LoginForm({
       </label>
 
       <button className="btn btn-primary w-fit" disabled={status === 'sending'}>
-        {status === 'sending' ? 'Sending...' : 'Send login link'}
+        {status === 'sending' ? text.sending : text.submit}
       </button>
 
       {message && (

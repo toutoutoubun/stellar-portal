@@ -1,15 +1,46 @@
 ---
 import { type Lang } from '@/lib/i18n';
 const { lang } = Astro.props as { lang: Lang };
+
+const copy = {
+  ja: {
+    tagline: 'Stellar Portal / ローカルファースト研究アーカイブ',
+    note: '公式Wikiと審査済みコミュニティアドオンは、役割を分けて掲載します。',
+    terms: '利用規約',
+    privacy: 'プライバシー',
+    addonPolicy: 'アドオンポリシー'
+  },
+  en: {
+    tagline: 'Stellar Portal / local-first archive console',
+    note: 'Official Wiki and reviewed community addon listings are separated by design.',
+    terms: 'Terms',
+    privacy: 'Privacy',
+    addonPolicy: 'Addon Policy'
+  },
+  fr: {
+    tagline: 'Stellar Portal / console d’archive locale',
+    note: 'Le Wiki officiel et les extensions communautaires examinées restent séparés.',
+    terms: 'Conditions',
+    privacy: 'Confidentialité',
+    addonPolicy: 'Politique des extensions'
+  },
+  af: {
+    tagline: 'Stellar Portal / plaaslik-eerste argiefkonsole',
+    note: 'Die amptelike Wiki en gekeurde gemeenskapsbyvoegings word apart gehou.',
+    terms: 'Bepalings',
+    privacy: 'Privaatheid',
+    addonPolicy: 'Byvoegingsbeleid'
+  }
+}[lang];
 ---
 <footer class="border-t border-stellar-border py-8 text-sm text-stellar-muted">
   <div class="mx-auto grid max-w-7xl gap-4 px-4 sm:px-6 lg:grid-cols-3 lg:px-8">
-    <p class="font-mono uppercase tracking-[.18em]">Stellar Portal / local-first archive console</p>
-    <p>Official Wiki and reviewed community addon listing are separated by design.</p>
+    <p class="font-mono uppercase tracking-[.18em]">{copy.tagline}</p>
+    <p>{copy.note}</p>
     <nav class="flex flex-wrap gap-3 font-mono text-xs uppercase tracking-[.12em]">
-      <a href={`/${lang}/legal/terms`}>Terms</a>
-      <a href={`/${lang}/legal/privacy`}>Privacy</a>
-      <a href={`/${lang}/legal/addon-policy`}>Addon Policy</a>
+      <a href={`/${lang}/legal/terms`}>{copy.terms}</a>
+      <a href={`/${lang}/legal/privacy`}>{copy.privacy}</a>
+      <a href={`/${lang}/legal/addon-policy`}>{copy.addonPolicy}</a>
       <a href="https://github.com/toutoutoubun/stellar">GitHub</a>
     </nav>
   </div>

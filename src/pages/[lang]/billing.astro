@@ -5,10 +5,16 @@ import BillingButtons from '@/components/BillingButtons';
 import { normalizeLang } from '@/lib/i18n';
 import { requireUser } from '@/lib/access';
 const lang = normalizeLang(Astro.params.lang);
+const copy = {
+  ja: { eyebrow: '請求', title: '請求', description: '開発者プランを管理するためにStripeの請求ポータルを開きます。' },
+  en: { eyebrow: 'billing', title: 'Billing', description: 'Open Stripe Billing Portal to manage the Developer Plan.' },
+  fr: { eyebrow: 'facturation', title: 'Facturation', description: 'Ouvrez le portail Stripe Billing pour gérer le plan développeur.' },
+  af: { eyebrow: 'fakturering', title: 'Fakturering', description: 'Maak die Stripe-faktuurportaal oop om die ontwikkelaarsplan te bestuur.' }
+}[lang];
 const viewer = await requireUser(Astro);
 if ('redirect' in viewer) return viewer.redirect;
 ---
-<BaseLayout title="Billing" lang={lang}>
-  <PageHeader eyebrow="billing" title="Billing" description="Open Stripe Billing Portal to manage the Developer Plan." />
+<BaseLayout title={copy.title} lang={lang} description={copy.description}>
+  <PageHeader eyebrow={copy.eyebrow} title={copy.title} description={copy.description} />
   <BillingButtons client:load lang={lang} mode="portal" />
 </BaseLayout>

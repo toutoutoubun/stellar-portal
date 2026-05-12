@@ -5,9 +5,10 @@ import ShareButtons from '@/components/ShareButtons';
 import { normalizeLang } from '@/lib/i18n';
 import { getEnv } from '@/lib/env';
 import { createSupabaseServer } from '@/lib/supabaseServer';
-import { getRelatedWikiPages, getWikiPage, wikiPageFromRecord, type WikiPageRecord } from '@/lib/wiki';
+import { getRelatedWikiPages, getWikiPage, getWikiUi, wikiPageFromRecord, type WikiPageRecord } from '@/lib/wiki';
 const lang = normalizeLang(Astro.params.lang);
 const slug = Astro.params.slug!;
+const ui = getWikiUi(lang);
 let page = getWikiPage(lang, slug);
 
 try {
@@ -35,16 +36,21 @@ const relatedPages = getRelatedWikiPages(lang, page.related);
   <PageHeader eyebrow={page.category} title={page.title} description={page.summary} />
 
   <div class="mb-6 flex flex-wrap items-center gap-3 font-mono text-xs uppercase tracking-[.14em] text-stellar-muted">
-    <a class="border border-stellar-border px-3 py-2 hover:border-stellar-accent" href={`/${lang}/wiki`}>Wiki index</a>
+    <a class="border border-stellar-border px-3 py-2 hover:border-stellar-accent" href={`/${lang}/wiki`}>{ui.indexLink}</a>
     <span class="border border-stellar-border px-3 py-2">/{page.slug}</span>
-    <time class="border border-stellar-border px-3 py-2" datetime={page.updatedAt}>Updated {page.updatedAt}</time>
+    <time class="border border-stellar-border px-3 py-2" datetime={page.updatedAt}>{ui.updatedLabel} {page.updatedAt}</time>
   </div>
 
-  <article class="grid gap-5">
-    {page.sections.map((section) => (
-      <section class="prose-stellar terminal-panel max-w-none p-6">
-        <h2 class="mb-4 text-xl text-stellar-text">{section.heading}</h2>
-        {section.body.map((paragraph) => <p>{paragraph}</p>)}
+  <article class="border-y border-stellar-border">
+    {page.sections.map((section, index) => (
+      <section class="grid gap-5 border-b border-stellar-border py-7 last:border-b-0 lg:grid-cols-[96px_minmax(0,1fr)]">
+        <div class="font-mono text-stellar-muted">
+          <p class="text-3xl text-stellar-text">{String(index + 1).padStart(2, '0')}</p>
+          <p class="mt-2 text-xs uppercase tracking-[.14em] text-stellar-accent">{ui.sectionLabel}</p>
+        </div>
+        <div class="prose-stellar max-w-none">
+          <h2 class="mb-4 text-xl text-stellar-text">{section.heading}</h2>
+          {section.body.map((paragraph) => <p>{paragraph}</p>)}
         {section.bullets && (
           <ul class="mt-5 grid gap-2 pl-0">
             {section.bullets.map((item) => (
@@ -54,13 +60,14 @@ const relatedPages = getRelatedWikiPages(lang, page.related);
             ))}
           </ul>
         )}
+        </div>
       </section>
     ))}
   </article>
 
   {relatedPages.length > 0 && (
     <section class="mt-8">
-      <h2 class="mb-4 font-mono text-sm uppercase tracking-[.18em] text-stellar-accent">Related docs</h2>
+      <h2 class="mb-4 font-mono text-sm uppercase tracking-[.18em] text-stellar-accent">{ui.relatedDocs}</h2>
       <div class="grid gap-4 md:grid-cols-3">
         {relatedPages.map((related) => (
           <a class="terminal-panel block p-5 hover:border-stellar-accent" href={`/${lang}/wiki/${related.slug}`}>

@@ -6,6 +6,32 @@ import { getViewer } from '@/lib/access';
 import { normalizeLang } from '@/lib/i18n';
 
 const lang = normalizeLang(Astro.params.lang);
+const copy = {
+  ja: {
+    title: 'アカウント',
+    eyebrow: '識別情報',
+    description: 'このStellarポータルログインに紐づくアカウント情報を管理します。',
+    form: { email: 'メール', role: 'ロール', subscription: '契約', displayName: '表示名', avatarUrl: 'アバターURL', save: 'プロフィールを保存', saved: '保存しました。', failed: '保存に失敗しました。' }
+  },
+  en: {
+    title: 'Account',
+    eyebrow: 'identity file',
+    description: 'Manage the account record attached to this Stellar Portal login.',
+    form: { email: 'Email', role: 'Role', subscription: 'Subscription', displayName: 'Display name', avatarUrl: 'Avatar URL', save: 'Save profile', saved: 'Saved.', failed: 'Failed.' }
+  },
+  fr: {
+    title: 'Compte',
+    eyebrow: 'fiche d’identité',
+    description: 'Gérez le compte lié à cette connexion Stellar Portal.',
+    form: { email: 'Email', role: 'Rôle', subscription: 'Abonnement', displayName: 'Nom affiché', avatarUrl: 'URL d’avatar', save: 'Enregistrer le profil', saved: 'Enregistré.', failed: 'Échec de l’enregistrement.' }
+  },
+  af: {
+    title: 'Rekening',
+    eyebrow: 'identiteitslêer',
+    description: 'Bestuur die rekeningrekord wat aan hierdie Stellar Portal-aanmelding gekoppel is.',
+    form: { email: 'E-pos', role: 'Rol', subscription: 'Intekening', displayName: 'Vertoonnaam', avatarUrl: 'Avatar-URL', save: 'Stoor profiel', saved: 'Gestoor.', failed: 'Kon nie stoor nie.' }
+  }
+}[lang];
 const viewer = await getViewer(Astro);
 
 if (!viewer.user) {
@@ -20,13 +46,13 @@ const profile = viewer.profile ?? {
   subscription_status: 'none'
 };
 ---
-<DashboardLayout title="Account">
+<DashboardLayout title={copy.title}>
   <PageHeader
-    eyebrow="identity file"
-    title="Account"
-    description="Manage the account record attached to this Stellar Portal login."
+    eyebrow={copy.eyebrow}
+    title={copy.title}
+    description={copy.description}
   />
   <div class="max-w-2xl">
-    <AccountForm client:load profile={profile} />
+    <AccountForm client:load profile={profile} copy={copy.form} />
   </div>
 </DashboardLayout>

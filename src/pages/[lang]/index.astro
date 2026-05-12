@@ -10,32 +10,99 @@ const lang = normalizeLang(Astro.params.lang);
 const featuredWiki = getFeaturedWikiPages(lang, 3);
 const supabase = createSupabaseServer(Astro);
 const { data: addons } = await supabase.from('addons').select('*').eq('review_status', 'approved').order('updated_at', { ascending: false }).limit(3);
+
+const copy = {
+  ja: {
+    homeTitle: 'ホーム',
+    wikiEyebrow: '公式Wiki',
+    wikiDescription: 'Stellarの導入、文献からノートとグラフへ進む流れ、困ったときの確認、開発参加を公式手順としてまとめます。',
+    wikiAction: '開く',
+    addonEyebrow: 'アドオン登録所',
+    addonDescription: 'コミュニティアドオンはレビュー後だけ掲載します。公式、審査済み、コミュニティの区分は混ぜません。',
+    addonAction: '見る',
+    developerEyebrow: '開発者アクセス',
+    developerDescription: '課金登録で投稿権限が付与されます。公開権限ではありません。すべてのアドオンはレビューキューに入ります。',
+    developerAction: '登録する',
+    wikiSectionDescription: 'インストール、初回セットアップ、バックアップ、研究ワークフロー、分析機能、貢献方法を確認できます。',
+    reviewedEyebrow: '審査済み',
+    addonsTitle: 'アドオン',
+    addonsDescription: '審査済みアドオンカタログの新着を表示します。'
+  },
+  en: {
+    homeTitle: 'Home',
+    wikiEyebrow: 'official wiki',
+    wikiDescription: 'Install Stellar, learn the library-note-graph workflow, troubleshoot safely, and join development with practical official docs.',
+    wikiAction: 'Open',
+    addonEyebrow: 'addon registry',
+    addonDescription: 'Community addon submissions are listed only after review. Official, reviewed, and community labels remain separate.',
+    addonAction: 'Browse',
+    developerEyebrow: 'developer access',
+    developerDescription: 'Paid registration grants submission rights, not publication rights. Every addon enters the review queue.',
+    developerAction: 'Register',
+    wikiSectionDescription: 'Installation, quick start, backups, research workflows, analysis tools, and contributor guidance.',
+    reviewedEyebrow: 'latest reviewed',
+    addonsTitle: 'Addons',
+    addonsDescription: 'A small window into the reviewed addon catalog.'
+  },
+  fr: {
+    homeTitle: 'Accueil',
+    wikiEyebrow: 'wiki officiel',
+    wikiDescription: 'Installer Stellar, comprendre le flux bibliothèque-notes-graphe, résoudre les problèmes et contribuer avec des documents officiels pratiques.',
+    wikiAction: 'Ouvrir',
+    addonEyebrow: 'registre des extensions',
+    addonDescription: 'Les extensions communautaires ne sont listées qu’après examen. Les statuts officiel, examiné et communautaire restent séparés.',
+    addonAction: 'Voir',
+    developerEyebrow: 'accès développeur',
+    developerDescription: 'L’inscription payante donne un droit de soumission, pas un droit de publication. Chaque extension passe par la file de revue.',
+    developerAction: 'S’inscrire',
+    wikiSectionDescription: 'Installation, démarrage rapide, sauvegardes, flux de recherche, outils d’analyse et guide de contribution.',
+    reviewedEyebrow: 'dernières revues',
+    addonsTitle: 'Extensions',
+    addonsDescription: 'Une vue courte du catalogue des extensions examinées.'
+  },
+  af: {
+    homeTitle: 'Tuis',
+    wikiEyebrow: 'amptelike wiki',
+    wikiDescription: 'Installeer Stellar, leer die biblioteek-nota-grafiek-vloei, los probleme veilig op en dra by met praktiese amptelike dokumente.',
+    wikiAction: 'Maak oop',
+    addonEyebrow: 'byvoegingsregister',
+    addonDescription: 'Gemeenskapsbyvoegings verskyn eers ná keuring. Amptelike, gekeurde en gemeenskapsmerkers bly apart.',
+    addonAction: 'Blaai',
+    developerEyebrow: 'ontwikkelaartoegang',
+    developerDescription: 'Betaalde registrasie gee indieningsregte, nie publikasie-regte nie. Elke byvoeging gaan deur die keuringsry.',
+    developerAction: 'Registreer',
+    wikiSectionDescription: 'Installasie, vinnige begin, rugsteun, navorsingsvloei, analise-instrumente en bydraergids.',
+    reviewedEyebrow: 'nuut gekeur',
+    addonsTitle: 'Byvoegings',
+    addonsDescription: '’n Kort blik op die katalogus van gekeurde byvoegings.'
+  }
+}[lang];
 ---
-<BaseLayout title="Home" lang={lang} description={t(lang, 'tagline')}>
+<BaseLayout title={copy.homeTitle} lang={lang} description={t(lang, 'tagline')}>
   <ConsoleHero lang={lang} />
   <section class="mt-10 grid gap-6 lg:grid-cols-3">
     <div class="terminal-panel p-5">
-      <p class="font-mono text-xs uppercase tracking-[.18em] text-stellar-accent">official wiki</p>
+      <p class="font-mono text-xs uppercase tracking-[.18em] text-stellar-accent">{copy.wikiEyebrow}</p>
       <h2 class="mt-3 font-mono text-2xl">{t(lang, 'officialWiki')}</h2>
-      <p class="mt-3 leading-7 text-stellar-muted">Install Stellar, learn the library-note-graph workflow, troubleshoot safely, and join development with practical official docs.</p>
-      <a class="mt-5 inline-flex btn" href={`/${lang}/wiki`}>Open</a>
+      <p class="mt-3 leading-7 text-stellar-muted">{copy.wikiDescription}</p>
+      <a class="mt-5 inline-flex btn" href={`/${lang}/wiki`}>{copy.wikiAction}</a>
     </div>
     <div class="terminal-panel p-5">
-      <p class="font-mono text-xs uppercase tracking-[.18em] text-stellar-accent">addon registry</p>
+      <p class="font-mono text-xs uppercase tracking-[.18em] text-stellar-accent">{copy.addonEyebrow}</p>
       <h2 class="mt-3 font-mono text-2xl">{t(lang, 'reviewedAddons')}</h2>
-      <p class="mt-3 leading-7 text-stellar-muted">Community addon submissions are listed only after review. Official, reviewed, and community labels remain separate.</p>
-      <a class="mt-5 inline-flex btn" href={`/${lang}/addons`}>Browse</a>
+      <p class="mt-3 leading-7 text-stellar-muted">{copy.addonDescription}</p>
+      <a class="mt-5 inline-flex btn" href={`/${lang}/addons`}>{copy.addonAction}</a>
     </div>
     <div class="terminal-panel p-5">
-      <p class="font-mono text-xs uppercase tracking-[.18em] text-stellar-accent">developer access</p>
+      <p class="font-mono text-xs uppercase tracking-[.18em] text-stellar-accent">{copy.developerEyebrow}</p>
       <h2 class="mt-3 font-mono text-2xl">{t(lang, 'developerPlan')}</h2>
-      <p class="mt-3 leading-7 text-stellar-muted">Paid registration grants submission rights, not publication rights. Every addon enters the review queue.</p>
-      <a class="mt-5 inline-flex btn" href={`/${lang}/pricing`}>Register</a>
+      <p class="mt-3 leading-7 text-stellar-muted">{copy.developerDescription}</p>
+      <a class="mt-5 inline-flex btn" href={`/${lang}/pricing`}>{copy.developerAction}</a>
     </div>
   </section>
 
   <section class="mt-12">
-    <PageHeader eyebrow="official wiki" title={t(lang, 'officialWiki')} description="Installation, quick start, backups, research workflows, analysis tools, and contributor guidance." />
+    <PageHeader eyebrow={copy.wikiEyebrow} title={t(lang, 'officialWiki')} description={copy.wikiSectionDescription} />
     <div class="grid gap-4 lg:grid-cols-3">
       {featuredWiki.map((page) => (
         <a class="terminal-panel block p-5 hover:border-stellar-accent" href={`/${lang}/wiki/${page.slug}`}>
@@ -48,7 +115,7 @@ const { data: addons } = await supabase.from('addons').select('*').eq('review_st
   </section>
 
   <section class="mt-12">
-    <PageHeader eyebrow="latest reviewed" title="Addons" description="A small window into the reviewed addon catalog." />
+    <PageHeader eyebrow={copy.reviewedEyebrow} title={copy.addonsTitle} description={copy.addonsDescription} />
     <div class="grid gap-4">
       {(addons ?? []).length ? addons?.map((addon) => <AddonCard addon={addon} />) : <p class="text-stellar-muted">{t(lang, 'noAddons')}</p>}
     </div>

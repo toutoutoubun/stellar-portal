@@ -2,11 +2,13 @@
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import PageHeader from '@/components/PageHeader.astro';
 import { normalizeLang } from '@/lib/i18n';
+import { getPublicCopy } from '@/lib/publicCopy';
 const lang = normalizeLang(Astro.params.lang);
+const copy = getPublicCopy(lang);
 ---
-<BaseLayout title="Changelog" lang={lang}>
-  <PageHeader eyebrow="stellar portal" title="Changelog" description="Stellar and Portal release notes." />
+<BaseLayout title={copy.changelog.title} lang={lang} description={copy.changelog.description}>
+  <PageHeader eyebrow={copy.portalEyebrow} title={copy.changelog.title} description={copy.changelog.description} />
   <div class="terminal-panel prose-stellar p-6">
-    <p>Stellar and Portal release notes.</p>
+    <p>{copy.changelog.body}</p>
   </div>
 </BaseLayout>

@@ -38,7 +38,7 @@ const jaPages: WikiPage[] = [
         body: [
           'Stellarは、文献管理、ノート、グラフビュー、質的分析、量的分析、エクスポートを1つにまとめた、人文・社会科学系研究者向けの研究支援デスクトップアプリです。'
         ],
-        bullets: ['ローカルファースト', 'AIなし', 'サブスクリプションなし', 'macOS / Windows / Linux対応', '日本語 / English / Francais / Afrikaans対応', 'MITライセンス']
+        bullets: ['ローカルファースト', 'AIなし', 'サブスクリプションなし', 'macOS / Windows / Linux対応', '日本語・英語・フランス語・アフリカーンス語対応', 'MITライセンス']
       },
       {
         heading: 'はじめての方へ',
@@ -328,7 +328,7 @@ const jaPages: WikiPage[] = [
       },
       {
         heading: '言語',
-        body: ['表示言語は日本語、English、Francais、Afrikaansに対応します。一部の変更はアプリ再起動後に反映される場合があります。']
+        body: ['表示言語は日本語、英語、フランス語、アフリカーンス語に対応します。一部の変更はアプリ再起動後に反映される場合があります。']
       }
     ],
     related: ['installation-setup', 'cloud-backup-security', 'shortcuts']
@@ -413,7 +413,7 @@ const jaPages: WikiPage[] = [
       },
       {
         heading: '対応言語',
-        body: ['Stellarは日本語、English、Francais、Afrikaansに対応します。翻訳追加手順は現在のi18n構成と一致している必要があります。']
+        body: ['Stellarは日本語、英語、フランス語、アフリカーンス語に対応します。翻訳追加手順は現在のi18n構成と一致している必要があります。']
       }
     ],
     related: ['developer-setup', 'settings-customization', 'home']
@@ -806,26 +806,26 @@ const localizedMeta: Record<Exclude<Lang, 'ja'>, Record<string, { title: string;
     'addons-plugins': { title: 'Creating addons and plugins', summary: 'Analysis addons, distributable plugins, manifests, and plugin IDs.', category: 'Development' }
   },
   fr: {
-    home: { title: 'Wiki Stellar', summary: 'Documentation officielle pratique pour installer Stellar, apprendre les bases, resoudre les problemes et contribuer.', category: 'Vue d ensemble' },
-    'installation-setup': { title: 'Installation et premier demarrage', summary: 'Telecharger Stellar depuis GitHub Releases et terminer le premier parcours de configuration.', category: 'Debut' },
-    'quick-start': { title: 'Demarrage rapide', summary: 'Le chemin le plus court entre l ajout d un article, les notes, les WikiLinks et le graphe.', category: 'Debut' },
-    'interface-basics': { title: 'Bases de l interface', summary: 'Comprendre la barre laterale, le panneau principal et le panneau de contexte.', category: 'Debut' },
-    'literature-library': { title: 'Bibliotheque de references', summary: 'Ajouter, chercher, taguer et suivre articles, livres et sources.', category: 'Fonctions' },
-    'pdf-reader-highlights': { title: 'Lecteur PDF et surlignages', summary: 'Lire, chercher, surligner, commenter et creer des notes depuis les surlignages.', category: 'Fonctions' },
+    home: { title: 'Wiki Stellar', summary: 'Documentation officielle pratique pour installer Stellar, apprendre les bases, résoudre les problèmes et contribuer.', category: 'Vue d’ensemble' },
+    'installation-setup': { title: 'Installation et premier démarrage', summary: 'Télécharger Stellar depuis GitHub Releases et terminer le premier parcours de configuration.', category: 'Début' },
+    'quick-start': { title: 'Démarrage rapide', summary: 'Le chemin le plus court entre l’ajout d’un article, les notes, les WikiLinks et le graphe.', category: 'Début' },
+    'interface-basics': { title: 'Bases de l’interface', summary: 'Comprendre la barre latérale, le panneau principal et le panneau de contexte.', category: 'Début' },
+    'literature-library': { title: 'Bibliothèque de références', summary: 'Ajouter, chercher, étiqueter et suivre articles, livres et sources.', category: 'Fonctions' },
+    'pdf-reader-highlights': { title: 'Lecteur PDF et surlignages', summary: 'Lire, chercher, surligner, commenter et créer des notes depuis les surlignages.', category: 'Fonctions' },
     'notes-wikilinks': { title: 'Notes et WikiLinks', summary: 'Notes Markdown, WikiLinks, backlinks, plan, sauvegarde automatique et mode focus.', category: 'Fonctions' },
-    'draft-citations': { title: 'Mode brouillon et citations', summary: 'Ecriture longue, sections, citations, styles bibliographiques et bibliographie.', category: 'Fonctions' },
-    'knowledge-graph-citation-network': { title: 'Graphe de connaissances et reseau de citations', summary: 'Visualiser notes, articles, citations et recommandations de lectures.', category: 'Fonctions' },
-    'qualitative-analysis': { title: 'Analyse qualitative', summary: 'Codebooks, ICR, critique des sources, timelines, cartes d acteurs et comparaison.', category: 'Analyse' },
+    'draft-citations': { title: 'Mode brouillon et citations', summary: 'Écriture longue, sections, citations, styles bibliographiques et bibliographie.', category: 'Fonctions' },
+    'knowledge-graph-citation-network': { title: 'Graphe de connaissances et réseau de citations', summary: 'Visualiser notes, articles, citations et recommandations de lectures.', category: 'Fonctions' },
+    'qualitative-analysis': { title: 'Analyse qualitative', summary: 'Codebooks, ICR, critique des sources, timelines, cartes d’acteurs et comparaison.', category: 'Analyse' },
     'quantitative-analysis-data-studio': { title: 'Analyse quantitative Data Studio', summary: 'Import CSV, types de variables, statistiques, analyse textuelle et graphiques.', category: 'Analyse' },
-    'export-research-package': { title: 'Export et paquet de recherche', summary: 'PDF, DOCX, site statique, JSON, BibTeX, RIS et paquets .stellar.', category: 'Donnees' },
-    'cloud-backup-security': { title: 'Sauvegarde cloud et securite', summary: 'AES-256-GCM, code de recuperation, sauvegardes chiffrees et limites de restauration.', category: 'Donnees' },
-    'browser-clipper': { title: 'Integration navigateur Stellar Clipper', summary: 'Import local depuis l extension navigateur vers Stellar.', category: 'Fonctions' },
-    'settings-customization': { title: 'Parametres et personnalisation', summary: 'Themes, polices, stockage, export, sauvegarde, langue et integration navigateur.', category: 'Parametres' },
-    shortcuts: { title: 'Raccourcis', summary: 'Raccourcis de navigation, editeur, PDF et graphe.', category: 'Parametres' },
-    'faq-troubleshooting': { title: 'FAQ et depannage', summary: 'Solutions pour metadata, autosave, graphe, sauvegarde, langue et Clipper.', category: 'Support' },
-    'developer-setup': { title: 'Configuration developpeur', summary: 'Node.js, Rust, Tauri, React, SQLite et commandes de developpement.', category: 'Developpement' },
-    'translation-contribution': { title: 'Contribuer aux traductions', summary: 'Politique de traduction et notes de prise en charge linguistique.', category: 'Developpement' },
-    'addons-plugins': { title: 'Creer des addons et plugins', summary: 'Addons d analyse, plugins distribuables, manifests et identifiants de plugin.', category: 'Developpement' }
+    'export-research-package': { title: 'Export et paquet de recherche', summary: 'PDF, DOCX, site statique, JSON, BibTeX, RIS et paquets .stellar.', category: 'Données' },
+    'cloud-backup-security': { title: 'Sauvegarde cloud et sécurité', summary: 'AES-256-GCM, code de récupération, sauvegardes chiffrées et limites de restauration.', category: 'Données' },
+    'browser-clipper': { title: 'Intégration navigateur Stellar Clipper', summary: 'Import local depuis l’extension navigateur vers Stellar.', category: 'Fonctions' },
+    'settings-customization': { title: 'Paramètres et personnalisation', summary: 'Thèmes, polices, stockage, export, sauvegarde, langue et intégration navigateur.', category: 'Paramètres' },
+    shortcuts: { title: 'Raccourcis', summary: 'Raccourcis de navigation, éditeur, PDF et graphe.', category: 'Paramètres' },
+    'faq-troubleshooting': { title: 'FAQ et dépannage', summary: 'Solutions pour métadonnées, sauvegarde automatique, graphe, sauvegarde, langue et Clipper.', category: 'Support' },
+    'developer-setup': { title: 'Configuration développeur', summary: 'Node.js, Rust, Tauri, React, SQLite et commandes de développement.', category: 'Développement' },
+    'translation-contribution': { title: 'Contribuer aux traductions', summary: 'Politique de traduction et notes de prise en charge linguistique.', category: 'Développement' },
+    'addons-plugins': { title: 'Créer des extensions et plugins', summary: 'Extensions d’analyse, plugins distribuables, manifests et identifiants de plugin.', category: 'Développement' }
   },
   af: {
     home: { title: 'Stellar Wiki', summary: 'Amptelike praktiese dokumentasie vir installasie, leer, probleemoplossing en bydraes.', category: 'Oorsig' },
@@ -833,7 +833,7 @@ const localizedMeta: Record<Exclude<Lang, 'ja'>, Record<string, { title: string;
     'quick-start': { title: 'Vinnige begin', summary: 'Die kortste roete van artikel byvoeg tot notas, WikiLinks en die grafiek.', category: 'Begin' },
     'interface-basics': { title: 'Basiese koppelvlak', summary: 'Verstaan die sybalk, hoofpaneel en konteks-paneel.', category: 'Begin' },
     'literature-library': { title: 'Literatuurbiblioteek', summary: 'Voeg artikels, boeke en bronne by, soek, merk en volg leesstatus.', category: 'Funksies' },
-    'pdf-reader-highlights': { title: 'PDF-leser en hoogtepunte', summary: 'Lees PDF s, soek, merk, lewer kommentaar en skep notas uit hoogtepunte.', category: 'Funksies' },
+    'pdf-reader-highlights': { title: 'PDF-leser en hoogtepunte', summary: 'Lees PDF’s, soek, merk, lewer kommentaar en skep notas uit hoogtepunte.', category: 'Funksies' },
     'notes-wikilinks': { title: 'Notas en WikiLinks', summary: 'Markdown-notas, WikiLinks, backlinks, buitelyn, outostoor en fokusmodus.', category: 'Funksies' },
     'draft-citations': { title: 'Konsepmodus en aanhalings', summary: 'Langvorm skryfwerk, afdelings, aanhalings, stylkeuses en bibliografie.', category: 'Funksies' },
     'knowledge-graph-citation-network': { title: 'Kennisgrafiek en aanhalingsnetwerk', summary: 'Visualiseer notas, artikels, aanhalings en verwante literatuur.', category: 'Funksies' },
@@ -847,7 +847,7 @@ const localizedMeta: Record<Exclude<Lang, 'ja'>, Record<string, { title: string;
     'faq-troubleshooting': { title: 'FAQ en probleemoplossing', summary: 'Oplossings vir metadata, outostoor, grafiek, rugsteun, taal en Clipper.', category: 'Ondersteuning' },
     'developer-setup': { title: 'Ontwikkelaaropstelling', summary: 'Node.js, Rust, Tauri, React, SQLite en ontwikkelopdragte.', category: 'Ontwikkeling' },
     'translation-contribution': { title: 'Bydra tot vertalings', summary: 'Vertaalbeleid en notas oor taalondersteuning.', category: 'Ontwikkeling' },
-    'addons-plugins': { title: 'Skep addons en plugins', summary: 'Analise-addons, verspreibare plugins, manifests en plugin-ID s.', category: 'Ontwikkeling' }
+    'addons-plugins': { title: 'Skep byvoegings en plugins', summary: 'Analise-byvoegings, verspreibare plugins, manifests en plugin-ID’s.', category: 'Ontwikkeling' }
   }
 };
 
@@ -875,48 +875,48 @@ const localizedGuidance: Record<Exclude<Lang, 'ja'>, Record<string, string[]>> =
     'addons-plugins': ['Local analysis addons start at src/plugins/registerAnalysisAddons.ts.', 'There are qualitative tabs and quantitative method additions.', 'Distributed plugins include stellar-plugin.json and index.js.', 'Use stable alphanumeric and hyphenated plugin IDs.']
   },
   fr: {
-    home: ['Utiliser le Wiki pour les procedures pratiques.', 'Stellar reste local-first, sans IA, sans abonnement et sous licence MIT.', 'Commencer par installation, demarrage rapide, interface, FAQ et sauvegardes.'],
-    'installation-setup': ['Telecharger depuis GitHub Releases.', 'Utiliser .dmg pour macOS, .msi pour Windows et .AppImage pour Linux.', 'Finir l onboarding puis modifier langue, dossier et theme dans les parametres.'],
-    'quick-start': ['Ajouter un article dans la bibliotheque.', 'Attacher un PDF et creer des surlignages.', 'Creer une note depuis un surlignage.', 'Relier notes et articles avec [[WikiLinks]].', 'Ouvrir le graphe pour verifier la boucle de recherche.'],
-    'interface-basics': ['Utiliser la barre laterale pour naviguer.', 'Travailler dans le panneau principal.', 'Lire metadata, notes liees et contexte de citation dans le panneau de contexte.'],
-    'literature-library': ['Ajouter par PDF, URL, DOI, saisie manuelle ou Stellar Clipper.', 'Filtrer par tags, recherche, annee, presence du PDF et statut de lecture.', 'Utiliser non lu, en cours, termine et a relire.'],
-    'pdf-reader-highlights': ['Lire avec zoom, navigation et recherche.', 'Utiliser quatre couleurs de surlignage.', 'Ajouter des commentaires et creer des notes depuis les surlignages.'],
-    'notes-wikilinks': ['Ecrire en Markdown.', 'Taper [[ pour completer les liens.', 'Utiliser backlinks et plan pour les notes longues.', 'Garder le mode focus pour l ecriture.'],
-    'draft-citations': ['Creer, reordonner, replier et supprimer des sections.', 'Inserer des citations depuis la bibliotheque.', 'Generer la bibliographie en APA, MLA, Chicago ou style Hitotsubashi.'],
-    'knowledge-graph-citation-network': ['Cliquer, survoler, double-cliquer, zoomer et deplacer les noeuds.', 'Utiliser CrossRef, OpenAlex et Semantic Scholar en ligne.', 'Importer les articles recommandes si utiles.'],
-    'qualitative-analysis': ['Commencer par codebook et matrice de codage.', 'Utiliser ICR pour verifier l accord.', 'Employer critique des sources, timeline, acteurs, process tracing, comparaison, cadrage et rapports.'],
-    'quantitative-analysis-data-studio': ['Importer des CSV.', 'Definir variables scale, nominal, ordinal, text ou date.', 'Executer statistiques descriptives, frequences, correlations, tests, regression, frequence de tokens, TF-IDF et graphiques.'],
-    'export-research-package': ['Exporter les notes en PDF, DOCX ou site statique.', 'Exporter toutes les donnees en JSON.', 'Utiliser BibTeX ou RIS pour les references.', 'Regrouper articles, notes, surlignages, liens et PDF dans un paquet .stellar.'],
-    'cloud-backup-security': ['Les sauvegardes sont chiffrees sur le poste utilisateur.', 'AES-256-GCM est utilise.', 'Conserver le code de recuperation a 12 chiffres.', 'Sans ce code, un nouveau PC ne peut pas restaurer la sauvegarde cloud.'],
-    'browser-clipper': ['Stellar ecoute sur 127.0.0.1:57321.', 'L extension envoie les metadata vers POST /api/import.', 'L application desktop doit etre lancee.'],
-    'settings-customization': ['Choisir White, Ivory, Dark Blue ou Black.', 'Regler taille, hauteur de ligne et police editeur.', 'Utiliser l onglet Donnees pour stockage, export, sauvegarde, paquets, navigateur et cloud.'],
-    shortcuts: ['Ctrl/Cmd + K ouvre la recherche.', 'Ctrl/Cmd + N cree une note.', 'Ctrl/Cmd + , ouvre les parametres.', 'Ctrl/Cmd + F cherche dans le PDF.', 'La molette zoome le graphe et le glisser deplace.'],
-    'faq-troubleshooting': ['Corriger les titres PDF manuellement si les metadata sont pauvres.', 'Verifier WikiLinks, liens d articles et filtres si le graphe est vide.', 'Utiliser sauvegardes cloud, locales, automatiques et paquets de recherche.'],
-    'developer-setup': ['Utiliser Node.js 22+, Rust 1.75+ et Tauri CLI.', 'Executer npm install, npm run tauri dev, npm run tauri build et npm run lint.', 'Garder la direction sans IA et local-first.'],
-    'translation-contribution': ['Stabiliser le japonais avant traduction.', 'Synchroniser textes UI et procedures Wiki.', 'Verifier la structure i18n actuelle avant d ajouter une langue.'],
-    'addons-plugins': ['Les addons locaux commencent dans src/plugins/registerAnalysisAddons.ts.', 'Deux axes: onglets qualitatifs et methodes quantitatives.', 'Les plugins distribues contiennent stellar-plugin.json et index.js.', 'Utiliser des IDs stables avec lettres, chiffres et tirets.']
+    home: ['Utiliser le Wiki pour les procédures pratiques.', 'Stellar reste local, sans IA, sans abonnement et sous licence MIT.', 'Commencer par l’installation, le démarrage rapide, l’interface, la FAQ et les sauvegardes.'],
+    'installation-setup': ['Télécharger depuis GitHub Releases.', 'Utiliser .dmg pour macOS, .msi pour Windows et .AppImage pour Linux.', 'Terminer l’accueil initial, puis modifier la langue, le dossier et le thème dans les paramètres.'],
+    'quick-start': ['Ajouter un article dans la bibliothèque.', 'Attacher un PDF et créer des surlignages.', 'Créer une note depuis un surlignage.', 'Relier notes et articles avec [[WikiLinks]].', 'Ouvrir le graphe pour vérifier la boucle de recherche.'],
+    'interface-basics': ['Utiliser la barre latérale pour naviguer.', 'Travailler dans le panneau principal.', 'Lire les métadonnées, les notes liées et le contexte de citation dans le panneau de contexte.'],
+    'literature-library': ['Ajouter par PDF, URL, DOI, saisie manuelle ou Stellar Clipper.', 'Filtrer par étiquettes, recherche, année, présence du PDF et statut de lecture.', 'Utiliser non lu, en cours, terminé et à relire.'],
+    'pdf-reader-highlights': ['Lire avec zoom, navigation et recherche.', 'Utiliser quatre couleurs de surlignage.', 'Ajouter des commentaires et créer des notes depuis les surlignages.'],
+    'notes-wikilinks': ['Écrire en Markdown.', 'Taper [[ pour compléter les liens.', 'Utiliser backlinks et plan pour les notes longues.', 'Garder le mode focus pour l’écriture.'],
+    'draft-citations': ['Créer, réordonner, replier et supprimer des sections.', 'Insérer des citations depuis la bibliothèque.', 'Générer la bibliographie en APA, MLA, Chicago ou style Hitotsubashi.'],
+    'knowledge-graph-citation-network': ['Cliquer, survoler, double-cliquer, zoomer et déplacer les noeuds.', 'Utiliser CrossRef, OpenAlex et Semantic Scholar en ligne.', 'Importer les articles recommandés si utiles.'],
+    'qualitative-analysis': ['Commencer par codebook et matrice de codage.', 'Utiliser ICR pour vérifier l’accord.', 'Employer critique des sources, timeline, acteurs, process tracing, comparaison, cadrage et rapports.'],
+    'quantitative-analysis-data-studio': ['Importer des CSV.', 'Définir les variables scale, nominal, ordinal, text ou date.', 'Exécuter statistiques descriptives, fréquences, corrélations, tests, régression, fréquence de tokens, TF-IDF et graphiques.'],
+    'export-research-package': ['Exporter les notes en PDF, DOCX ou site statique.', 'Exporter toutes les données en JSON.', 'Utiliser BibTeX ou RIS pour les références.', 'Regrouper articles, notes, surlignages, liens et PDF dans un paquet .stellar.'],
+    'cloud-backup-security': ['Les sauvegardes sont chiffrées sur le poste utilisateur.', 'AES-256-GCM est utilisé.', 'Conserver le code de récupération à 12 chiffres.', 'Sans ce code, un nouveau PC ne peut pas restaurer la sauvegarde cloud.'],
+    'browser-clipper': ['Stellar écoute sur 127.0.0.1:57321.', 'L’extension envoie les métadonnées vers POST /api/import.', 'L’application desktop doit être lancée.'],
+    'settings-customization': ['Choisir White, Ivory, Dark Blue ou Black.', 'Régler taille, hauteur de ligne et police éditeur.', 'Utiliser l’onglet Données pour stockage, export, sauvegarde, paquets, navigateur et cloud.'],
+    shortcuts: ['Ctrl/Cmd + K ouvre la recherche.', 'Ctrl/Cmd + N crée une note.', 'Ctrl/Cmd + , ouvre les paramètres.', 'Ctrl/Cmd + F cherche dans le PDF.', 'La molette zoome le graphe et le glisser déplace.'],
+    'faq-troubleshooting': ['Corriger les titres PDF manuellement si les métadonnées sont pauvres.', 'Vérifier WikiLinks, liens d’articles et filtres si le graphe est vide.', 'Utiliser sauvegardes cloud, locales, automatiques et paquets de recherche.'],
+    'developer-setup': ['Utiliser Node.js 22+, Rust 1.75+ et Tauri CLI.', 'Exécuter npm install, npm run tauri dev, npm run tauri build et npm run lint.', 'Garder la direction sans IA et locale.'],
+    'translation-contribution': ['Stabiliser le japonais avant traduction.', 'Synchroniser textes UI et procédures Wiki.', 'Vérifier la structure i18n actuelle avant d’ajouter une langue.'],
+    'addons-plugins': ['Les extensions locales commencent dans src/plugins/registerAnalysisAddons.ts.', 'Deux axes : onglets qualitatifs et méthodes quantitatives.', 'Les plugins distribués contiennent stellar-plugin.json et index.js.', 'Utiliser des IDs stables avec lettres, chiffres et tirets.']
   },
   af: {
     home: ['Gebruik die Wiki vir praktiese stappe.', 'Stellar bly plaaslik-eerste, sonder AI, sonder intekening en MIT-gelisensieer.', 'Begin met installasie, vinnige begin, koppelvlak, FAQ en rugsteun.'],
     'installation-setup': ['Laai af vanaf GitHub Releases.', 'Gebruik .dmg vir macOS, .msi vir Windows en .AppImage vir Linux.', 'Voltooi opstelling en verander later taal, stoorplek en tema in Instellings.'],
-    'quick-start': ['Voeg een artikel by die biblioteek.', 'Heg n PDF aan en maak hoogtepunte.', 'Skep n nota uit n hoogtepunt.', 'Verbind notas en artikels met [[WikiLinks]].', 'Maak die grafiek oop om die navorsingslus te sien.'],
+    'quick-start': ['Voeg een artikel by die biblioteek.', 'Heg ’n PDF aan en maak hoogtepunte.', 'Skep ’n nota uit ’n hoogtepunt.', 'Verbind notas en artikels met [[WikiLinks]].', 'Maak die grafiek oop om die navorsingslus te sien.'],
     'interface-basics': ['Gebruik die sybalk vir navigasie.', 'Werk in die hoofpaneel.', 'Lees metadata, gekoppelde notas en aanhalingskonteks in die konteks-paneel.'],
     'literature-library': ['Voeg bronne by met PDF, URL, DOI, handinvoer of Stellar Clipper.', 'Filter volgens tags, soek, jaar, PDF en leesstatus.', 'Gebruik ongelees, besig, voltooi en herlees.'],
-    'pdf-reader-highlights': ['Lees PDF s met zoom, bladsybeweging en soek.', 'Gebruik vier kleure vir verskillende leesdoeleindes.', 'Voeg kommentaar by en skep notas uit hoogtepunte.'],
+    'pdf-reader-highlights': ['Lees PDF’s met zoom, bladsybeweging en soek.', 'Gebruik vier kleure vir verskillende leesdoeleindes.', 'Voeg kommentaar by en skep notas uit hoogtepunte.'],
     'notes-wikilinks': ['Skryf in Markdown.', 'Tik [[ om skakels te voltooi.', 'Gebruik backlinks en buitelyne vir lang notas.', 'Gebruik fokusmodus vir skryfwerk.'],
-    'draft-citations': ['Skep, herrangskik, vou en verwyder afdelings.', 'Voeg aanhalings uit die biblioteek in.', 'Genereer bibliografiee in APA, MLA, Chicago of Hitotsubashi-styl.'],
+    'draft-citations': ['Skep, herrangskik, vou en verwyder afdelings.', 'Voeg aanhalings uit die biblioteek in.', 'Genereer bibliografieë in APA, MLA, Chicago of Hitotsubashi-styl.'],
     'knowledge-graph-citation-network': ['Klik, sweef, dubbelklik, zoom en pan nodusse.', 'Gebruik CrossRef, OpenAlex en Semantic Scholar wanneer aanlyn.', 'Voer aanbevole verwante artikels in wanneer nuttig.'],
     'qualitative-analysis': ['Begin met kodeboeke en kodematrikse.', 'Gebruik ICR vir ooreenstemming.', 'Gebruik bronkritiek, tydlyne, akteurkaarte, prosesnasporing, vergelyking, framing en verslae.'],
     'quantitative-analysis-data-studio': ['Voer CSV-lêers in.', 'Ken scale, nominal, ordinal, text of date veranderlikes toe.', 'Gebruik beskrywende statistiek, frekwensies, korrelasies, toetse, regressie, tokenfrekwensie, TF-IDF en grafieke.'],
-    'export-research-package': ['Voer notas uit as PDF, DOCX of statiese webwerf.', 'Voer alle data as JSON uit.', 'Gebruik BibTeX of RIS vir verwysings.', 'Gebruik .stellar-pakkette vir artikels, notas, hoogtepunte, skakels en PDF s.'],
-    'cloud-backup-security': ['Rugsteun word op die gebruiker se toestel geënkripteer.', 'AES-256-GCM word gebruik.', 'Bewaar die 12-syfer herstelkode veilig.', 'Sonder die kode kan n nuwe rekenaar nie wolk-rugsteun herstel nie.'],
+    'export-research-package': ['Voer notas uit as PDF, DOCX of statiese webwerf.', 'Voer alle data as JSON uit.', 'Gebruik BibTeX of RIS vir verwysings.', 'Gebruik .stellar-pakkette vir artikels, notas, hoogtepunte, skakels en PDF’s.'],
+    'cloud-backup-security': ['Rugsteun word op die gebruiker se toestel geënkripteer.', 'AES-256-GCM word gebruik.', 'Bewaar die 12-syfer herstelkode veilig.', 'Sonder die kode kan ’n nuwe rekenaar nie wolk-rugsteun herstel nie.'],
     'browser-clipper': ['Stellar luister op 127.0.0.1:57321.', 'Die uitbreiding stuur metadata na POST /api/import.', 'Die desktop-app moet loop voordat die uitbreiding kan koppel.'],
     'settings-customization': ['Kies White, Ivory, Dark Blue of Black.', 'Pas lettergrootte, lynhoogte en redigeerder-font aan.', 'Gebruik die Data-oortjie vir stoorplek, uitvoer, rugsteun, pakkette, blaaier en wolk.'],
-    shortcuts: ['Ctrl/Cmd + K open globale soek.', 'Ctrl/Cmd + N skep n nota.', 'Ctrl/Cmd + , open instellings.', 'Ctrl/Cmd + F soek in PDF.', 'Muiswiel zoom die grafiek en sleep pan.'],
+    shortcuts: ['Ctrl/Cmd + K open globale soek.', 'Ctrl/Cmd + N skep ’n nota.', 'Ctrl/Cmd + , open instellings.', 'Ctrl/Cmd + F soek in PDF.', 'Muiswiel zoom die grafiek en sleep pan.'],
     'faq-troubleshooting': ['Wysig PDF-titels handmatig as metadata swak is.', 'Kontroleer WikiLinks, artikelskakels en filters as die grafiek leeg is.', 'Gebruik wolk-, plaaslike en outomatiese rugsteun plus navorsingspakkette.'],
     'developer-setup': ['Gebruik Node.js 22+, Rust 1.75+ en Tauri CLI.', 'Voer npm install, npm run tauri dev, npm run tauri build en npm run lint uit.', 'Hou ontwikkeling plaaslik-eerste en sonder AI.'],
     'translation-contribution': ['Stabiliseer Japanees eerste en vertaal dan.', 'Hou UI-teks en Wiki-stappe gesinchroniseer.', 'Kontroleer die huidige i18n-struktuur voordat tale bygevoeg word.'],
-    'addons-plugins': ['Plaaslike addons begin by src/plugins/registerAnalysisAddons.ts.', 'Daar is kwalitatiewe tabs en kwantitatiewe metode-byvoegings.', 'Verspreide plugins bevat stellar-plugin.json en index.js.', 'Gebruik stabiele alfanumeriese en koppelteken plugin-ID s.']
+    'addons-plugins': ['Plaaslike byvoegings begin by src/plugins/registerAnalysisAddons.ts.', 'Daar is kwalitatiewe tabs en kwantitatiewe metode-byvoegings.', 'Verspreide plugins bevat stellar-plugin.json en index.js.', 'Gebruik stabiele alfanumeriese en koppelteken plugin-ID’s.']
   }
 };
 
@@ -935,25 +935,25 @@ const localizedLabels = {
     qualityThree: 'When the workflow touches security or recovery, test the restore path before depending on it.'
   },
   fr: {
-    overview: 'Vue d ensemble',
+    overview: 'Vue d’ensemble',
     guidance: 'Guide principal',
-    workflow: 'Flux recommande',
-    quality: 'Verifications avant de s appuyer sur cette page',
+    workflow: 'Flux recommandé',
+    quality: 'Vérifications avant de s’appuyer sur cette page',
     intro: 'Utilisez cette page comme checklist pratique pour la fonction ou le flux.',
-    workflowIntro: 'Utilisez ces etapes comme rythme de travail. Commencez petit, verifiez le resultat, puis elargissez le flux seulement si cela aide la recherche.',
-    qualityIntro: 'Avant de considerer le resultat comme durable, verifiez les metadata, les liens, les sauvegardes et la coherence avec l implementation actuelle.',
-    principle: 'Stellar reste local-first et laisse le chercheur garder le controle.',
-    qualityOne: 'Verifier que les donnees utiles sont sauvegardees localement et retrouvables.',
-    qualityTwo: 'Verifier que liens, citations, exports ou sauvegardes pointent vers le bon materiel.',
-    qualityThree: 'Pour la securite ou la restauration, tester le chemin de recuperation avant d en dependre.'
+    workflowIntro: 'Utilisez ces étapes comme rythme de travail. Commencez petit, vérifiez le résultat, puis élargissez le flux seulement si cela aide la recherche.',
+    qualityIntro: 'Avant de considérer le résultat comme durable, vérifiez les métadonnées, les liens, les sauvegardes et la cohérence avec l’implémentation actuelle.',
+    principle: 'Stellar reste local et laisse le chercheur garder le contrôle.',
+    qualityOne: 'Vérifier que les données utiles sont sauvegardées localement et retrouvables.',
+    qualityTwo: 'Vérifier que liens, citations, exports ou sauvegardes pointent vers le bon matériel.',
+    qualityThree: 'Pour la sécurité ou la restauration, tester le chemin de récupération avant d’en dépendre.'
   },
   af: {
     overview: 'Oorsig',
     guidance: 'Hoofriglyne',
     workflow: 'Aanbevole werkvloei',
     quality: 'Kontroles voordat jy hierop staatmaak',
-    intro: 'Gebruik hierdie bladsy as n praktiese kontrolelys vir die funksie of vloei.',
-    workflowIntro: 'Gebruik die stappe as n werkritme. Begin klein, bevestig die resultaat, en brei eers uit wanneer dit die navorsing help.',
+    intro: 'Gebruik hierdie bladsy as ’n praktiese kontrolelys vir die funksie of vloei.',
+    workflowIntro: 'Gebruik die stappe as ’n werkritme. Begin klein, bevestig die resultaat, en brei eers uit wanneer dit die navorsing help.',
     qualityIntro: 'Voordat jy die resultaat as duursame navorsingsmateriaal gebruik, kontroleer metadata, skakels, rugsteun en of die bladsy met die huidige implementering klop.',
     principle: 'Stellar hou navorsingsdata plaaslik-eerste en laat die navorser in beheer.',
     qualityOne: 'Bevestig dat die relevante data plaaslik gestoor is en weer gevind kan word.',
@@ -1007,6 +1007,231 @@ export const wikiPages: Record<Lang, WikiPage[]> = {
   af: makeLocalizedPages('af')
 };
 
+export type WikiEditorFormCopy = {
+  slugLabel: string;
+  localeLabel: string;
+  statusLabel: string;
+  titleLabel: string;
+  bodyLabel: string;
+  titlePlaceholder: string;
+  bodyPlaceholder: string;
+  saveIdle: string;
+  saveBusy: string;
+  savedMessage: string;
+  saveFailed: string;
+  editablePages: string;
+  emptyPages: string;
+  locales: Record<string, string>;
+  statuses: Record<string, string>;
+};
+
+export type WikiUi = {
+  title: string;
+  layoutDescription: string;
+  eyebrow: string;
+  description: string;
+  transmission: string;
+  status: string;
+  categoryHeading: string;
+  docsLabel: string;
+  readDocument: string;
+  indexLink: string;
+  updatedLabel: string;
+  relatedDocs: string;
+  sectionLabel: string;
+  editor: {
+    eyebrow: string;
+    title: string;
+    description: string;
+    authNotConnected: string;
+    loginRequired: string;
+    loginAction: string;
+    planRequired: string;
+    planMessage: string;
+    pricingAction: string;
+    form: WikiEditorFormCopy;
+  };
+};
+
+export const wikiUi = {
+  ja: {
+    title: 'Wiki',
+    layoutDescription: 'Stellar公式Wiki。導入、研究ワークフロー、分析、データ保全、トラブル対応、貢献方法をまとめます。',
+    eyebrow: '公式ドキュメント',
+    description: '導入、使い方、困ったときの対応、開発参加を整理したStellarの公式Wikiです。',
+    transmission: '記録 02 / 2026 / 公式文書',
+    status: '全システム静穏',
+    categoryHeading: '分類',
+    docsLabel: '件',
+    readDocument: '読む',
+    indexLink: 'Wiki一覧',
+    updatedLabel: '更新日',
+    relatedDocs: '関連ページ',
+    sectionLabel: '節',
+    editor: {
+      eyebrow: '開発者コンソール',
+      title: 'Wiki編集',
+      description: '課金ユーザーは、4言語それぞれのWikiページを作成・更新できます。',
+      authNotConnected: '認証に接続できません',
+      loginRequired: 'Wiki編集にはログインが必要です。',
+      loginAction: 'ログイン',
+      planRequired: '開発者プランが必要です',
+      planMessage: '課金状態が有効または試用中のユーザー、または開発者・レビュアー・管理者ロールのユーザーだけがWikiを編集できます。',
+      pricingAction: '料金を見る',
+      form: {
+        slugLabel: 'スラッグ',
+        localeLabel: '言語',
+        statusLabel: '状態',
+        titleLabel: 'タイトル',
+        bodyLabel: '本文',
+        titlePlaceholder: 'Wikiページのタイトル',
+        bodyPlaceholder: '本文を段落ごとに空行で区切って入力してください。',
+        saveIdle: 'Wikiページを保存',
+        saveBusy: '保存中...',
+        savedMessage: 'Wikiページを保存しました。',
+        saveFailed: 'Wikiの保存に失敗しました。',
+        editablePages: '編集できるページ',
+        emptyPages: 'DBで編集されたWikiページはまだありません。',
+        locales: { ja: '日本語', en: '英語', fr: 'フランス語', af: 'アフリカーンス語' },
+        statuses: { published: '公開', draft: '下書き', archived: 'アーカイブ' }
+      }
+    }
+  },
+  en: {
+    title: 'Wiki',
+    layoutDescription: 'Official Stellar Wiki for installation, research workflows, analysis, data safety, troubleshooting, and contribution.',
+    eyebrow: 'official documentation',
+    description: 'Official Stellar documentation for installing, learning, troubleshooting, and contributing to the local-first desktop app.',
+    transmission: 'VOL. 02 / 2026 / DOCUMENTATION',
+    status: 'ALL SYSTEMS QUIET',
+    categoryHeading: 'Categories',
+    docsLabel: 'docs',
+    readDocument: 'Read document',
+    indexLink: 'Wiki index',
+    updatedLabel: 'Updated',
+    relatedDocs: 'Related docs',
+    sectionLabel: 'Section',
+    editor: {
+      eyebrow: 'developer console',
+      title: 'Wiki Editor',
+      description: 'Active paid users can create and update Wiki pages for each of the four locales.',
+      authNotConnected: 'auth not connected',
+      loginRequired: 'Login is required to edit the Wiki.',
+      loginAction: 'Login',
+      planRequired: 'Developer Plan required',
+      planMessage: 'Only users with an active or trialing subscription, or a Developer, Reviewer, or Admin role, can edit the Wiki.',
+      pricingAction: 'Open pricing',
+      form: {
+        slugLabel: 'slug',
+        localeLabel: 'locale',
+        statusLabel: 'status',
+        titleLabel: 'title',
+        bodyLabel: 'body',
+        titlePlaceholder: 'Wiki page title',
+        bodyPlaceholder: 'Separate body paragraphs with blank lines.',
+        saveIdle: 'Save Wiki Page',
+        saveBusy: 'Saving...',
+        savedMessage: 'Wiki page saved.',
+        saveFailed: 'Wiki save failed.',
+        editablePages: 'editable pages',
+        emptyPages: 'No editable DB-backed Wiki pages yet.',
+        locales: { ja: 'Japanese', en: 'English', fr: 'French', af: 'Afrikaans' },
+        statuses: { published: 'published', draft: 'draft', archived: 'archived' }
+      }
+    }
+  },
+  fr: {
+    title: 'Wiki',
+    layoutDescription: 'Wiki officiel de Stellar pour l’installation, les flux de recherche, l’analyse, la sécurité des données, le dépannage et la contribution.',
+    eyebrow: 'documentation officielle',
+    description: 'Documentation officielle de Stellar pour installer, apprendre, dépanner et contribuer à l’application desktop locale.',
+    transmission: 'VOL. 02 / 2026 / DOCUMENTATION',
+    status: 'TOUS LES SYSTÈMES CALMES',
+    categoryHeading: 'Catégories',
+    docsLabel: 'pages',
+    readDocument: 'Lire',
+    indexLink: 'Index du Wiki',
+    updatedLabel: 'Mis à jour',
+    relatedDocs: 'Pages liées',
+    sectionLabel: 'Section',
+    editor: {
+      eyebrow: 'console développeur',
+      title: 'Édition du Wiki',
+      description: 'Les utilisateurs payants actifs peuvent créer et mettre à jour les pages Wiki pour chacune des quatre langues.',
+      authNotConnected: 'authentification non connectée',
+      loginRequired: 'La connexion est requise pour éditer le Wiki.',
+      loginAction: 'Connexion',
+      planRequired: 'Plan développeur requis',
+      planMessage: 'Seuls les utilisateurs avec un abonnement actif ou en essai, ou un rôle Développeur, Reviewer ou Admin, peuvent éditer le Wiki.',
+      pricingAction: 'Voir les tarifs',
+      form: {
+        slugLabel: 'slug',
+        localeLabel: 'langue',
+        statusLabel: 'statut',
+        titleLabel: 'titre',
+        bodyLabel: 'corps',
+        titlePlaceholder: 'Titre de la page Wiki',
+        bodyPlaceholder: 'Séparez les paragraphes par des lignes vides.',
+        saveIdle: 'Enregistrer la page Wiki',
+        saveBusy: 'Enregistrement...',
+        savedMessage: 'Page Wiki enregistrée.',
+        saveFailed: 'Échec de l’enregistrement du Wiki.',
+        editablePages: 'pages éditables',
+        emptyPages: 'Aucune page Wiki éditable en base pour le moment.',
+        locales: { ja: 'Japonais', en: 'Anglais', fr: 'Français', af: 'Afrikaans' },
+        statuses: { published: 'publié', draft: 'brouillon', archived: 'archivé' }
+      }
+    }
+  },
+  af: {
+    title: 'Wiki',
+    layoutDescription: 'Amptelike Stellar Wiki vir installasie, navorsingsvloei, analise, dataveiligheid, probleemoplossing en bydraes.',
+    eyebrow: 'amptelike dokumentasie',
+    description: 'Amptelike Stellar-dokumentasie vir installasie, leer, probleemoplossing en bydraes tot die plaaslik-eerste desktop-app.',
+    transmission: 'VOL. 02 / 2026 / DOKUMENTASIE',
+    status: 'ALLE STELSELS STIL',
+    categoryHeading: 'Kategorieë',
+    docsLabel: 'bladsye',
+    readDocument: 'Lees',
+    indexLink: 'Wiki-indeks',
+    updatedLabel: 'Bygewerk',
+    relatedDocs: 'Verwante bladsye',
+    sectionLabel: 'Afdeling',
+    editor: {
+      eyebrow: 'ontwikkelaarskonsole',
+      title: 'Wiki-redigeerder',
+      description: 'Aktiewe betalende gebruikers kan Wiki-bladsye vir al vier tale skep en opdateer.',
+      authNotConnected: 'verifikasie nie gekoppel nie',
+      loginRequired: 'Aanmelding is nodig om die Wiki te redigeer.',
+      loginAction: 'Teken in',
+      planRequired: 'Ontwikkelaarsplan vereis',
+      planMessage: 'Slegs gebruikers met ’n aktiewe of proefintekening, of ’n Ontwikkelaar-, Reviewer- of Admin-rol, kan die Wiki redigeer.',
+      pricingAction: 'Maak pryse oop',
+      form: {
+        slugLabel: 'slug',
+        localeLabel: 'taal',
+        statusLabel: 'status',
+        titleLabel: 'titel',
+        bodyLabel: 'inhoud',
+        titlePlaceholder: 'Wiki-bladsytitel',
+        bodyPlaceholder: 'Skei inhoudsparagrawe met leë reëls.',
+        saveIdle: 'Stoor Wiki-bladsy',
+        saveBusy: 'Stoor...',
+        savedMessage: 'Wiki-bladsy gestoor.',
+        saveFailed: 'Wiki kon nie gestoor word nie.',
+        editablePages: 'redigeerbare bladsye',
+        emptyPages: 'Nog geen redigeerbare DB-gesteunde Wiki-bladsye nie.',
+        locales: { ja: 'Japannees', en: 'Engels', fr: 'Frans', af: 'Afrikaans' },
+        statuses: { published: 'gepubliseer', draft: 'konsep', archived: 'geargiveer' }
+      }
+    }
+  }
+} satisfies Record<Lang, WikiUi>;
+
+export function getWikiUi(lang: Lang): WikiUi {
+  return wikiUi[lang] ?? wikiUi.ja;
+}
+
 export type WikiPageRecord = {
   slug: string;
   locale: Lang;
@@ -1018,14 +1243,14 @@ export type WikiPageRecord = {
 const dbSectionHeadings: Record<Lang, string> = {
   ja: '編集済み本文',
   en: 'Edited content',
-  fr: 'Contenu modifie',
+  fr: 'Contenu modifié',
   af: 'Geredigeerde inhoud'
 };
 
 const dbCategories: Record<Lang, string> = {
   ja: '編集',
   en: 'Edited',
-  fr: 'Modifie',
+  fr: 'Modifié',
   af: 'Geredigeer'
 };
 

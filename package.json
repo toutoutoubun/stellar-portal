@@ -30,6 +30,12 @@
     "postcss": "latest",
     "tailwindcss": "^3.4.17",
     "typescript": "latest",
+    "vite": "^7.3.3",
     "wrangler": "latest"
+  },
+  "pnpm": {
+    "overrides": {
+      "vite": "^7"
+    }
   }
 }

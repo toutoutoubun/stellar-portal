@@ -16,7 +16,13 @@ interface Props {
 const env = getEnv();
 const lang = Astro.props.lang ?? normalizeLang(Astro.params.lang);
 const title = Astro.props.title ? `${Astro.props.title} / Stellar Portal` : 'Stellar Portal';
-const description = Astro.props.description ?? 'A local-first research portal for Stellar: wiki, addons, developer registration, and reviewed community extensions.';
+const defaultDescriptions: Record<Lang, string> = {
+  ja: 'Stellarの公式ポータル。Wiki、アドオン、開発者登録、審査済みコミュニティ拡張を扱います。',
+  en: 'A local-first research portal for Stellar: Wiki, addons, developer registration, and reviewed community extensions.',
+  fr: 'Portail officiel de Stellar : Wiki, extensions, inscription développeur et extensions communautaires examinées.',
+  af: 'Stellar se amptelike portaal vir Wiki, byvoegings, ontwikkelaarregistrasie en gekeurde gemeenskapsuitbreidings.'
+};
+const description = Astro.props.description ?? defaultDescriptions[lang];
 const canonical = absoluteUrl(Astro.url.pathname, env.PUBLIC_SITE_URL);
 const image = absoluteUrl(Astro.props.image ?? '/og-default.svg', env.PUBLIC_SITE_URL);
 const alts = alternateLinks(Astro.url.pathname, env.PUBLIC_SITE_URL);

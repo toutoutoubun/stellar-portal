@@ -1,12 +1,45 @@
 import React, { useState } from 'react';
+import { isLang, type Lang } from '@/lib/i18n';
 
 type Props = {
   lang: string;
   mode: 'checkout' | 'portal';
 };
 
+const copy = {
+  ja: {
+    checkout: '開発者プランを始める',
+    portal: '請求ポータルを開く',
+    opening: '開いています...',
+    missingUrl: 'Stripe URLが返されませんでした。',
+    failed: 'Stripeを開けませんでした。'
+  },
+  en: {
+    checkout: 'Start Developer Plan',
+    portal: 'Open Billing Portal',
+    opening: 'Opening...',
+    missingUrl: 'Stripe URL was not returned.',
+    failed: 'Failed to open Stripe.'
+  },
+  fr: {
+    checkout: 'Démarrer le plan développeur',
+    portal: 'Ouvrir le portail de facturation',
+    opening: 'Ouverture...',
+    missingUrl: 'L’URL Stripe n’a pas été retournée.',
+    failed: 'Impossible d’ouvrir Stripe.'
+  },
+  af: {
+    checkout: 'Begin ontwikkelaarsplan',
+    portal: 'Maak faktuurportaal oop',
+    opening: 'Maak oop...',
+    missingUrl: 'Stripe-URL is nie teruggestuur nie.',
+    failed: 'Kon Stripe nie oopmaak nie.'
+  }
+} satisfies Record<Lang, Record<string, string>>;
+
 export default function BillingButtons({ lang, mode }: Props) {
   const [loading, setLoading] = useState(false);
+  const text = copy[isLang(lang) ? lang : 'ja'];
 
   const endpoint =
     mode === 'checkout'
@@ -15,8 +48,8 @@ export default function BillingButtons({ lang, mode }: Props) {
 
   const label =
     mode === 'checkout'
-      ? 'Start Developer Plan'
-      : 'Open Billing Portal';
+      ? text.checkout
+      : text.portal;
 
   async function open() {
     setLoading(true);
@@ -42,9 +75,9 @@ export default function BillingButtons({ lang, mode }: Props) {
         return;
       }
 
-      alert('Stripe URL was not returned.');
+      alert(text.missingUrl);
     } catch (error) {
-      alert(error instanceof Error ? error.message : 'Failed to open Stripe.');
+      alert(error instanceof Error ? error.message : text.failed);
     } finally {
       setLoading(false);
     }
@@ -52,7 +85,7 @@ export default function BillingButtons({ lang, mode }: Props) {
 
   return (
     <button className="btn btn-primary" onClick={open} disabled={loading}>
-      {loading ? 'Opening...' : label}
+      {loading ? text.opening : label}
     </button>
   );
 }

@@ -5,6 +5,104 @@ import { normalizeLang } from '@/lib/i18n';
 import { getViewer, hasDeveloperAccess } from '@/lib/access';
 
 const lang = normalizeLang(Astro.params.lang);
+const copy = {
+  ja: {
+    title: 'ダッシュボード',
+    eyebrow: '開発者コンソール',
+    description: 'アドオン投稿には、先に開発者登録が必要です。',
+    authNotConnected: '認証に接続できません',
+    authMessage: 'Supabase接続またはCookie認証がまだ完了していません。',
+    notSignedIn: 'ログインしていません',
+    notSignedInBody: 'アドオン投稿や課金状態の確認にはSupabase Authが必要です。',
+    login: 'ログイン',
+    user: 'ユーザー',
+    role: 'ロール',
+    subscription: '契約',
+    developerAccess: '開発者権限',
+    enabled: '有効',
+    disabled: '無効',
+    none: 'なし',
+    addonDesk: 'アドオン管理を開く',
+    editWiki: 'Wikiを編集',
+    purchases: '購入済みアドオン',
+    adminSafety: '管理者安全性',
+    setupNote: 'セットアップメモ',
+    setupBody: 'このページが表示されれば、Astroのダッシュボード画面自体は動いています。',
+    setupNext: '次にSupabaseを接続すると、ログイン、プロフィール、開発者権限が使えるようになります。'
+  },
+  en: {
+    title: 'Dashboard',
+    eyebrow: 'developer console',
+    description: 'Developer registration is required before addon submission becomes available.',
+    authNotConnected: 'auth not connected',
+    authMessage: 'Supabase connection or cookie authentication is not complete yet.',
+    notSignedIn: 'not signed in',
+    notSignedInBody: 'Supabase Auth is required for addon submission and subscription checks.',
+    login: 'Login',
+    user: 'user',
+    role: 'role',
+    subscription: 'subscription',
+    developerAccess: 'developer access',
+    enabled: 'enabled',
+    disabled: 'disabled',
+    none: 'none',
+    addonDesk: 'Open addon desk',
+    editWiki: 'Edit Wiki',
+    purchases: 'Purchased addons',
+    adminSafety: 'Admin safety',
+    setupNote: 'setup note',
+    setupBody: 'If this page is visible, the Astro dashboard route itself is working.',
+    setupNext: 'Connect Supabase next to enable login, profiles, and Developer access.'
+  },
+  fr: {
+    title: 'Tableau de bord',
+    eyebrow: 'console développeur',
+    description: 'L’inscription développeur est requise avant de soumettre des extensions.',
+    authNotConnected: 'authentification non connectée',
+    authMessage: 'La connexion Supabase ou l’authentification par cookie n’est pas encore terminée.',
+    notSignedIn: 'non connecté',
+    notSignedInBody: 'Supabase Auth est requis pour soumettre des extensions et vérifier l’abonnement.',
+    login: 'Connexion',
+    user: 'utilisateur',
+    role: 'rôle',
+    subscription: 'abonnement',
+    developerAccess: 'accès développeur',
+    enabled: 'activé',
+    disabled: 'désactivé',
+    none: 'aucun',
+    addonDesk: 'Ouvrir les extensions',
+    editWiki: 'Éditer le Wiki',
+    purchases: 'Extensions achetées',
+    adminSafety: 'Sécurité admin',
+    setupNote: 'note de configuration',
+    setupBody: 'Si cette page s’affiche, la route Astro du tableau de bord fonctionne.',
+    setupNext: 'Connectez ensuite Supabase pour activer connexion, profils et accès développeur.'
+  },
+  af: {
+    title: 'Paneel',
+    eyebrow: 'ontwikkelaarskonsole',
+    description: 'Ontwikkelaarregistrasie is nodig voordat byvoegings ingedien kan word.',
+    authNotConnected: 'verifikasie nie gekoppel nie',
+    authMessage: 'Supabase-verbinding of koekie-verifikasie is nog nie voltooi nie.',
+    notSignedIn: 'nie aangemeld nie',
+    notSignedInBody: 'Supabase Auth is nodig vir byvoeging-indiening en intekeningkontroles.',
+    login: 'Teken in',
+    user: 'gebruiker',
+    role: 'rol',
+    subscription: 'intekening',
+    developerAccess: 'ontwikkelaartoegang',
+    enabled: 'aan',
+    disabled: 'af',
+    none: 'geen',
+    addonDesk: 'Maak byvoegingspaneel oop',
+    editWiki: 'Redigeer Wiki',
+    purchases: 'Gekoopte byvoegings',
+    adminSafety: 'Admin-veiligheid',
+    setupNote: 'opstellingsnota',
+    setupBody: 'As hierdie bladsy wys, werk die Astro-paneelroete self.',
+    setupNext: 'Koppel volgende Supabase om aanmelding, profiele en ontwikkelaartoegang te aktiveer.'
+  }
+}[lang];
 
 let viewer = {
   user: null as any,
@@ -19,51 +117,51 @@ try {
   authError = error instanceof Error ? error.message : 'Unknown auth error';
 }
 ---
-<DashboardLayout title="Dashboard">
+<DashboardLayout title={copy.title}>
   <PageHeader
-    eyebrow="developer console"
-    title="Dashboard"
-    description="Developer registration is required before addon submission becomes available."
+    eyebrow={copy.eyebrow}
+    title={copy.title}
+    description={copy.description}
   />
 
   <div class="terminal-panel grid gap-4 p-6 font-mono text-sm">
     {authError && (
       <div class="border border-stellar-danger/60 bg-stellar-danger/10 p-4 text-stellar-text">
-        <p class="mb-2 text-xs uppercase tracking-[.22em] text-stellar-danger">auth not connected</p>
-        <p>Supabase接続またはCookie認証がまだ完了していません。</p>
+        <p class="mb-2 text-xs uppercase tracking-[.22em] text-stellar-danger">{copy.authNotConnected}</p>
+        <p>{copy.authMessage}</p>
         <p class="mt-2 text-stellar-muted">{authError}</p>
       </div>
     )}
 
     {!viewer.user && !authError && (
       <div class="border border-stellar-border bg-stellar-panel2 p-4">
-        <p class="mb-2 text-xs uppercase tracking-[.22em] text-stellar-muted">not signed in</p>
-        <p>まだログインしていません。アドオン投稿や課金状態の確認にはSupabase Authが必要です。</p>
-        <a class="btn mt-4 inline-flex w-fit" href={`/${lang}/login`}>Login</a>
+        <p class="mb-2 text-xs uppercase tracking-[.22em] text-stellar-muted">{copy.notSignedIn}</p>
+        <p>{copy.notSignedInBody}</p>
+        <a class="btn mt-4 inline-flex w-fit" href={`/${lang}/login`}>{copy.login}</a>
       </div>
     )}
 
     {viewer.user && (
       <>
-        <p>user: {viewer.user.email}</p>
-        <p>role: {viewer.profile?.role ?? 'none'}</p>
-        <p>subscription: {viewer.profile?.subscription_status ?? 'none'}</p>
-        <p>developer access: {hasDeveloperAccess(viewer.profile) ? 'enabled' : 'disabled'}</p>
+        <p>{copy.user}: {viewer.user.email}</p>
+        <p>{copy.role}: {viewer.profile?.role ?? copy.none}</p>
+        <p>{copy.subscription}: {viewer.profile?.subscription_status ?? copy.none}</p>
+        <p>{copy.developerAccess}: {hasDeveloperAccess(viewer.profile) ? copy.enabled : copy.disabled}</p>
         <div class="mt-3 flex flex-wrap gap-2">
-          <a class="btn w-fit" href={`/${lang}/dashboard/addons`}>Open addon desk</a>
-          {hasDeveloperAccess(viewer.profile) ? <a class="btn w-fit" href={`/${lang}/dashboard/wiki`}>Edit Wiki</a> : null}
-          <a class="btn w-fit" href={`/${lang}/dashboard/purchases`}>Purchased addons</a>
+          <a class="btn w-fit" href={`/${lang}/dashboard/addons`}>{copy.addonDesk}</a>
+          {hasDeveloperAccess(viewer.profile) ? <a class="btn w-fit" href={`/${lang}/dashboard/wiki`}>{copy.editWiki}</a> : null}
+          <a class="btn w-fit" href={`/${lang}/dashboard/purchases`}>{copy.purchases}</a>
           {viewer.profile?.role === 'admin' || viewer.profile?.role === 'reviewer' ? (
-            <a class="btn w-fit" href={`/${lang}/admin/safety`}>Admin safety</a>
+            <a class="btn w-fit" href={`/${lang}/admin/safety`}>{copy.adminSafety}</a>
           ) : null}
         </div>
       </>
     )}
 
     <div class="border border-stellar-border p-4 text-stellar-muted">
-      <p class="mb-2 text-xs uppercase tracking-[.22em]">setup note</p>
-      <p>このページが表示されれば、Astroのダッシュボード画面自体は動いています。</p>
-      <p>次にSupabaseを接続すると、ログイン・プロフィール・Developer権限が使えるようになります。</p>
+      <p class="mb-2 text-xs uppercase tracking-[.22em]">{copy.setupNote}</p>
+      <p>{copy.setupBody}</p>
+      <p>{copy.setupNext}</p>
     </div>
   </div>
 </DashboardLayout>
