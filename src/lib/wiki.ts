@@ -442,6 +442,346 @@ const jaPages: WikiPage[] = [
   }
 ];
 
+const jaSupplementalSections: Record<string, WikiSection[]> = {
+  home: [
+    {
+      heading: 'Wikiの読み進め方',
+      body: [
+        'はじめてStellarに触れる場合は、Homeから順番に読むよりも、目的に合わせて読むページを選ぶと早く理解できます。導入だけならインストール、最初の30分ならクイックスタート、研究データの保全が気になる場合はクラウドバックアップを先に確認します。',
+        '研究に使う道具は、最初の印象だけでなく、数週間後に検索できるか、数か月後に引用できるか、別のPCに移しても復元できるかで価値が決まります。このWikiでは、操作手順とあわせて、その判断基準も残します。'
+      ],
+      bullets: ['まず動かす: インストール、クイックスタート、基本画面', '研究に入る: 文献ライブラリ、PDF、ノート、グラフ', '成果にする: 草稿、引用、エクスポート、研究パッケージ', '守る: バックアップ、復元、FAQ', '広げる: 開発者向け、翻訳、アドオン']
+    },
+    {
+      heading: '公式Wikiで扱わないもの',
+      body: [
+        '公式Wikiは、Stellar本体の実装済み機能、公開済み仕様、ユーザーが再現できる手順を中心にします。構想段階のアイデア、未公開の画面、実装が揺れている機能は、Issueやロードマップに分けます。',
+        '特にセキュリティ、バックアップ、データ移行、プラグイン公開に関する説明は、実装と違う文章を残すとユーザーの判断を誤らせます。仕様が変わったらWikiも同じリリースで更新します。'
+      ]
+    }
+  ],
+  'installation-setup': [
+    {
+      heading: 'OS別の確認ポイント',
+      body: [
+        'インストーラーを選ぶ前に、OSの種類、CPUアーキテクチャ、社用・学校管理端末の制限を確認します。macOSでは署名やGatekeeper、WindowsではSmartScreen、Linuxでは実行権限が初回起動時のつまずきになりやすい箇所です。',
+        '学校や研究室の共有PCで使う場合は、保存先を個人領域に置けるか、バックアップの保存先が同期対象か、管理者権限なしで起動できるかを事前に確認します。'
+      ],
+      bullets: ['macOS: .dmgを開き、Applicationsへ移動してから起動する', 'Windows: .msiを実行し、SmartScreenが出た場合は発行元と入手元を確認する', 'Linux: .AppImageに実行権限を付けて起動する', '共有端末: vault保存先とバックアップ先を個人領域にする']
+    },
+    {
+      heading: '初回セットアップで決めること',
+      body: [
+        '初回オンボーディングでは、後から変更できる設定と、最初に慎重に決めた方がよい設定を分けて考えます。テーマや言語は気軽に変更できますが、研究データの保存先はバックアップや同期の方針に関わります。',
+        '保存先は、容量が十分にあり、誤って削除しにくく、バックアップ対象に含められる場所を選びます。PDFを多く扱う研究では、クラウド同期フォルダの容量制限にも注意します。'
+      ]
+    }
+  ],
+  'quick-start': [
+    {
+      heading: '30分で試すミニワークフロー',
+      body: [
+        '最初の30分では、完璧な分類体系を作らず、1本の論文を材料にStellarの流れを体験します。論文を追加し、PDFを開き、重要な一段落をハイライトし、そのハイライトからノートを作ります。',
+        'ノートには、論文の要約ではなく、自分が後で使いたい問い、引用したい箇所、他の文献と比較したい観点を書きます。最後にWikiLinkを1つ作り、グラフに反映されることを確認します。'
+      ],
+      bullets: ['文献を1件だけ追加する', 'PDFの1ページを読む', '重要箇所を1つハイライトする', 'ハイライトに短いコメントを付ける', 'ノートを1つ作る', 'WikiLinkを1つ入れる', 'グラフを開いて接続を見る']
+    },
+    {
+      heading: '最初にやりすぎないこと',
+      body: [
+        'タグ体系、引用スタイル、質的分析コード、量的分析データセットは、最初から全部決めなくてかまいません。研究初期は資料の種類や問いが変わりやすいため、細かい分類を先に作るとかえって使いにくくなります。',
+        'まずはライブラリ、ノート、グラフがつながる感覚を作ります。その後、必要に応じて草稿モード、引用、分析、エクスポートへ広げます。'
+      ]
+    }
+  ],
+  'interface-basics': [
+    {
+      heading: '画面を迷わないための見方',
+      body: [
+        'Stellarでは、現在選んでいる対象を意識すると画面が読みやすくなります。ライブラリで文献を選んでいるのか、ノートを選んでいるのか、分析プロジェクトを選んでいるのかによって、右側の情報や使える操作が変わります。',
+        '操作に迷ったら、まず左から右へ見ます。左で場所を選び、中央で作業し、右で詳細や関連情報を確認する、という順番です。'
+      ],
+      bullets: ['左: どの機能にいるか', '中央: いま編集・閲覧しているもの', '右: 選択中の対象に関する補助情報', '上部: 検索、フィルタ、作成、保存などの操作']
+    },
+    {
+      heading: '初心者が見落としやすい状態表示',
+      body: [
+        '保存状態、同期状態、フィルタの有無、選択中のタグは、作業結果に直接影響します。特にグラフや検索結果が空に見える場合、データが消えたのではなくフィルタが効いているだけの場合があります。'
+      ]
+    }
+  ],
+  'literature-library': [
+    {
+      heading: '文献を追加するときの基準',
+      body: [
+        '文献ライブラリには、読んだ文献だけでなく、これから読む候補、授業やゼミで指定された資料、比較対象として残しておきたい資料も入れられます。ただし、何でも入れると検索ノイズが増えるため、研究テーマとの関係を短いメモで残します。',
+        'DOIやURLから取得したメタデータは便利ですが、タイトル、著者、年、出版元が必ず正しいとは限りません。引用に使う文献は、早い段階で手動確認しておくと後の修正が減ります。'
+      ],
+      bullets: ['タイトルの表記揺れを確認する', '著者名の順序と姓・名を確認する', '発行年と版を確認する', 'PDFが正しい文献に紐づいているか確認する', '読書ステータスを更新する']
+    },
+    {
+      heading: 'タグ運用のコツ',
+      body: [
+        'タグは細かく作りすぎるより、後から検索しやすい粒度にします。研究テーマ、方法、地域、時代、理論、授業名など、複数の軸を混ぜてもかまいませんが、同じ意味のタグを増やしすぎないようにします。',
+        'たとえば「方法論」「method」「methods」を同時に使うと、検索時に漏れが出ます。タグ名は一度決めたら、定期的に統合します。'
+      ]
+    }
+  ],
+  'pdf-reader-highlights': [
+    {
+      heading: 'ハイライトの粒度',
+      body: [
+        'ハイライトは、後で自分が読み返すための目印です。ページ全体を塗るより、引用したい文、方法論の定義、議論の転換点、疑問が生じた箇所など、再利用できる単位で残します。',
+        '長い段落をハイライトする場合は、コメントに「なぜ重要か」を一文で書きます。色だけでは、数週間後に意図を思い出せないことがあります。'
+      ],
+      bullets: ['黄色: 主張や結論', '緑: 方法、データ、史料', '青: 自分の研究との接点', '赤: 疑問、反論、要確認']
+    },
+    {
+      heading: 'ハイライトからノートへ移すタイミング',
+      body: [
+        'すべてのハイライトをノート化する必要はありません。ノートにするのは、複数文献をまたいで比較したい点、草稿で引用する可能性が高い点、自分の問いに直結する点です。',
+        'ノート化したら、元の文献、ページ、ハイライトに戻れるようにしておくと、引用確認や再読が楽になります。'
+      ]
+    }
+  ],
+  'notes-wikilinks': [
+    {
+      heading: 'ノートの種類を分ける',
+      body: [
+        'ノートは1種類に統一しなくてもかまいません。読書ノート、概念ノート、人物ノート、史料ノート、仮説ノート、草稿メモなど、目的別に書き方を変えると整理しやすくなります。',
+        '重要なのは、ノート名を後から見ても意味が分かるようにすることです。「メモ1」よりも、「福祉国家_比較枠組み」や「A論文_方法論メモ」のように、対象と観点を入れると検索しやすくなります。'
+      ],
+      bullets: ['読書ノート: 文献ごとの要点とコメント', '概念ノート: 用語、理論、定義の整理', '比較ノート: 複数文献の共通点と違い', '仮説ノート: 自分の問いと暫定的な説明', '草稿メモ: 章や節へ移す前の材料']
+    },
+    {
+      heading: 'WikiLinkの使い方',
+      body: [
+        'WikiLinkは、完成した分類を表すものではなく、思考の途中で関係を仮置きするための道具です。書きながら気になった概念や文献をリンクし、後でバックリンクから関係を見直します。',
+        'リンク先がまだ存在しない場合でも、将来作るノートの名前として使えます。これは、あとで調べたい問いや未整理の概念を逃さないために有効です。'
+      ]
+    }
+  ],
+  'draft-citations': [
+    {
+      heading: '草稿を研究ノートから分ける理由',
+      body: [
+        '研究ノートは素材を集める場所、草稿モードは読者に向けて並べ直す場所です。ノートで見つけた関係を、そのまま文章構成にすると読みにくい場合があります。草稿では、問い、先行研究、方法、分析、結論の流れを意識します。',
+        '章や節は最初から固定せず、書きながら並び替えます。折りたたみを使うと、長い文章でも全体構造を見失いにくくなります。'
+      ]
+    },
+    {
+      heading: '引用確認の習慣',
+      body: [
+        '引用を挿入したら、ページ番号、引用スタイル、参考文献リストの表記を確認します。自動生成は作業を助けますが、最終責任は執筆者にあります。',
+        '提出前には、本文中の引用と参考文献リストが対応しているか、同じ文献が重複していないか、著者名や年の表記が揃っているかを確認します。'
+      ]
+    }
+  ],
+  'knowledge-graph-citation-network': [
+    {
+      heading: 'グラフを読むときの注意',
+      body: [
+        'グラフは研究全体の地図ですが、地図そのものが結論ではありません。ノードが多い文献や概念は重要に見えますが、それは単に多くリンクした結果かもしれません。リンクの理由をノート本文で確認します。',
+        'グラフが複雑になったら、タグ、文献種別、時期、テーマで絞り込みます。全体を見る時間と、限定した関係を見る時間を分けると、探索と検証のバランスが取れます。'
+      ]
+    },
+    {
+      heading: '外部APIを使う機能',
+      body: [
+        'CrossRef、OpenAlex、Semantic Scholarを使う機能は、オンライン接続や外部サービスの応答に依存します。取得できない場合でも、ローカルに保存済みの文献、ノート、リンクは使えます。',
+        '外部APIから得た関連論文は、候補として扱います。研究テーマとの関係、出版年、査読状況、引用文脈を確認してからライブラリに取り込みます。'
+      ]
+    }
+  ],
+  'qualitative-analysis': [
+    {
+      heading: '分析を始める前の準備',
+      body: [
+        '質的分析に入る前に、対象資料、研究問い、分析単位を決めます。資料全体を読むのか、発話単位で見るのか、政策文書の段落単位で見るのかによって、コードの付け方が変わります。',
+        '最初のコードブックは粗くてかまいません。数件の資料に試しにコードを付け、重複、曖昧さ、階層の深さを見直してから本格的に進めます。'
+      ],
+      bullets: ['研究問いを一文で書く', '分析対象の範囲を決める', '分析単位を決める', '初期コードを少数作る', '数件で試し、コードブックを修正する']
+    },
+    {
+      heading: 'タブの使い分け',
+      body: [
+        'コードブックとコーディングマトリクスは、資料の内容を整理するために使います。ICRは複数人でコーディングする場合の一致確認に使います。史料批判、タイムライン、アクターマップは、歴史研究や政策過程研究で文脈を確認するために役立ちます。',
+        'プロセストレーシング、比較分析、フレーミング分析は、問いがある程度固まってから使うと効果的です。最初からすべてのタブを埋めようとしないことが大切です。'
+      ]
+    }
+  ],
+  'quantitative-analysis-data-studio': [
+    {
+      heading: 'CSVを入れる前に整えること',
+      body: [
+        'Data Studioに入れるCSVは、1行が1観測、1列が1変数になるように整えます。列名は短く、意味が分かり、記号や空白を使いすぎない名前にします。',
+        '欠損値、日付形式、カテゴリ名の表記揺れは、分析前に確認します。たとえば「Japan」「JP」「日本」が同じカテゴリを意味するなら、事前に統一します。'
+      ],
+      bullets: ['1行1観測にする', '1列1変数にする', '列名を短く明確にする', '欠損値の表し方を統一する', 'カテゴリ名の表記揺れを直す']
+    },
+    {
+      heading: '分析結果の読み方',
+      body: [
+        '統計結果は、数値だけで判断せず、データの作られ方、サンプル数、変数の意味、外れ値の有無と一緒に読みます。相関があることは、因果関係があることを意味しません。',
+        'チャートは、読者に何を見せたいかを決めてから選びます。分布を見るならヒストグラム、カテゴリ比較なら棒グラフ、関係を見るなら散布図が基本です。'
+      ]
+    }
+  ],
+  'export-research-package': [
+    {
+      heading: '用途別の出力選択',
+      body: [
+        '提出用の文章にはPDFやDOCX、Webで共有する資料には静的サイト、別環境で再利用する研究データにはJSONや.stellar研究パッケージを使います。目的によって、読みやすさ、再編集しやすさ、再現性の優先順位が変わります。',
+        '共同研究では、相手がStellarを使っているかどうかも考えます。Stellar同士なら研究パッケージ、一般的な文献管理ツールとの連携ならBibTeXやRISが向いています。'
+      ],
+      bullets: ['提出: PDF / DOCX', '公開: 静的サイト', '移行: JSON / .stellar', '文献共有: BibTeX / RIS', '共同研究: 相手の環境に合わせる']
+    },
+    {
+      heading: 'エクスポート前の確認',
+      body: [
+        'エクスポート前には、文献メタデータ、引用、画像、PDF添付、リンク切れを確認します。特に研究パッケージは、移動先で再現するための単位なので、必要なPDFやリンクが含まれているかを確認します。'
+      ]
+    }
+  ],
+  'cloud-backup-security': [
+    {
+      heading: 'バックアップを複数持つ理由',
+      body: [
+        'クラウドバックアップは便利ですが、唯一のバックアップにしない方が安全です。ローカルバックアップ、自動バックアップ、研究パッケージを組み合わせると、PC故障、誤削除、同期ミス、アカウント問題に備えられます。',
+        'バックアップは作るだけでなく、復元できることを確認して初めて意味があります。重要な研究プロジェクトでは、定期的に別の場所へ復元テストを行います。'
+      ],
+      bullets: ['クラウドバックアップ: PC故障に備える', 'ローカルバックアップ: 素早い復元に使う', '研究パッケージ: プロジェクト単位で移動する', '復元テスト: バックアップの実効性を確認する']
+    },
+    {
+      heading: 'リカバリーコードの扱い',
+      body: [
+        '12桁のリカバリーコードは、クラウドバックアップを新しいPCで復元するための鍵です。スクリーンショットだけに頼ると、端末故障時に一緒に失われる可能性があります。',
+        '紙、パスワード管理ツール、暗号化された安全なメモなど、少なくとも2種類の方法で保管します。共有PCや研究室PCの見える場所には置かないでください。'
+      ]
+    }
+  ],
+  'browser-clipper': [
+    {
+      heading: '取り込み時に確認すること',
+      body: [
+        'Stellar Clipperで取り込んだメタデータは、Webページ側の構造に左右されます。タイトル、著者、出版年、URL、DOIが正しく入ったかをライブラリで確認します。',
+        'デスクトップアプリが起動していない場合、ブラウザ拡張はローカルHTTPサーバーに接続できません。取り込みに失敗したら、まずStellar本体が起動しているかを確認します。'
+      ],
+      bullets: ['タイトルが正しいか', '著者名が欠けていないか', 'DOIやURLが入っているか', '重複文献になっていないか', '必要ならタグを付ける']
+    },
+    {
+      heading: 'プライバシー上の考え方',
+      body: [
+        'ClipperはローカルのStellarにデータを渡すための入口です。取り込む前に、対象ページが研究に必要なものか、個人情報や機密情報を含まないかを確認します。',
+        'ブラウザ側の閲覧履歴すべてを取り込む機能ではなく、ユーザーが選んだ文献やページのメタデータを送るための機能として扱います。'
+      ]
+    }
+  ],
+  'settings-customization': [
+    {
+      heading: '研究環境に合わせる',
+      body: [
+        '設定は見た目を変えるだけでなく、長時間の読書と執筆を続けやすくするためのものです。画面の明るさ、文字サイズ、行高さ、エディタフォントは、疲れにくさに直結します。',
+        '保存先やバックアップ設定は、研究データの安全性に関わります。見た目の設定とデータ設定を分けて、変更した内容を把握しておきます。'
+      ],
+      bullets: ['読書中心: 文字を大きめ、行間を広めにする', '執筆中心: エディタフォントとフォーカスモードを調整する', '共有PC: 保存先とバックアップ先を確認する', '多言語利用: 言語変更後に再起動が必要か確認する']
+    },
+    {
+      heading: '設定変更後の確認',
+      body: [
+        '保存先、バックアップ、言語、ブラウザ連携などを変えた後は、実際に文献を開く、ノートを書く、バックアップを作る、Clipperで取り込むなど、関連する操作を一度試します。'
+      ]
+    }
+  ],
+  shortcuts: [
+    {
+      heading: '覚える順番',
+      body: [
+        '最初からすべてのショートカットを覚える必要はありません。まずは検索、新規ノート、保存、PDF内検索、グラフ操作だけで十分です。よく使う機能が決まってから、画面切り替えや装飾のショートカットを増やします。',
+        'MacではCmd、Windows/LinuxではCtrlを使います。研究室や学校で複数OSを使う場合は、この違いを意識して案内します。'
+      ],
+      bullets: ['最初に覚える: Ctrl/Cmd + K, N, S, F', '執筆で覚える: B, I, [[', '画面移動で覚える: 1, 2, 3', 'グラフで覚える: ホイール、ドラッグ、ダブルクリック']
+    },
+    {
+      heading: 'ショートカットが効かないとき',
+      body: [
+        '入力欄にフォーカスがある場合、ブラウザやOS側のショートカットが優先される場合、キーボード配列が違う場合は、期待通りに動かないことがあります。まず現在どの画面と入力欄にフォーカスがあるかを確認します。'
+      ]
+    }
+  ],
+  'faq-troubleshooting': [
+    {
+      heading: '切り分けの基本',
+      body: [
+        '問題が起きたら、データが失われたのか、表示されていないだけなのか、同期やフィルタの影響なのかを切り分けます。焦って再インストールや削除をする前に、バックアップと現在の保存先を確認します。',
+        '再現手順を短く書き出すと、Issueを作る場合にも役立ちます。どの画面で、何を押し、何が起き、何を期待していたかを記録します。'
+      ],
+      bullets: ['まず保存先を確認する', 'フィルタや検索条件を解除する', 'アプリを再起動する', 'バックアップの有無を確認する', '再現手順をメモする']
+    },
+    {
+      heading: '問い合わせ前に集める情報',
+      body: [
+        'サポートやIssueで相談する場合は、OS、Stellarのバージョン、対象機能、エラーメッセージ、再現手順、スクリーンショットを添えると調査が進みやすくなります。個人情報や未公開研究データは隠して共有します。'
+      ]
+    }
+  ],
+  'developer-setup': [
+    {
+      heading: '開発環境の考え方',
+      body: [
+        'Stellarはデスクトップアプリなので、フロントエンドだけでなくTauri、Rust、SQLite、OS固有の挙動も確認します。Webアプリよりも、ファイルアクセス、ウィンドウ、ローカル保存、ビルド成果物の差異に注意が必要です。',
+        '依存関係を更新する場合は、開発環境だけでなく、各OSのビルド、既存データの互換性、プラグインやエクスポートへの影響も確認します。'
+      ],
+      bullets: ['Node.jsとRustのバージョンを固定する', 'Tauri CLIを確認する', 'SQLite migrationを確認する', 'lintとbuildを通す', 'OS別の動作差を記録する']
+    },
+    {
+      heading: '貢献前の確認',
+      body: [
+        'Stellarの方針は、ローカルファースト、AI非依存、サブスクリプションなし、研究者の判断を尊重することです。新機能を提案する場合も、この方針と矛盾しない形で設計します。',
+        '大きな変更は、実装前にIssueで目的、利用者、保存されるデータ、移行の有無、UIへの影響を整理します。'
+      ]
+    }
+  ],
+  'translation-contribution': [
+    {
+      heading: '翻訳で守ること',
+      body: [
+        '翻訳は直訳よりも、ユーザーが操作を再現できることを優先します。ただし、機能名、設定名、ボタン名はUIと一致させます。UIとWikiの表記がずれると、ユーザーが画面上で探せなくなります。',
+        'まず日本語版を安定させ、英語、フランス語、アフリカーンス語へ展開します。機能追加時は、翻訳未対応のページに古い説明が残らないようにします。'
+      ],
+      bullets: ['UI文言と一致させる', '専門用語は一貫させる', '長い文は短く分ける', '危険な注意書きは弱めない', '翻訳後に画面で手順を確認する']
+    },
+    {
+      heading: '翻訳レビューの観点',
+      body: [
+        '翻訳レビューでは、言葉の自然さだけでなく、手順の正確さ、警告の強さ、リンク先、ショートカット表記、OS別表記を確認します。特にセキュリティとバックアップは意味が変わらないように注意します。'
+      ]
+    }
+  ],
+  'addons-plugins': [
+    {
+      heading: 'アドオン設計の基本',
+      body: [
+        'アドオンやプラグインは、Stellar本体の研究データを扱うため、便利さだけでなく、権限、保存先、失敗時の挙動、ユーザーへの説明を設計します。分析アドオンは、入力データと出力データが分かるようにします。',
+        '配布用プラグインでは、ID、バージョン、互換Stellarバージョン、必要な権限、ライセンス、更新履歴を明確にします。'
+      ],
+      bullets: ['安定したplugin IDを使う', '入力と出力を説明する', '必要な権限だけを要求する', '失敗時のメッセージを用意する', '互換バージョンを明記する']
+    },
+    {
+      heading: '公開前のセルフチェック',
+      body: [
+        'プラグインを公開する前に、クリーンな環境でインストールできるか、サンプルデータで動くか、不要な外部通信がないか、エラー時に研究データを壊さないかを確認します。',
+        '公式Wikiには、実装済みでユーザーが利用できる範囲だけを書きます。計画中のAPIや未公開の仕様は、実装と公開状態が揃ってから追加します。'
+      ]
+    }
+  ]
+};
+
+const jaWikiPages = jaPages.map((page) => ({
+  ...page,
+  sections: [...page.sections, ...(jaSupplementalSections[page.slug] ?? [])]
+}));
+
 const localizedMeta: Record<Exclude<Lang, 'ja'>, Record<string, { title: string; summary: string; category: string }>> = {
   en: {
     home: { title: 'Stellar Wiki', summary: 'Official practical documentation for installing, learning, troubleshooting, and contributing to Stellar.', category: 'Overview' },
@@ -584,20 +924,41 @@ const localizedLabels = {
   en: {
     overview: 'Overview',
     guidance: 'Main guidance',
+    workflow: 'Recommended workflow',
+    quality: 'Checks before relying on this page',
     intro: 'Use this page as a practical checklist for the feature or workflow.',
-    principle: 'Stellar keeps research data local-first and asks the researcher to stay in control.'
+    workflowIntro: 'Treat the steps below as a working rhythm. Start small, confirm the result, then expand the workflow only when it helps the research.',
+    qualityIntro: 'Before treating the result as durable research material, check metadata, links, backups, and whether the page still matches the current implementation.',
+    principle: 'Stellar keeps research data local-first and asks the researcher to stay in control.',
+    qualityOne: 'Confirm that the relevant data is saved locally and can be found again.',
+    qualityTwo: 'Check that links, citations, exports, or backups still point to the intended material.',
+    qualityThree: 'When the workflow touches security or recovery, test the restore path before depending on it.'
   },
   fr: {
     overview: 'Vue d ensemble',
     guidance: 'Guide principal',
+    workflow: 'Flux recommande',
+    quality: 'Verifications avant de s appuyer sur cette page',
     intro: 'Utilisez cette page comme checklist pratique pour la fonction ou le flux.',
-    principle: 'Stellar reste local-first et laisse le chercheur garder le controle.'
+    workflowIntro: 'Utilisez ces etapes comme rythme de travail. Commencez petit, verifiez le resultat, puis elargissez le flux seulement si cela aide la recherche.',
+    qualityIntro: 'Avant de considerer le resultat comme durable, verifiez les metadata, les liens, les sauvegardes et la coherence avec l implementation actuelle.',
+    principle: 'Stellar reste local-first et laisse le chercheur garder le controle.',
+    qualityOne: 'Verifier que les donnees utiles sont sauvegardees localement et retrouvables.',
+    qualityTwo: 'Verifier que liens, citations, exports ou sauvegardes pointent vers le bon materiel.',
+    qualityThree: 'Pour la securite ou la restauration, tester le chemin de recuperation avant d en dependre.'
   },
   af: {
     overview: 'Oorsig',
     guidance: 'Hoofriglyne',
+    workflow: 'Aanbevole werkvloei',
+    quality: 'Kontroles voordat jy hierop staatmaak',
     intro: 'Gebruik hierdie bladsy as n praktiese kontrolelys vir die funksie of vloei.',
-    principle: 'Stellar hou navorsingsdata plaaslik-eerste en laat die navorser in beheer.'
+    workflowIntro: 'Gebruik die stappe as n werkritme. Begin klein, bevestig die resultaat, en brei eers uit wanneer dit die navorsing help.',
+    qualityIntro: 'Voordat jy die resultaat as duursame navorsingsmateriaal gebruik, kontroleer metadata, skakels, rugsteun en of die bladsy met die huidige implementering klop.',
+    principle: 'Stellar hou navorsingsdata plaaslik-eerste en laat die navorser in beheer.',
+    qualityOne: 'Bevestig dat die relevante data plaaslik gestoor is en weer gevind kan word.',
+    qualityTwo: 'Kontroleer dat skakels, aanhalings, uitvoere of rugsteun na die regte materiaal wys.',
+    qualityThree: 'Wanneer die werkvloei veiligheid of herstel raak, toets die herstelpad voordat jy daarop staatmaak.'
   }
 } satisfies Record<Exclude<Lang, 'ja'>, Record<string, string>>;
 
@@ -606,8 +967,9 @@ function makeLocalizedPages(lang: Exclude<Lang, 'ja'>): WikiPage[] {
   const labels = localizedLabels[lang];
   const guidance = localizedGuidance[lang];
 
-  return jaPages.map((page) => {
+  return jaWikiPages.map((page) => {
     const localized = meta[page.slug] ?? localizedMeta.en[page.slug];
+    const guidanceItems = guidance[page.slug] ?? [];
     return {
       ...page,
       title: localized.title,
@@ -621,7 +983,17 @@ function makeLocalizedPages(lang: Exclude<Lang, 'ja'>): WikiPage[] {
         {
           heading: labels.guidance,
           body: [labels.intro],
-          bullets: guidance[page.slug] ?? []
+          bullets: guidanceItems
+        },
+        {
+          heading: labels.workflow,
+          body: [labels.workflowIntro],
+          bullets: guidanceItems.slice(0, 5)
+        },
+        {
+          heading: labels.quality,
+          body: [labels.qualityIntro],
+          bullets: [labels.qualityOne, labels.qualityTwo, labels.qualityThree]
         }
       ]
     };
@@ -629,7 +1001,7 @@ function makeLocalizedPages(lang: Exclude<Lang, 'ja'>): WikiPage[] {
 }
 
 export const wikiPages: Record<Lang, WikiPage[]> = {
-  ja: jaPages,
+  ja: jaWikiPages,
   en: makeLocalizedPages('en'),
   fr: makeLocalizedPages('fr'),
   af: makeLocalizedPages('af')

@@ -42,6 +42,7 @@ export const POST: APIRoute = async (context) => {
         title,
         body: content,
         status,
+        source_locale: locale,
         published_at: status === 'published' ? new Date().toISOString() : null
       },
       { onConflict: 'slug,locale' }

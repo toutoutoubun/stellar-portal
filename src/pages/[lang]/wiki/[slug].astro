@@ -17,6 +17,7 @@ try {
     .select('slug,locale,title,body,updated_at')
     .eq('locale', lang)
     .eq('slug', slug)
+    .eq('source_locale', lang)
     .eq('status', 'published')
     .maybeSingle();
 
