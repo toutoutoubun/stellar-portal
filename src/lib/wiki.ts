@@ -16,7 +16,7 @@ export type WikiPage = {
   related: string[];
 };
 
-const updatedAt = '2026-05-11';
+const updatedAt = '2026-05-12';
 
 const jaPages: WikiPage[] = [
   {
@@ -465,39 +465,146 @@ const localizedMeta: Record<Exclude<Lang, 'ja'>, Record<string, { title: string;
     'translation-contribution': { title: 'Contributing translations', summary: 'Translation policy and language support notes.', category: 'Development' },
     'addons-plugins': { title: 'Creating addons and plugins', summary: 'Analysis addons, distributable plugins, manifests, and plugin IDs.', category: 'Development' }
   },
-  fr: {},
-  af: {}
+  fr: {
+    home: { title: 'Wiki Stellar', summary: 'Documentation officielle pratique pour installer Stellar, apprendre les bases, resoudre les problemes et contribuer.', category: 'Vue d ensemble' },
+    'installation-setup': { title: 'Installation et premier demarrage', summary: 'Telecharger Stellar depuis GitHub Releases et terminer le premier parcours de configuration.', category: 'Debut' },
+    'quick-start': { title: 'Demarrage rapide', summary: 'Le chemin le plus court entre l ajout d un article, les notes, les WikiLinks et le graphe.', category: 'Debut' },
+    'interface-basics': { title: 'Bases de l interface', summary: 'Comprendre la barre laterale, le panneau principal et le panneau de contexte.', category: 'Debut' },
+    'literature-library': { title: 'Bibliotheque de references', summary: 'Ajouter, chercher, taguer et suivre articles, livres et sources.', category: 'Fonctions' },
+    'pdf-reader-highlights': { title: 'Lecteur PDF et surlignages', summary: 'Lire, chercher, surligner, commenter et creer des notes depuis les surlignages.', category: 'Fonctions' },
+    'notes-wikilinks': { title: 'Notes et WikiLinks', summary: 'Notes Markdown, WikiLinks, backlinks, plan, sauvegarde automatique et mode focus.', category: 'Fonctions' },
+    'draft-citations': { title: 'Mode brouillon et citations', summary: 'Ecriture longue, sections, citations, styles bibliographiques et bibliographie.', category: 'Fonctions' },
+    'knowledge-graph-citation-network': { title: 'Graphe de connaissances et reseau de citations', summary: 'Visualiser notes, articles, citations et recommandations de lectures.', category: 'Fonctions' },
+    'qualitative-analysis': { title: 'Analyse qualitative', summary: 'Codebooks, ICR, critique des sources, timelines, cartes d acteurs et comparaison.', category: 'Analyse' },
+    'quantitative-analysis-data-studio': { title: 'Analyse quantitative Data Studio', summary: 'Import CSV, types de variables, statistiques, analyse textuelle et graphiques.', category: 'Analyse' },
+    'export-research-package': { title: 'Export et paquet de recherche', summary: 'PDF, DOCX, site statique, JSON, BibTeX, RIS et paquets .stellar.', category: 'Donnees' },
+    'cloud-backup-security': { title: 'Sauvegarde cloud et securite', summary: 'AES-256-GCM, code de recuperation, sauvegardes chiffrees et limites de restauration.', category: 'Donnees' },
+    'browser-clipper': { title: 'Integration navigateur Stellar Clipper', summary: 'Import local depuis l extension navigateur vers Stellar.', category: 'Fonctions' },
+    'settings-customization': { title: 'Parametres et personnalisation', summary: 'Themes, polices, stockage, export, sauvegarde, langue et integration navigateur.', category: 'Parametres' },
+    shortcuts: { title: 'Raccourcis', summary: 'Raccourcis de navigation, editeur, PDF et graphe.', category: 'Parametres' },
+    'faq-troubleshooting': { title: 'FAQ et depannage', summary: 'Solutions pour metadata, autosave, graphe, sauvegarde, langue et Clipper.', category: 'Support' },
+    'developer-setup': { title: 'Configuration developpeur', summary: 'Node.js, Rust, Tauri, React, SQLite et commandes de developpement.', category: 'Developpement' },
+    'translation-contribution': { title: 'Contribuer aux traductions', summary: 'Politique de traduction et notes de prise en charge linguistique.', category: 'Developpement' },
+    'addons-plugins': { title: 'Creer des addons et plugins', summary: 'Addons d analyse, plugins distribuables, manifests et identifiants de plugin.', category: 'Developpement' }
+  },
+  af: {
+    home: { title: 'Stellar Wiki', summary: 'Amptelike praktiese dokumentasie vir installasie, leer, probleemoplossing en bydraes.', category: 'Oorsig' },
+    'installation-setup': { title: 'Installasie en eerste opstelling', summary: 'Laai Stellar vanaf GitHub Releases af en voltooi die eerste opstelling.', category: 'Begin' },
+    'quick-start': { title: 'Vinnige begin', summary: 'Die kortste roete van artikel byvoeg tot notas, WikiLinks en die grafiek.', category: 'Begin' },
+    'interface-basics': { title: 'Basiese koppelvlak', summary: 'Verstaan die sybalk, hoofpaneel en konteks-paneel.', category: 'Begin' },
+    'literature-library': { title: 'Literatuurbiblioteek', summary: 'Voeg artikels, boeke en bronne by, soek, merk en volg leesstatus.', category: 'Funksies' },
+    'pdf-reader-highlights': { title: 'PDF-leser en hoogtepunte', summary: 'Lees PDF s, soek, merk, lewer kommentaar en skep notas uit hoogtepunte.', category: 'Funksies' },
+    'notes-wikilinks': { title: 'Notas en WikiLinks', summary: 'Markdown-notas, WikiLinks, backlinks, buitelyn, outostoor en fokusmodus.', category: 'Funksies' },
+    'draft-citations': { title: 'Konsepmodus en aanhalings', summary: 'Langvorm skryfwerk, afdelings, aanhalings, stylkeuses en bibliografie.', category: 'Funksies' },
+    'knowledge-graph-citation-network': { title: 'Kennisgrafiek en aanhalingsnetwerk', summary: 'Visualiseer notas, artikels, aanhalings en verwante literatuur.', category: 'Funksies' },
+    'qualitative-analysis': { title: 'Kwalitatiewe analise', summary: 'Kodeboeke, ICR, bronkritiek, tydlyne, akteurkaarte en vergelyking.', category: 'Analise' },
+    'quantitative-analysis-data-studio': { title: 'Kwantitatiewe analise Data Studio', summary: 'CSV-invoer, veranderliketipes, statistiek, teksanalise en grafieke.', category: 'Analise' },
+    'export-research-package': { title: 'Uitvoer en navorsingspakkette', summary: 'PDF, DOCX, statiese webwerf, JSON, BibTeX, RIS en .stellar-pakkette.', category: 'Data' },
+    'cloud-backup-security': { title: 'Wolk-rugsteun en veiligheid', summary: 'AES-256-GCM, herstelkode, geënkripteerde rugsteun en herstelbeperkings.', category: 'Data' },
+    'browser-clipper': { title: 'Blaaierintegrasie Stellar Clipper', summary: 'Plaaslike invoer vanaf die blaaieruitbreiding na Stellar.', category: 'Funksies' },
+    'settings-customization': { title: 'Instellings en aanpassing', summary: 'Temas, lettertipes, stoorplek, uitvoer, rugsteun, taal en blaaierintegrasie.', category: 'Instellings' },
+    shortcuts: { title: 'Kortpaaie', summary: 'Kortpaaie vir navigasie, redigeerder, PDF en grafiek.', category: 'Instellings' },
+    'faq-troubleshooting': { title: 'FAQ en probleemoplossing', summary: 'Oplossings vir metadata, outostoor, grafiek, rugsteun, taal en Clipper.', category: 'Ondersteuning' },
+    'developer-setup': { title: 'Ontwikkelaaropstelling', summary: 'Node.js, Rust, Tauri, React, SQLite en ontwikkelopdragte.', category: 'Ontwikkeling' },
+    'translation-contribution': { title: 'Bydra tot vertalings', summary: 'Vertaalbeleid en notas oor taalondersteuning.', category: 'Ontwikkeling' },
+    'addons-plugins': { title: 'Skep addons en plugins', summary: 'Analise-addons, verspreibare plugins, manifests en plugin-ID s.', category: 'Ontwikkeling' }
+  }
 };
 
-localizedMeta.fr = Object.fromEntries(
-  Object.entries(localizedMeta.en).map(([slug, page]) => [
-    slug,
-    {
-      title: page.title,
-      summary: 'Version francaise synthetique. La version japonaise reste la source officielle pendant la stabilisation du Wiki.',
-      category: page.category
-    }
-  ])
-) as Record<string, { title: string; summary: string; category: string }>;
+const localizedGuidance: Record<Exclude<Lang, 'ja'>, Record<string, string[]>> = {
+  en: {
+    home: ['Use the Wiki for practical procedures, not project marketing.', 'Stellar is local-first, AI-free, subscription-free, and MIT licensed.', 'Start with installation, quick start, interface basics, FAQ, and backups.'],
+    'installation-setup': ['Download from GitHub Releases.', 'Use .dmg for macOS, .msi for Windows, and .AppImage for Linux.', 'Complete onboarding, then adjust language, storage location, and theme later in Settings.'],
+    'quick-start': ['Add one paper to the library.', 'Attach a PDF and create highlights.', 'Create a note from a highlight.', 'Connect notes and papers with [[WikiLinks]].', 'Open the graph to confirm the research loop.'],
+    'interface-basics': ['Use the sidebar for major areas.', 'Work in the main pane.', 'Read metadata, linked notes, and citation context in the context panel.'],
+    'literature-library': ['Add sources by PDF, URL, DOI, manual entry, or Stellar Clipper.', 'Filter by tags, search, year, PDF presence, and reading status.', 'Use unread, reading, completed, and reread statuses.'],
+    'pdf-reader-highlights': ['Read PDFs with zoom, page navigation, and search.', 'Use four highlight colors for different reading roles.', 'Add comments and create notes from selected highlights.'],
+    'notes-wikilinks': ['Write in Markdown.', 'Type [[ to complete note or paper links.', 'Use backlinks and outlines to navigate longer notes.', 'Keep focus mode for sustained writing.'],
+    'draft-citations': ['Create, reorder, collapse, and remove sections.', 'Insert inline citations from the library.', 'Generate bibliographies in APA, MLA, Chicago, or Hitotsubashi style.'],
+    'knowledge-graph-citation-network': ['Click, hover, double-click, zoom, and pan graph nodes.', 'Use CrossRef, OpenAlex, and Semantic Scholar when online.', 'Import recommended related papers when they are useful.'],
+    'qualitative-analysis': ['Begin with codebooks and coding matrices.', 'Use ICR for agreement checks.', 'Use source criticism, timelines, actor maps, process tracing, comparison, framing, and reports as needed.'],
+    'quantitative-analysis-data-studio': ['Import CSV files.', 'Assign scale, nominal, ordinal, text, or date variables.', 'Run descriptive statistics, frequency tables, correlations, tests, regression, token frequency, TF-IDF, and charts.'],
+    'export-research-package': ['Export notes as PDF, DOCX, or a static site.', 'Export all data as JSON.', 'Use BibTeX or RIS for references.', 'Use .stellar packages to move papers, notes, highlights, links, and PDFs together.'],
+    'cloud-backup-security': ['Backups are encrypted on the user device.', 'AES-256-GCM is used for encrypted backups.', 'Keep the 12-digit recovery code safe.', 'Without the recovery code, a new computer cannot restore cloud backups.'],
+    'browser-clipper': ['Stellar listens on 127.0.0.1:57321.', 'The extension sends metadata to POST /api/import.', 'The desktop app must be running before the extension can connect.'],
+    'settings-customization': ['Choose White, Ivory, Dark Blue, or Black themes.', 'Adjust font size, line height, and editor font.', 'Use the Data tab for storage, export, backup, research packages, browser integration, and cloud backup.'],
+    shortcuts: ['Ctrl/Cmd + K opens global search.', 'Ctrl/Cmd + N creates a note.', 'Ctrl/Cmd + , opens settings.', 'Ctrl/Cmd + F searches inside PDFs.', 'Mouse wheel zooms the graph and drag pans it.'],
+    'faq-troubleshooting': ['Fix missing PDF titles manually when metadata is poor.', 'Check WikiLinks, paper links, and filters when the graph is empty.', 'Use cloud backup, local backup, automatic backup, and research packages for data safety.'],
+    'developer-setup': ['Use Node.js 22 or later, Rust 1.75 or later, and Tauri CLI.', 'Run npm install, npm run tauri dev, npm run tauri build, and npm run lint.', 'Keep development guidance aligned with the no-AI, local-first direction.'],
+    'translation-contribution': ['Stabilize Japanese first, then translate.', 'Keep UI text and Wiki procedures in sync.', 'Check the current i18n structure before adding languages.'],
+    'addons-plugins': ['Local analysis addons start at src/plugins/registerAnalysisAddons.ts.', 'There are qualitative tabs and quantitative method additions.', 'Distributed plugins include stellar-plugin.json and index.js.', 'Use stable alphanumeric and hyphenated plugin IDs.']
+  },
+  fr: {
+    home: ['Utiliser le Wiki pour les procedures pratiques.', 'Stellar reste local-first, sans IA, sans abonnement et sous licence MIT.', 'Commencer par installation, demarrage rapide, interface, FAQ et sauvegardes.'],
+    'installation-setup': ['Telecharger depuis GitHub Releases.', 'Utiliser .dmg pour macOS, .msi pour Windows et .AppImage pour Linux.', 'Finir l onboarding puis modifier langue, dossier et theme dans les parametres.'],
+    'quick-start': ['Ajouter un article dans la bibliotheque.', 'Attacher un PDF et creer des surlignages.', 'Creer une note depuis un surlignage.', 'Relier notes et articles avec [[WikiLinks]].', 'Ouvrir le graphe pour verifier la boucle de recherche.'],
+    'interface-basics': ['Utiliser la barre laterale pour naviguer.', 'Travailler dans le panneau principal.', 'Lire metadata, notes liees et contexte de citation dans le panneau de contexte.'],
+    'literature-library': ['Ajouter par PDF, URL, DOI, saisie manuelle ou Stellar Clipper.', 'Filtrer par tags, recherche, annee, presence du PDF et statut de lecture.', 'Utiliser non lu, en cours, termine et a relire.'],
+    'pdf-reader-highlights': ['Lire avec zoom, navigation et recherche.', 'Utiliser quatre couleurs de surlignage.', 'Ajouter des commentaires et creer des notes depuis les surlignages.'],
+    'notes-wikilinks': ['Ecrire en Markdown.', 'Taper [[ pour completer les liens.', 'Utiliser backlinks et plan pour les notes longues.', 'Garder le mode focus pour l ecriture.'],
+    'draft-citations': ['Creer, reordonner, replier et supprimer des sections.', 'Inserer des citations depuis la bibliotheque.', 'Generer la bibliographie en APA, MLA, Chicago ou style Hitotsubashi.'],
+    'knowledge-graph-citation-network': ['Cliquer, survoler, double-cliquer, zoomer et deplacer les noeuds.', 'Utiliser CrossRef, OpenAlex et Semantic Scholar en ligne.', 'Importer les articles recommandes si utiles.'],
+    'qualitative-analysis': ['Commencer par codebook et matrice de codage.', 'Utiliser ICR pour verifier l accord.', 'Employer critique des sources, timeline, acteurs, process tracing, comparaison, cadrage et rapports.'],
+    'quantitative-analysis-data-studio': ['Importer des CSV.', 'Definir variables scale, nominal, ordinal, text ou date.', 'Executer statistiques descriptives, frequences, correlations, tests, regression, frequence de tokens, TF-IDF et graphiques.'],
+    'export-research-package': ['Exporter les notes en PDF, DOCX ou site statique.', 'Exporter toutes les donnees en JSON.', 'Utiliser BibTeX ou RIS pour les references.', 'Regrouper articles, notes, surlignages, liens et PDF dans un paquet .stellar.'],
+    'cloud-backup-security': ['Les sauvegardes sont chiffrees sur le poste utilisateur.', 'AES-256-GCM est utilise.', 'Conserver le code de recuperation a 12 chiffres.', 'Sans ce code, un nouveau PC ne peut pas restaurer la sauvegarde cloud.'],
+    'browser-clipper': ['Stellar ecoute sur 127.0.0.1:57321.', 'L extension envoie les metadata vers POST /api/import.', 'L application desktop doit etre lancee.'],
+    'settings-customization': ['Choisir White, Ivory, Dark Blue ou Black.', 'Regler taille, hauteur de ligne et police editeur.', 'Utiliser l onglet Donnees pour stockage, export, sauvegarde, paquets, navigateur et cloud.'],
+    shortcuts: ['Ctrl/Cmd + K ouvre la recherche.', 'Ctrl/Cmd + N cree une note.', 'Ctrl/Cmd + , ouvre les parametres.', 'Ctrl/Cmd + F cherche dans le PDF.', 'La molette zoome le graphe et le glisser deplace.'],
+    'faq-troubleshooting': ['Corriger les titres PDF manuellement si les metadata sont pauvres.', 'Verifier WikiLinks, liens d articles et filtres si le graphe est vide.', 'Utiliser sauvegardes cloud, locales, automatiques et paquets de recherche.'],
+    'developer-setup': ['Utiliser Node.js 22+, Rust 1.75+ et Tauri CLI.', 'Executer npm install, npm run tauri dev, npm run tauri build et npm run lint.', 'Garder la direction sans IA et local-first.'],
+    'translation-contribution': ['Stabiliser le japonais avant traduction.', 'Synchroniser textes UI et procedures Wiki.', 'Verifier la structure i18n actuelle avant d ajouter une langue.'],
+    'addons-plugins': ['Les addons locaux commencent dans src/plugins/registerAnalysisAddons.ts.', 'Deux axes: onglets qualitatifs et methodes quantitatives.', 'Les plugins distribues contiennent stellar-plugin.json et index.js.', 'Utiliser des IDs stables avec lettres, chiffres et tirets.']
+  },
+  af: {
+    home: ['Gebruik die Wiki vir praktiese stappe.', 'Stellar bly plaaslik-eerste, sonder AI, sonder intekening en MIT-gelisensieer.', 'Begin met installasie, vinnige begin, koppelvlak, FAQ en rugsteun.'],
+    'installation-setup': ['Laai af vanaf GitHub Releases.', 'Gebruik .dmg vir macOS, .msi vir Windows en .AppImage vir Linux.', 'Voltooi opstelling en verander later taal, stoorplek en tema in Instellings.'],
+    'quick-start': ['Voeg een artikel by die biblioteek.', 'Heg n PDF aan en maak hoogtepunte.', 'Skep n nota uit n hoogtepunt.', 'Verbind notas en artikels met [[WikiLinks]].', 'Maak die grafiek oop om die navorsingslus te sien.'],
+    'interface-basics': ['Gebruik die sybalk vir navigasie.', 'Werk in die hoofpaneel.', 'Lees metadata, gekoppelde notas en aanhalingskonteks in die konteks-paneel.'],
+    'literature-library': ['Voeg bronne by met PDF, URL, DOI, handinvoer of Stellar Clipper.', 'Filter volgens tags, soek, jaar, PDF en leesstatus.', 'Gebruik ongelees, besig, voltooi en herlees.'],
+    'pdf-reader-highlights': ['Lees PDF s met zoom, bladsybeweging en soek.', 'Gebruik vier kleure vir verskillende leesdoeleindes.', 'Voeg kommentaar by en skep notas uit hoogtepunte.'],
+    'notes-wikilinks': ['Skryf in Markdown.', 'Tik [[ om skakels te voltooi.', 'Gebruik backlinks en buitelyne vir lang notas.', 'Gebruik fokusmodus vir skryfwerk.'],
+    'draft-citations': ['Skep, herrangskik, vou en verwyder afdelings.', 'Voeg aanhalings uit die biblioteek in.', 'Genereer bibliografiee in APA, MLA, Chicago of Hitotsubashi-styl.'],
+    'knowledge-graph-citation-network': ['Klik, sweef, dubbelklik, zoom en pan nodusse.', 'Gebruik CrossRef, OpenAlex en Semantic Scholar wanneer aanlyn.', 'Voer aanbevole verwante artikels in wanneer nuttig.'],
+    'qualitative-analysis': ['Begin met kodeboeke en kodematrikse.', 'Gebruik ICR vir ooreenstemming.', 'Gebruik bronkritiek, tydlyne, akteurkaarte, prosesnasporing, vergelyking, framing en verslae.'],
+    'quantitative-analysis-data-studio': ['Voer CSV-lêers in.', 'Ken scale, nominal, ordinal, text of date veranderlikes toe.', 'Gebruik beskrywende statistiek, frekwensies, korrelasies, toetse, regressie, tokenfrekwensie, TF-IDF en grafieke.'],
+    'export-research-package': ['Voer notas uit as PDF, DOCX of statiese webwerf.', 'Voer alle data as JSON uit.', 'Gebruik BibTeX of RIS vir verwysings.', 'Gebruik .stellar-pakkette vir artikels, notas, hoogtepunte, skakels en PDF s.'],
+    'cloud-backup-security': ['Rugsteun word op die gebruiker se toestel geënkripteer.', 'AES-256-GCM word gebruik.', 'Bewaar die 12-syfer herstelkode veilig.', 'Sonder die kode kan n nuwe rekenaar nie wolk-rugsteun herstel nie.'],
+    'browser-clipper': ['Stellar luister op 127.0.0.1:57321.', 'Die uitbreiding stuur metadata na POST /api/import.', 'Die desktop-app moet loop voordat die uitbreiding kan koppel.'],
+    'settings-customization': ['Kies White, Ivory, Dark Blue of Black.', 'Pas lettergrootte, lynhoogte en redigeerder-font aan.', 'Gebruik die Data-oortjie vir stoorplek, uitvoer, rugsteun, pakkette, blaaier en wolk.'],
+    shortcuts: ['Ctrl/Cmd + K open globale soek.', 'Ctrl/Cmd + N skep n nota.', 'Ctrl/Cmd + , open instellings.', 'Ctrl/Cmd + F soek in PDF.', 'Muiswiel zoom die grafiek en sleep pan.'],
+    'faq-troubleshooting': ['Wysig PDF-titels handmatig as metadata swak is.', 'Kontroleer WikiLinks, artikelskakels en filters as die grafiek leeg is.', 'Gebruik wolk-, plaaslike en outomatiese rugsteun plus navorsingspakkette.'],
+    'developer-setup': ['Gebruik Node.js 22+, Rust 1.75+ en Tauri CLI.', 'Voer npm install, npm run tauri dev, npm run tauri build en npm run lint uit.', 'Hou ontwikkeling plaaslik-eerste en sonder AI.'],
+    'translation-contribution': ['Stabiliseer Japanees eerste en vertaal dan.', 'Hou UI-teks en Wiki-stappe gesinchroniseer.', 'Kontroleer die huidige i18n-struktuur voordat tale bygevoeg word.'],
+    'addons-plugins': ['Plaaslike addons begin by src/plugins/registerAnalysisAddons.ts.', 'Daar is kwalitatiewe tabs en kwantitatiewe metode-byvoegings.', 'Verspreide plugins bevat stellar-plugin.json en index.js.', 'Gebruik stabiele alfanumeriese en koppelteken plugin-ID s.']
+  }
+};
 
-localizedMeta.af = Object.fromEntries(
-  Object.entries(localizedMeta.en).map(([slug, page]) => [
-    slug,
-    {
-      title: page.title,
-      summary: 'Kort Afrikaanse weergawe. Die Japannese Wiki bly die amptelike bron terwyl vertalings voorberei word.',
-      category: page.category
-    }
-  ])
-) as Record<string, { title: string; summary: string; category: string }>;
+const localizedLabels = {
+  en: {
+    overview: 'Overview',
+    guidance: 'Main guidance',
+    intro: 'Use this page as a practical checklist for the feature or workflow.',
+    principle: 'Stellar keeps research data local-first and asks the researcher to stay in control.'
+  },
+  fr: {
+    overview: 'Vue d ensemble',
+    guidance: 'Guide principal',
+    intro: 'Utilisez cette page comme checklist pratique pour la fonction ou le flux.',
+    principle: 'Stellar reste local-first et laisse le chercheur garder le controle.'
+  },
+  af: {
+    overview: 'Oorsig',
+    guidance: 'Hoofriglyne',
+    intro: 'Gebruik hierdie bladsy as n praktiese kontrolelys vir die funksie of vloei.',
+    principle: 'Stellar hou navorsingsdata plaaslik-eerste en laat die navorser in beheer.'
+  }
+} satisfies Record<Exclude<Lang, 'ja'>, Record<string, string>>;
 
 function makeLocalizedPages(lang: Exclude<Lang, 'ja'>): WikiPage[] {
   const meta = localizedMeta[lang];
-  const statusText = {
-    en: 'This localized page is a concise outline while the Japanese official Wiki is stabilized. The project intentionally keeps the tone practical, local-first, AI-free, and subscription-free.',
-    fr: 'Cette page localisee est un resume pendant la stabilisation du Wiki japonais officiel. Le projet reste pratique, local-first, sans IA et sans abonnement.',
-    af: 'Hierdie gelokaliseerde bladsy is n kort oorsig terwyl die Japannese amptelike Wiki gestabiliseer word. Die projek bly prakties, plaaslik-eerste, sonder AI en sonder intekening.'
-  }[lang];
+  const labels = localizedLabels[lang];
+  const guidance = localizedGuidance[lang];
 
   return jaPages.map((page) => {
     const localized = meta[page.slug] ?? localizedMeta.en[page.slug];
@@ -508,13 +615,13 @@ function makeLocalizedPages(lang: Exclude<Lang, 'ja'>): WikiPage[] {
       category: localized.category,
       sections: [
         {
-          heading: lang === 'en' ? 'Translation status' : lang === 'fr' ? 'Statut de traduction' : 'Vertaalstatus',
-          body: [statusText]
+          heading: labels.overview,
+          body: [localized.summary, labels.principle]
         },
         {
-          heading: lang === 'en' ? 'Japanese source summary' : lang === 'fr' ? 'Resume de la source japonaise' : 'Opsomming van die Japannese bron',
-          body: [page.summary],
-          bullets: page.sections.flatMap((section) => section.bullets ?? []).slice(0, 6)
+          heading: labels.guidance,
+          body: [labels.intro],
+          bullets: guidance[page.slug] ?? []
         }
       ]
     };
@@ -527,6 +634,61 @@ export const wikiPages: Record<Lang, WikiPage[]> = {
   fr: makeLocalizedPages('fr'),
   af: makeLocalizedPages('af')
 };
+
+export type WikiPageRecord = {
+  slug: string;
+  locale: Lang;
+  title: string;
+  body: string;
+  updated_at?: string | null;
+};
+
+const dbSectionHeadings: Record<Lang, string> = {
+  ja: '編集済み本文',
+  en: 'Edited content',
+  fr: 'Contenu modifie',
+  af: 'Geredigeerde inhoud'
+};
+
+const dbCategories: Record<Lang, string> = {
+  ja: '編集',
+  en: 'Edited',
+  fr: 'Modifie',
+  af: 'Geredigeer'
+};
+
+export function wikiPageFromRecord(record: WikiPageRecord, lang: Lang, basePage?: WikiPage): WikiPage {
+  const paragraphs = record.body
+    .split(/\n{2,}/)
+    .map((paragraph) => paragraph.trim())
+    .filter(Boolean);
+  const summary = paragraphs[0]?.slice(0, 180) ?? record.title;
+
+  return {
+    slug: record.slug,
+    title: record.title,
+    summary,
+    category: basePage?.category ?? dbCategories[lang],
+    updatedAt: record.updated_at?.slice(0, 10) ?? updatedAt,
+    sections: [
+      {
+        heading: dbSectionHeadings[lang],
+        body: paragraphs.length ? paragraphs : [record.body]
+      }
+    ],
+    related: basePage?.related ?? []
+  };
+}
+
+export function mergeWikiPages(basePages: WikiPage[], editedPages: WikiPage[]): WikiPage[] {
+  const pagesBySlug = new Map(basePages.map((page) => [page.slug, page]));
+
+  for (const editedPage of editedPages) {
+    pagesBySlug.set(editedPage.slug, editedPage);
+  }
+
+  return Array.from(pagesBySlug.values());
+}
 
 const slugAliases: Record<string, string> = {
   'getting-started': 'quick-start',

@@ -25,6 +25,10 @@ export function hasDeveloperAccess(profile?: Profile | null) {
   return ['developer', 'reviewer', 'admin'].includes(profile.role) || ['active', 'trialing'].includes(profile.subscription_status);
 }
 
+export function hasWikiEditAccess(profile?: Profile | null) {
+  return hasDeveloperAccess(profile);
+}
+
 export async function getViewer(context: APIContext | AstroGlobal) {
   const supabase = createSupabaseServer(context);
   const { data: userResult } = await supabase.auth.getUser();

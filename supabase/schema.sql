@@ -327,6 +327,12 @@ create policy "addon versions: owner insert" on public.addon_versions
 
 create policy "wiki: published read" on public.wiki_pages
   for select using (status = 'published'::public.wiki_status or public.is_staff());
+create policy "wiki: paid users read all" on public.wiki_pages
+  for select using (public.has_active_developer_plan());
+create policy "wiki: paid users insert" on public.wiki_pages
+  for insert with check (public.has_active_developer_plan());
+create policy "wiki: paid users update" on public.wiki_pages
+  for update using (public.has_active_developer_plan()) with check (public.has_active_developer_plan());
 
 create policy "moderation logs: staff read" on public.moderation_logs
   for select using (public.is_staff());

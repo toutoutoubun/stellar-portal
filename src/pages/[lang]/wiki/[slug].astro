@@ -4,10 +4,27 @@ import PageHeader from '@/components/PageHeader.astro';
 import ShareButtons from '@/components/ShareButtons';
 import { normalizeLang } from '@/lib/i18n';
 import { getEnv } from '@/lib/env';
-import { getRelatedWikiPages, getWikiPage } from '@/lib/wiki';
+import { createSupabaseServer } from '@/lib/supabaseServer';
+import { getRelatedWikiPages, getWikiPage, wikiPageFromRecord, type WikiPageRecord } from '@/lib/wiki';
 const lang = normalizeLang(Astro.params.lang);
 const slug = Astro.params.slug!;
-const page = getWikiPage(lang, slug);
+let page = getWikiPage(lang, slug);
+
+try {
+  const supabase = createSupabaseServer(Astro);
+  const { data } = await supabase
+    .from('wiki_pages')
+    .select('slug,locale,title,body,updated_at')
+    .eq('locale', lang)
+    .eq('slug', slug)
+    .eq('status', 'published')
+    .maybeSingle();
+
+  if (data) page = wikiPageFromRecord(data as WikiPageRecord, lang, page);
+} catch {
+  page = getWikiPage(lang, slug);
+}
+
 if (!page) return new Response('Not found', { status: 404 });
 const env = getEnv();
 const url = new URL(Astro.url.pathname, env.PUBLIC_SITE_URL).toString();
