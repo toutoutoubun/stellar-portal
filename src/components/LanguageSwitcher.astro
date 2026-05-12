@@ -6,7 +6,7 @@ const { lang } = Astro.props as { lang: Lang };
   {languages.map((next) => (
     <a
       aria-current={next === lang ? 'page' : undefined}
-      class:list={['border px-2 py-1', next === lang ? 'border-stellar-accent text-stellar-accent' : 'border-stellar-border text-stellar-muted']}
+      class:list={['rounded-full border px-2 py-1 text-[10px]', next === lang ? 'border-stellar-accent bg-stellar-accent text-white' : 'border-stellar-border text-stellar-muted hover:border-stellar-accent']}
       href={localizePath(Astro.url.pathname, next)}
       title={languageNames[next]}
     >{next}</a>

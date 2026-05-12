@@ -26,7 +26,26 @@ const copy = {
     wikiSectionDescription: 'インストール、初回セットアップ、バックアップ、研究ワークフロー、分析機能、貢献方法を確認できます。',
     reviewedEyebrow: '審査済み',
     addonsTitle: 'アドオン',
-    addonsDescription: '審査済みアドオンカタログの新着を表示します。'
+    addonsDescription: '審査済みアドオンカタログの新着を表示します。',
+    projectsTitle: 'Projects',
+    projectsCount: '[ 02 / 02 — ALL ACTIVE ]',
+    projectOneMeta: 'PROJECT_01 · DOCS · ACTIVE',
+    projectOneTitle: 'Official Wiki',
+    projectOnePill: '公式Wiki',
+    projectOneBody: '導入、使い方、バックアップ、分析、翻訳、開発参加まで。Stellarの判断材料を、静かに、まとめて置いておきます。',
+    projectOneAction: 'OPEN WIKI →',
+    projectTwoMeta: 'PROJECT_02 · REGISTRY · REVIEWED',
+    projectTwoTitle: 'Addons',
+    projectTwoPill: '審査済みアドオン',
+    projectTwoBody: '公式、審査済み、コミュニティを混ぜません。公開前にレビューし、リリース元を明示します。',
+    projectTwoAction: 'BROWSE ↓',
+    refuseEyebrow: 'WHAT WE REFUSE',
+    refuseTitle: '混ぜない。',
+    refuseItems: [
+      ['01', '公式扱いしない。', 'コミュニティ投稿とStellar本体の保守範囲を分けます。'],
+      ['02', '急がせない。', '研究データの移行、バックアップ、公開判断を急がせません。'],
+      ['03', '勝手につなげない。', '外部連携やAI処理を前提にせず、ユーザーの手元を基準にします。']
+    ]
   },
   en: {
     homeTitle: 'Home',
@@ -42,7 +61,26 @@ const copy = {
     wikiSectionDescription: 'Installation, quick start, backups, research workflows, analysis tools, and contributor guidance.',
     reviewedEyebrow: 'latest reviewed',
     addonsTitle: 'Addons',
-    addonsDescription: 'A small window into the reviewed addon catalog.'
+    addonsDescription: 'A small window into the reviewed addon catalog.',
+    projectsTitle: 'Projects',
+    projectsCount: '[ 02 / 02 — ALL ACTIVE ]',
+    projectOneMeta: 'PROJECT_01 · DOCS · ACTIVE',
+    projectOneTitle: 'Official Wiki',
+    projectOnePill: 'Practical documentation',
+    projectOneBody: 'Installation, workflows, backups, analysis, translation, and development notes. Stellar keeps its reference material quiet and findable.',
+    projectOneAction: 'OPEN WIKI →',
+    projectTwoMeta: 'PROJECT_02 · REGISTRY · REVIEWED',
+    projectTwoTitle: 'Addons',
+    projectTwoPill: 'Reviewed addon registry',
+    projectTwoBody: 'Official, reviewed, and community labels stay separate. Every listing keeps review state and release source visible.',
+    projectTwoAction: 'BROWSE ↓',
+    refuseEyebrow: 'WHAT WE REFUSE',
+    refuseTitle: 'We keep things apart.',
+    refuseItems: [
+      ['01', 'No false official status.', 'Community submissions do not become core maintenance by accident.'],
+      ['02', 'No hurry.', 'Migration, backup, and publication decisions stay calm and reversible.'],
+      ['03', 'No forced connection.', 'External integrations and AI processing are never assumed as the default.']
+    ]
   },
   fr: {
     homeTitle: 'Accueil',
@@ -58,7 +96,26 @@ const copy = {
     wikiSectionDescription: 'Installation, démarrage rapide, sauvegardes, flux de recherche, outils d’analyse et guide de contribution.',
     reviewedEyebrow: 'dernières revues',
     addonsTitle: 'Extensions',
-    addonsDescription: 'Une vue courte du catalogue des extensions examinées.'
+    addonsDescription: 'Une vue courte du catalogue des extensions examinées.',
+    projectsTitle: 'Projects',
+    projectsCount: '[ 02 / 02 — ACTIFS ]',
+    projectOneMeta: 'PROJECT_01 · DOCS · ACTIF',
+    projectOneTitle: 'Wiki officiel',
+    projectOnePill: 'Documentation pratique',
+    projectOneBody: 'Installation, flux, sauvegardes, analyse, traduction et développement. Stellar garde ses repères calmes et retrouvables.',
+    projectOneAction: 'OUVRIR →',
+    projectTwoMeta: 'PROJECT_02 · REGISTRY · REVU',
+    projectTwoTitle: 'Extensions',
+    projectTwoPill: 'Registre examiné',
+    projectTwoBody: 'Les statuts officiel, examiné et communautaire restent séparés. Chaque fiche montre la revue et la source de version.',
+    projectTwoAction: 'PARCOURIR ↓',
+    refuseEyebrow: 'WHAT WE REFUSE',
+    refuseTitle: 'Nous séparons.',
+    refuseItems: [
+      ['01', 'Pas de faux statut officiel.', 'Une soumission communautaire ne devient pas maintenance coeur par accident.'],
+      ['02', 'Pas de hâte.', 'Migration, sauvegarde et publication restent calmes et réversibles.'],
+      ['03', 'Pas de connexion forcée.', 'Les intégrations externes et l’IA ne sont jamais supposées par défaut.']
+    ]
   },
   af: {
     homeTitle: 'Tuis',
@@ -74,34 +131,77 @@ const copy = {
     wikiSectionDescription: 'Installasie, vinnige begin, rugsteun, navorsingsvloei, analise-instrumente en bydraergids.',
     reviewedEyebrow: 'nuut gekeur',
     addonsTitle: 'Byvoegings',
-    addonsDescription: '’n Kort blik op die katalogus van gekeurde byvoegings.'
+    addonsDescription: '’n Kort blik op die katalogus van gekeurde byvoegings.',
+    projectsTitle: 'Projects',
+    projectsCount: '[ 02 / 02 — AKTIEF ]',
+    projectOneMeta: 'PROJECT_01 · DOCS · AKTIEF',
+    projectOneTitle: 'Amptelike Wiki',
+    projectOnePill: 'Praktiese dokumentasie',
+    projectOneBody: 'Installasie, werkvloei, rugsteun, analise, vertaling en ontwikkeling. Stellar hou verwysingsmateriaal stil en vindbaar.',
+    projectOneAction: 'MAAK WIKI OOP →',
+    projectTwoMeta: 'PROJECT_02 · REGISTRY · GEKEUR',
+    projectTwoTitle: 'Byvoegings',
+    projectTwoPill: 'Gekeurde register',
+    projectTwoBody: 'Amptelike, gekeurde en gemeenskapsmerkers bly apart. Elke lysinskrywing wys keuring en vrystellingsbron.',
+    projectTwoAction: 'BLAAI ↓',
+    refuseEyebrow: 'WHAT WE REFUSE',
+    refuseTitle: 'Ons hou dit apart.',
+    refuseItems: [
+      ['01', 'Geen vals amptelike status.', 'Gemeenskapsindienings word nie per ongeluk kernonderhoud nie.'],
+      ['02', 'Geen haas.', 'Migrasie, rugsteun en publikasie bly kalm en omkeerbaar.'],
+      ['03', 'Geen gedwonge koppeling.', 'Eksterne integrasies en AI-verwerking word nooit as standaard aanvaar nie.']
+    ]
   }
 }[lang];
 ---
 <BaseLayout title={copy.homeTitle} lang={lang} description={t(lang, 'tagline')}>
   <ConsoleHero lang={lang} />
-  <section class="mt-10 grid gap-6 lg:grid-cols-3">
-    <div class="terminal-panel p-5">
-      <p class="font-mono text-xs uppercase tracking-[.18em] text-stellar-accent">{copy.wikiEyebrow}</p>
-      <h2 class="mt-3 font-mono text-2xl">{t(lang, 'officialWiki')}</h2>
-      <p class="mt-3 leading-7 text-stellar-muted">{copy.wikiDescription}</p>
-      <a class="mt-5 inline-flex btn" href={`/${lang}/wiki`}>{copy.wikiAction}</a>
+
+  <section id="projects" class="mt-20">
+    <div class="mb-6 flex flex-wrap items-end justify-between gap-4 px-0 sm:px-4">
+      <h2 class="font-mono text-4xl font-bold tracking-[.08em] text-stellar-text">{copy.projectsTitle}</h2>
+      <p class="font-mono text-xs font-bold uppercase tracking-[.18em] text-stellar-muted">{copy.projectsCount}</p>
     </div>
-    <div class="terminal-panel p-5">
-      <p class="font-mono text-xs uppercase tracking-[.18em] text-stellar-accent">{copy.addonEyebrow}</p>
-      <h2 class="mt-3 font-mono text-2xl">{t(lang, 'reviewedAddons')}</h2>
-      <p class="mt-3 leading-7 text-stellar-muted">{copy.addonDescription}</p>
-      <a class="mt-5 inline-flex btn" href={`/${lang}/addons`}>{copy.addonAction}</a>
-    </div>
-    <div class="terminal-panel p-5">
-      <p class="font-mono text-xs uppercase tracking-[.18em] text-stellar-accent">{copy.developerEyebrow}</p>
-      <h2 class="mt-3 font-mono text-2xl">{t(lang, 'developerPlan')}</h2>
-      <p class="mt-3 leading-7 text-stellar-muted">{copy.developerDescription}</p>
-      <a class="mt-5 inline-flex btn" href={`/${lang}/pricing`}>{copy.developerAction}</a>
+    <div class="grid overflow-hidden rounded-[1.4rem] border border-stellar-border lg:grid-cols-2">
+      <a class="project-card project-card-blue block" href={`/${lang}/wiki`}>
+        <p class="project-meta">{copy.projectOneMeta}</p>
+        <p class="project-number">01</p>
+        <h3 class="project-title">{copy.projectOneTitle}</h3>
+        <p class="project-pill">{copy.projectOnePill}</p>
+        <p class="project-body">{copy.projectOneBody}</p>
+        <span class="btn btn-primary project-action">{copy.projectOneAction}</span>
+      </a>
+      <a class="project-card project-card-gold block" href={`/${lang}/addons`}>
+        <p class="project-meta">{copy.projectTwoMeta}</p>
+        <p class="project-number">02</p>
+        <h3 class="project-title">{copy.projectTwoTitle}</h3>
+        <p class="project-pill">{copy.projectTwoPill}</p>
+        <p class="project-body">{copy.projectTwoBody}</p>
+        <span class="btn project-action">{copy.projectTwoAction}</span>
+      </a>
     </div>
   </section>
 
-  <section class="mt-12">
+  <section class="refusal-band relative -mx-4 mt-20 overflow-hidden px-4 py-20 text-[#fffaf1] sm:-mx-6 sm:px-8 lg:-mx-8 lg:px-20">
+    <p class="inline-flex rounded-full bg-[var(--gold)] px-6 py-3 font-mono text-xs font-bold uppercase tracking-[.22em] text-stellar-text"><span class="mr-3 text-stellar-accent">●</span>{copy.refuseEyebrow}</p>
+    <h2 class="mt-10 max-w-5xl text-6xl font-black leading-tight sm:text-8xl">{copy.refuseTitle}</h2>
+    <div class="mt-16 border-t border-dashed border-[#fffaf1]/45 pt-16">
+      <div class="grid gap-12 lg:grid-cols-3">
+        {copy.refuseItems.map(([number, title, body]) => (
+          <article>
+            <p class="grid h-20 w-20 place-items-center rounded-full bg-[var(--gold)] font-mono text-2xl font-black text-[#bf5b3a]">{number}</p>
+            <h3 class="mt-8 text-4xl font-black">{title}</h3>
+            <p class="mt-6 max-w-sm text-lg font-bold leading-9 text-[#fffaf1]/86">{body}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+    <span class="absolute right-24 top-16 h-28 w-28 rounded-full border-[6px] border-[var(--gold)]"></span>
+    <span class="absolute bottom-20 right-16 h-12 w-12 rounded-full bg-[var(--pale-blue)]"></span>
+    <span class="absolute bottom-20 left-28 text-5xl text-[var(--pale-blue)]">✦</span>
+  </section>
+
+  <section class="mx-auto mt-20 max-w-7xl">
     <PageHeader eyebrow={copy.wikiEyebrow} title={t(lang, 'officialWiki')} description={copy.wikiSectionDescription} />
     <div class="grid gap-4 lg:grid-cols-3">
       {featuredWiki.map((page) => (
@@ -114,7 +214,7 @@ const copy = {
     </div>
   </section>
 
-  <section class="mt-12">
+  <section class="mx-auto mt-20 max-w-7xl">
     <PageHeader eyebrow={copy.reviewedEyebrow} title={copy.addonsTitle} description={copy.addonsDescription} />
     <div class="grid gap-4">
       {(addons ?? []).length ? addons?.map((addon) => <AddonCard addon={addon} />) : <p class="text-stellar-muted">{t(lang, 'noAddons')}</p>}

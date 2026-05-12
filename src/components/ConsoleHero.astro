@@ -5,74 +5,90 @@ const { lang } = Astro.props as { lang: Lang };
 const copy = {
   ja: {
     actions: ['Wikiを開く', 'アドオンを見る', '開発者ポータル', 'GitHub', 'リリース'],
-    logTitle: 'システムログ',
+    arc: '読む。考える。書く。つなげる。',
+    vol: 'VOL. 01 / 2026 / TRANSMISSION',
+    est: 'EST. 2026',
+    ok: 'TRANSMISSION 01 / OK',
+    logTitle: '◯ 全システム静穏',
     logs: [
-      '> モード: ローカルファースト',
-      '> 領域: 論文 / ノート / ハイライト / グラフ',
-      '> ポータル: Wiki + 審査済みアドオン',
-      '> 公開: レビュー後に反映',
-      '> 開発者権限: 課金状態を確認',
-      '> 直接ファイルアップロード: MVPでは無効',
-      '> リリース元: GitHub Releases URL'
+      '◯ NO PUSH · NO HURRY',
+      '◯ LOCAL FIRST · USER OWNED'
     ]
   },
   en: {
     actions: ['Open Wiki', 'Browse Addons', 'Developer Portal', 'GitHub', 'Releases'],
-    logTitle: 'SYSTEM LOG',
+    arc: 'Read. Think. Write. Connect.',
+    vol: 'VOL. 01 / 2026 / TRANSMISSION',
+    est: 'EST. 2026',
+    ok: 'TRANSMISSION 01 / OK',
+    logTitle: '◯ ALL SYSTEMS QUIET',
     logs: [
-      '> mode: local-first',
-      '> domain: papers / notes / highlights / graphs',
-      '> portal: wiki + reviewed addons',
-      '> publication: gated by review',
-      '> developer access: subscription required',
-      '> direct file upload: disabled in MVP',
-      '> release source: GitHub Releases URL'
+      '◯ NO PUSH · NO HURRY',
+      '◯ LOCAL FIRST · USER OWNED'
     ]
   },
   fr: {
     actions: ['Ouvrir le Wiki', 'Voir les extensions', 'Portail développeur', 'GitHub', 'Versions'],
-    logTitle: 'JOURNAL SYSTÈME',
+    arc: 'Lire. Penser. Écrire. Relier.',
+    vol: 'VOL. 01 / 2026 / TRANSMISSION',
+    est: 'ÉTABLI 2026',
+    ok: 'TRANSMISSION 01 / OK',
+    logTitle: '◯ TOUS LES SYSTÈMES CALMES',
     logs: [
-      '> mode : local',
-      '> domaine : articles / notes / surlignages / graphes',
-      '> portail : wiki + extensions examinées',
-      '> publication : après revue',
-      '> accès développeur : abonnement requis',
-      '> téléversement direct : désactivé dans le MVP',
-      '> source des versions : GitHub Releases URL'
+      '◯ PAS DE PRESSION · PAS DE HÂTE',
+      '◯ LOCAL · PROPRIÉTÉ UTILISATEUR'
     ]
   },
   af: {
     actions: ['Maak Wiki oop', 'Blaai deur byvoegings', 'Ontwikkelaarsportaal', 'GitHub', 'Vrystellings'],
-    logTitle: 'STELSELLOG',
+    arc: 'Lees. Dink. Skryf. Verbind.',
+    vol: 'VOL. 01 / 2026 / TRANSMISSION',
+    est: 'GESTIG 2026',
+    ok: 'TRANSMISSION 01 / OK',
+    logTitle: '◯ ALLE STELSELS STIL',
     logs: [
-      '> modus: plaaslik-eerste',
-      '> domein: artikels / notas / hoogtepunte / grafieke',
-      '> portaal: wiki + gekeurde byvoegings',
-      '> publikasie: ná keuring',
-      '> ontwikkelaartoegang: intekening vereis',
-      '> direkte lêeroplaai: afgeskakel in MVP',
-      '> vrystellingsbron: GitHub Releases URL'
+      '◯ GEEN DRUK · GEEN HAAS',
+      '◯ PLAASLIK · GEBRUIKER BESIT'
     ]
   }
 }[lang];
 ---
-<section class="terminal-panel scanline grid gap-8 p-6 sm:p-10 lg:grid-cols-[1.15fr_.85fr]">
-  <div>
-    <p class="mb-4 font-mono text-xs uppercase tracking-[.28em] text-stellar-accent">{t(lang, 'coordinate')}</p>
-    <h1 class="font-mono text-4xl tracking-[.16em] text-stellar-text sm:text-6xl">{t(lang, 'portal')}</h1>
-    <p class="mt-5 max-w-2xl font-serif text-xl leading-9 text-stellar-text">{t(lang, 'tagline')}</p>
-    <p class="mt-6 font-mono text-lg text-stellar-accent">{t(lang, 'readThinkWrite')}</p>
-    <div class="mt-8 flex flex-wrap gap-3">
+<section class="shiosai-hero relative min-h-[78vh] overflow-hidden border-b border-stellar-border">
+  <div class="relative z-10 grid gap-8 px-4 py-16 sm:px-8 lg:grid-cols-[1fr_320px] lg:py-24">
+    <div>
+      <p class="inline-flex rounded-full bg-[var(--gold)] px-6 py-3 font-mono text-xs font-bold uppercase tracking-[.22em] text-stellar-text">
+        <span class="mr-3 text-stellar-accent">●</span>{copy.vol}
+      </p>
+      <h1 class="mt-12 max-w-3xl font-mono text-5xl font-bold tracking-[.16em] text-stellar-accent2 sm:text-7xl">{t(lang, 'portal')}</h1>
+      <p class="mt-6 max-w-2xl text-2xl font-bold leading-10 text-stellar-text">{t(lang, 'tagline')}</p>
+      <p class="mt-6 font-mono text-lg font-bold tracking-[.12em] text-stellar-accent">{t(lang, 'readThinkWrite')}</p>
+      <div class="mt-10 flex flex-wrap gap-3">
       <a class="btn btn-primary" href={`/${lang}/wiki`}>{copy.actions[0]}</a>
       <a class="btn" href={`/${lang}/addons`}>{copy.actions[1]}</a>
       <a class="btn" href={`/${lang}/developers`}>{copy.actions[2]}</a>
       <a class="btn" href="https://github.com/toutoutoubun/stellar">{copy.actions[3]}</a>
       <a class="btn" href="https://github.com/toutoutoubun/stellar/releases" target="_blank" rel="noreferrer">{copy.actions[4]}</a>
+      </div>
+    </div>
+    <div class="font-mono text-xs font-bold uppercase leading-7 tracking-[.18em] text-stellar-accent2 lg:text-right">
+      <p>{copy.est}</p>
+      <p>{t(lang, 'coordinate')}</p>
+      <p>{copy.ok}</p>
+      <div class="mt-10 inline-grid gap-2 text-left text-stellar-accent2">
+        <p>{copy.logTitle}</p>
+        {copy.logs.map((line) => <p>{line}</p>)}
+      </div>
     </div>
   </div>
-  <div class="border border-stellar-border bg-stellar-bg p-4 font-mono text-xs leading-7 text-stellar-muted">
-    <p class="text-stellar-accent">{copy.logTitle}</p>
-    {copy.logs.map((line) => <p>{line}</p>)}
+  <div class="pointer-events-none absolute inset-0">
+    <div class="absolute left-[57%] top-[23%] h-[43rem] w-[43rem] rounded-full border-[6px] border-[var(--gold)] opacity-90"></div>
+    <p class="arc-text">{copy.arc}</p>
+    <p class="absolute bottom-[22%] left-[49%] text-8xl font-black leading-none text-[var(--pale-blue)]">≋</p>
+    <span class="absolute left-[35%] top-[25%] h-16 w-64 rounded-[50%] border-2 border-dashed border-[var(--pale-blue)]"></span>
+    <span class="absolute bottom-[13%] left-[8%] h-12 w-12 rounded-full bg-stellar-accent"></span>
+    <span class="absolute right-[11%] top-[25%] h-24 w-24 rounded-full bg-[var(--gold)]"></span>
+    <span class="absolute bottom-[9%] right-[12%] text-5xl text-stellar-accent">✦</span>
+    <span class="absolute left-[8%] top-[53%] h-5 w-5 rounded-full bg-[#d98a76]"></span>
+    <span class="absolute left-[43%] top-[50%] h-3 w-3 rounded-full bg-[#bf5b3a]"></span>
   </div>
 </section>

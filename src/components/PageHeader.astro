@@ -2,8 +2,10 @@
 interface Props { eyebrow?: string; title: string; description?: string; }
 const { eyebrow, title, description } = Astro.props;
 ---
-<header class="mb-8 border-b border-stellar-border pb-6">
-  {eyebrow && <p class="mb-3 font-mono text-xs uppercase tracking-[.22em] text-stellar-accent">{eyebrow}</p>}
-  <h1 class="font-mono text-3xl tracking-[.1em] text-stellar-text sm:text-4xl">{title}</h1>
-  {description && <p class="mt-4 max-w-3xl leading-8 text-stellar-muted">{description}</p>}
+<header class="quiet-shell mb-10 py-10">
+  <div class="mx-auto max-w-7xl">
+    {eyebrow && <p class="mb-5 inline-flex rounded-full bg-stellar-accent px-5 py-2 font-mono text-xs font-bold uppercase tracking-[.22em] text-white">{eyebrow}</p>}
+    <h1 class="font-mono text-4xl font-bold tracking-[.08em] text-stellar-text sm:text-6xl">{title}</h1>
+    {description && <p class="mt-5 max-w-3xl text-lg leading-9 text-stellar-muted">{description}</p>}
+  </div>
 </header>

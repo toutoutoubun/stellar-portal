@@ -11,12 +11,16 @@ const nav = [
 ];
 ---
 <header class="border-b border-stellar-border bg-stellar-bg/85 backdrop-blur">
-  <div class="mx-auto flex max-w-7xl flex-col gap-4 px-4 py-4 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8">
-    <a href={`/${lang}`} class="font-mono text-sm tracking-[.28em] text-stellar-text hover:text-stellar-accent">STELLAR PORTAL</a>
-    <nav class="flex flex-wrap items-center gap-2 font-mono text-xs uppercase tracking-[.12em] text-stellar-muted">
-      {nav.map(([label, href]) => <a href={href} class="border border-transparent px-2 py-1 hover:border-stellar-border">{label}</a>)}
-      <a href={`/${lang}/dashboard`} class="border border-stellar-border px-2 py-1">{t(lang, 'dashboard')}</a>
-      <a href={`/${lang}/login`} class="border border-stellar-border px-2 py-1">{t(lang, 'login')}</a>
+  <div class="grid gap-4 px-4 py-5 sm:px-8 lg:grid-cols-[1fr_auto_1fr] lg:items-center">
+    <a href={`/${lang}`} class="flex items-center gap-4 font-mono text-lg font-bold tracking-[.28em] text-stellar-accent2 hover:text-stellar-accent">
+      <span class="text-3xl leading-none tracking-normal">≋</span>
+      <span>STELLAR PORTAL</span>
+    </a>
+    <p class="hidden font-mono text-xs uppercase tracking-[.2em] text-stellar-muted lg:block">{t(lang, 'coordinate')}</p>
+    <nav class="flex flex-wrap items-center gap-5 font-mono text-xs font-bold uppercase tracking-[.18em] text-stellar-accent2 lg:justify-end">
+      {nav.map(([label, href]) => <a href={href} class="hover:text-stellar-accent">{label}</a>)}
+      <a href={`/${lang}/dashboard`} class="hover:text-stellar-accent">{t(lang, 'dashboard')}</a>
+      <a href={`/${lang}/login`} class="hover:text-stellar-accent">{t(lang, 'login')}</a>
       <LanguageSwitcher lang={lang} />
     </nav>
   </div>
