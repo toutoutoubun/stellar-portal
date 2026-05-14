@@ -57,8 +57,13 @@ export const publicCopy = {
       commonBody: 'これは公開前の仮テキストです。正式公開前に、法務レビュー済みの文面へ置き換えます。',
       reviewNotice: 'アドオン公開にはレビューがあります。開発者登録は、承認、順位付け、公式扱いを保証しません。',
       termsTitle: '利用規約',
+      termsDescription: 'Stellar Portal の利用条件を定める規約です。',
       privacyTitle: 'プライバシーポリシー',
-      addonPolicyTitle: 'アドオン投稿ポリシー'
+      privacyDescription: 'Stellar Portal における個人情報の取扱いについて定めたポリシーです。',
+      addonPolicyTitle: 'アドオン投稿ポリシー',
+      addonPolicyDescription: 'アドオンの投稿・審査・公開・停止に関する条件を定めたポリシーです。',
+      tokushohoTitle: '特定商取引法に基づく表示',
+      tokushohoDescription: '特定商取引法に基づく販売事業者情報の表示です。'
     }
   },
   en: {
@@ -117,8 +122,13 @@ export const publicCopy = {
       commonBody: 'This is a placeholder. Before launch, replace this page with jurisdiction-appropriate legal text.',
       reviewNotice: 'Addon publication is reviewed. Developer registration does not guarantee approval, ranking, or official status.',
       termsTitle: 'Terms of Service',
+      termsDescription: 'Terms and conditions governing the use of Stellar Portal.',
       privacyTitle: 'Privacy Policy',
-      addonPolicyTitle: 'Addon Submission Policy'
+      privacyDescription: 'How Stellar Portal handles personal information and user data.',
+      addonPolicyTitle: 'Addon Submission Policy',
+      addonPolicyDescription: 'Conditions for addon submission, review, publication, and suspension.',
+      tokushohoTitle: 'Notation Based on the Specified Commercial Transactions Act',
+      tokushohoDescription: 'Seller information required by the Japanese Specified Commercial Transactions Act.'
     }
   },
   fr: {
@@ -177,8 +187,13 @@ export const publicCopy = {
       commonBody: 'Ceci est un texte provisoire. Avant le lancement, remplacez cette page par un texte adapté à la juridiction concernée.',
       reviewNotice: 'La publication des extensions est examinée. L’inscription développeur ne garantit ni approbation, ni classement, ni statut officiel.',
       termsTitle: 'Conditions d’utilisation',
+      termsDescription: 'Conditions régissant l’utilisation de Stellar Portal.',
       privacyTitle: 'Politique de confidentialité',
-      addonPolicyTitle: 'Politique de soumission des extensions'
+      privacyDescription: 'Comment Stellar Portal traite les informations personnelles et les données des utilisateurs.',
+      addonPolicyTitle: 'Politique de soumission des extensions',
+      addonPolicyDescription: 'Conditions de soumission, examen, publication et suspension des extensions.',
+      tokushohoTitle: 'Mention légale au titre de la loi japonaise sur les transactions commerciales spécifiques',
+      tokushohoDescription: 'Informations sur le vendeur conformément à la loi japonaise sur les transactions commerciales spécifiques.'
     }
   },
   af: {
@@ -237,8 +252,13 @@ export const publicCopy = {
       commonBody: 'Dit is ’n plekhouer. Voor bekendstelling moet hierdie bladsy met jurisdiksiegeskikte regsteks vervang word.',
       reviewNotice: 'Byvoegingpublikasie word gekeur. Ontwikkelaarregistrasie waarborg nie goedkeuring, rangorde of amptelike status nie.',
       termsTitle: 'Diensbepalings',
+      termsDescription: 'Bepalings en voorwaardes wat die gebruik van Stellar Portal reguleer.',
       privacyTitle: 'Privaatheidsbeleid',
-      addonPolicyTitle: 'Byvoeging-indieningsbeleid'
+      privacyDescription: 'Hoe Stellar Portal persoonlike inligting en gebruikersdata hanteer.',
+      addonPolicyTitle: 'Byvoeging-indieningsbeleid',
+      addonPolicyDescription: 'Voorwaardes vir byvoeging-indiening, keuring, publikasie en skorsing.',
+      tokushohoTitle: 'Kennisname Kragtens die Wet op Gespesifiseerde Kommersiële Transaksies',
+      tokushohoDescription: 'Verkopersinligting kragtens die Japannese Wet op Gespesifiseerde Kommersiële Transaksies.'
     }
   }
 } as const satisfies Record<Lang, object>;
