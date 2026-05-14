@@ -8,28 +8,32 @@ const copy = {
     note: '公式Wikiと審査済みコミュニティアドオンは、役割を分けて掲載します。',
     terms: '利用規約',
     privacy: 'プライバシー',
-    addonPolicy: 'アドオンポリシー'
+    addonPolicy: 'アドオンポリシー',
+    tokushoho: '特定商取引法'
   },
   en: {
     tagline: 'Stellar Portal / local-first archive console',
     note: 'Official Wiki and reviewed community addon listings are separated by design.',
     terms: 'Terms',
     privacy: 'Privacy',
-    addonPolicy: 'Addon Policy'
+    addonPolicy: 'Addon Policy',
+    tokushoho: 'SCTL'
   },
   fr: {
     tagline: 'Stellar Portal / console d’archive locale',
     note: 'Le Wiki officiel et les extensions communautaires examinées restent séparés.',
     terms: 'Conditions',
     privacy: 'Confidentialité',
-    addonPolicy: 'Politique des extensions'
+    addonPolicy: 'Politique des extensions',
+    tokushoho: 'SCTL'
   },
   af: {
     tagline: 'Stellar Portal / plaaslik-eerste argiefkonsole',
     note: 'Die amptelike Wiki en gekeurde gemeenskapsbyvoegings word apart gehou.',
     terms: 'Bepalings',
     privacy: 'Privaatheid',
-    addonPolicy: 'Byvoegingsbeleid'
+    addonPolicy: 'Byvoegingsbeleid',
+    tokushoho: 'SCTL'
   }
 }[lang];
 ---
@@ -41,6 +45,7 @@ const copy = {
       <a href={`/${lang}/legal/terms`}>{copy.terms}</a>
       <a href={`/${lang}/legal/privacy`}>{copy.privacy}</a>
       <a href={`/${lang}/legal/addon-policy`}>{copy.addonPolicy}</a>
+      <a href={`/${lang}/legal/tokushoho`}>{copy.tokushoho}</a>
       <a href="https://github.com/toutoutoubun/stellar">GitHub</a>
     </nav>
   </div>

@@ -6,10 +6,167 @@ import { getPublicCopy } from '@/lib/publicCopy';
 const lang = normalizeLang(Astro.params.lang);
 const copy = getPublicCopy(lang);
 ---
-<BaseLayout title={copy.legal.privacyTitle} lang={lang} description={copy.legal.commonDescription}>
-  <PageHeader eyebrow={copy.legal.eyebrow} title={copy.legal.privacyTitle} description={copy.legal.commonDescription} />
-  <article class="terminal-panel prose-stellar p-6">
-    <p>{copy.legal.commonBody}</p>
-    <p>{copy.legal.reviewNotice}</p>
+<BaseLayout title={copy.legal.privacyTitle} lang={lang} description={copy.legal.privacyDescription}>
+  <PageHeader eyebrow={copy.legal.eyebrow} title={copy.legal.privacyTitle} description={copy.legal.privacyDescription} />
+  <article class="terminal-panel prose-stellar p-6 space-y-8">
+
+    <p class="text-sm text-stellar-muted">最終更新日：2026年5月14日</p>
+
+    <div class="space-y-4">
+      <p>Stellar Portal（以下「本サイト」といいます。）は、利用者のプライバシーを尊重し、個人情報を適切に取り扱います。</p>
+      <p>本プライバシーポリシーは、本サイトにおける個人情報、利用情報、投稿情報等の取扱いについて定めるものです。</p>
+    </div>
+
+    <!-- 第1条 基本方針 -->
+    <section class="space-y-3">
+      <h2 class="text-xl font-bold">第1条　基本方針</h2>
+      <p>本サイトは、利用者の個人情報を、利用目的の範囲内で適切に取り扱います。</p>
+      <p>本サイトは、必要以上の個人情報を収集しないよう努めます。</p>
+      <p>本サイトは、Stellar本体のローカルファースト性を尊重し、利用者の手元に保存された研究データ、文献、ノート、PDF、ハイライト等を、本サイトが当然に取得することはありません。</p>
+      <p>ただし、利用者が本サイトへ投稿、登録、送信、アップロードした情報については、本ポリシーに従って取り扱います。</p>
+    </section>
+
+    <!-- 第2条 取得する情報 -->
+    <section class="space-y-3">
+      <h2 class="text-xl font-bold">第2条　取得する情報</h2>
+      <p>本サイトは、以下の情報を取得することがあります。</p>
+
+      <h3 class="text-base font-bold mt-4">アカウント情報</h3>
+      <p>メールアドレス、ユーザー名、表示名、プロフィール情報、ログイン状態、認証に必要な情報</p>
+
+      <h3 class="text-base font-bold mt-4">開発者情報</h3>
+      <p>開発者名、説明文、Webサイト、GitHub等のリンク、アドオン投稿履歴、審査履歴、連絡先、請求・支払に必要な情報</p>
+
+      <h3 class="text-base font-bold mt-4">投稿情報</h3>
+      <p>Wiki投稿、アドオン説明文、アドオンのメタデータ、バージョン情報、ライセンス、権限説明、外部リンク、添付ファイル、審査用コメント</p>
+
+      <h3 class="text-base font-bold mt-4">支払関連情報</h3>
+      <p>有料プランの契約状態、決済履歴、請求情報、決済サービスから返される識別子</p>
+      <p>なお、クレジットカード番号等の詳細な決済情報は、原則として外部決済サービスが管理し、本サイトは保持しません。</p>
+
+      <h3 class="text-base font-bold mt-4">技術情報</h3>
+      <p>IPアドレス、ブラウザ情報、端末情報、アクセス日時、参照元、操作ログ、エラーログ、セキュリティログ、Cookieまたは類似技術により取得される情報</p>
+
+      <h3 class="text-base font-bold mt-4">問い合わせ情報</h3>
+      <p>問い合わせ本文、返信先、対応履歴、本人確認に必要な情報</p>
+    </section>
+
+    <!-- 第3条 利用目的 -->
+    <section class="space-y-3">
+      <h2 class="text-xl font-bold">第3条　利用目的</h2>
+      <p>本サイトは、取得した情報を以下の目的で利用します。</p>
+      <ul class="list-disc pl-6 space-y-2">
+        <li>本サイトの提供、運営、認証、ログイン管理のため</li>
+        <li>アカウント管理、本人確認、不正利用防止のため</li>
+        <li>Wiki、アドオンカタログ、開発者ページ、ダッシュボード等を表示するため</li>
+        <li>アドオンの投稿受付、審査、差戻し、承認、公開、停止、削除、問い合わせ対応のため</li>
+        <li>有料プランの提供、決済、請求、解約、返金、契約管理のため</li>
+        <li>セキュリティ確保、スパム対策、不正アクセス対策、障害調査のため</li>
+        <li>利用状況の分析、機能改善、UI改善、品質向上のため</li>
+        <li>規約違反、権利侵害、法令違反への対応のため</li>
+        <li>重要なお知らせ、規約変更、セキュリティ通知、メンテナンス通知を送るため</li>
+        <li>利用者からの問い合わせに対応するため</li>
+        <li>法令上必要な対応を行うため</li>
+      </ul>
+    </section>
+
+    <!-- 第4条 投稿情報の公開範囲 -->
+    <section class="space-y-3">
+      <h2 class="text-xl font-bold">第4条　投稿情報の公開範囲</h2>
+      <p>利用者が本サイト上で公開を選択した情報は、第三者から閲覧可能になります。</p>
+      <p>公開される可能性がある情報には、表示名、プロフィール、アドオン名、説明文、ライセンス、外部リンク、バージョン情報、投稿日時、更新日時等が含まれます。</p>
+      <p>審査中、非公開、下書き、管理用メモ等の情報は、原則として運営者、審査担当者、必要な権限を持つ者のみが閲覧します。</p>
+      <p>利用者は、個人情報、秘密情報、第三者に公開する権利のない情報を投稿しないものとします。</p>
+    </section>
+
+    <!-- 第5条 第三者提供 -->
+    <section class="space-y-3">
+      <h2 class="text-xl font-bold">第5条　第三者提供</h2>
+      <p>本サイトは、以下の場合を除き、利用者の個人情報を第三者に提供しません。</p>
+      <ul class="list-disc pl-6 space-y-2">
+        <li>利用者本人の同意がある場合</li>
+        <li>法令に基づく場合</li>
+        <li>人の生命、身体、財産の保護のために必要がある場合</li>
+        <li>公衆衛生または児童の健全な育成の推進のために特に必要がある場合</li>
+        <li>国の機関、地方公共団体、裁判所、行政機関等に協力する必要がある場合</li>
+        <li>本サイトの運営、決済、認証、ホスティング、メール送信、セキュリティ対策等に必要な範囲で、外部サービスに処理を委託する場合</li>
+      </ul>
+    </section>
+
+    <!-- 第6条 外部サービスの利用 -->
+    <section class="space-y-3">
+      <h2 class="text-xl font-bold">第6条　外部サービスの利用</h2>
+      <p>本サイトは、以下のような外部サービスを利用することがあります。</p>
+      <ul class="list-disc pl-6 space-y-2">
+        <li>ホスティング、配信、セキュリティ対策サービス</li>
+        <li>認証、データベース、ストレージ、メール送信サービス</li>
+        <li>決済サービス</li>
+        <li>GitHub等の開発・配布プラットフォーム</li>
+        <li>アクセス解析、エラー監視、スパム対策サービス</li>
+        <li>SNS共有機能</li>
+      </ul>
+      <p>外部サービスにおける情報の取扱いは、各サービスの規約およびプライバシーポリシーに従います。</p>
+    </section>
+
+    <!-- 第7条 Cookie等の利用 -->
+    <section class="space-y-3">
+      <h2 class="text-xl font-bold">第7条　Cookie等の利用</h2>
+      <p>本サイトは、ログイン状態の維持、セキュリティ対策、不正利用防止、アクセス状況の把握、機能改善のため、Cookieまたは類似技術を利用することがあります。</p>
+      <p>利用者は、ブラウザ設定によりCookieを無効化できます。ただし、その場合、本サイトの一部機能を利用できないことがあります。</p>
+      <p>本サイトは、過度な追跡広告や、研究データの内容に基づく広告配信を目的としてCookieを利用しません。</p>
+    </section>
+
+    <!-- 第8条 安全管理措置 -->
+    <section class="space-y-3">
+      <h2 class="text-xl font-bold">第8条　安全管理措置</h2>
+      <p>本サイトは、取得した情報について、漏えい、滅失、毀損、不正アクセス、不正利用を防止するため、合理的な安全管理措置を講じます。</p>
+      <p>ただし、インターネット上の通信、外部サービス、利用者端末の安全性を完全に保証するものではありません。</p>
+    </section>
+
+    <!-- 第9条 保存期間 -->
+    <section class="space-y-3">
+      <h2 class="text-xl font-bold">第9条　保存期間</h2>
+      <p>本サイトは、利用目的の達成に必要な範囲で情報を保存します。</p>
+      <p>アカウント削除、契約終了、投稿削除後も、法令遵守、紛争対応、セキュリティ対策、不正利用防止、バックアップのため、一定期間情報を保存することがあります。</p>
+      <p>保存の必要がなくなった情報は、合理的な方法で削除または匿名化します。</p>
+    </section>
+
+    <!-- 第10条 開示・訂正・削除・利用停止等 -->
+    <section class="space-y-3">
+      <h2 class="text-xl font-bold">第10条　開示・訂正・削除・利用停止等</h2>
+      <p>利用者は、法令に基づき、自己の個人情報について、開示、訂正、追加、削除、利用停止、第三者提供停止等を求めることができます。</p>
+      <p>請求を行う場合、運営者は、本人確認をお願いすることがあります。</p>
+      <p>法令上、保存が必要な情報、権利侵害対応や不正利用防止のために必要な情報については、請求に応じられない場合があります。</p>
+      <p>投稿済みの公開情報について、検索エンジン、外部サイト、キャッシュ等に残る情報を完全に削除することは保証できません。</p>
+    </section>
+
+    <!-- 第11条 漏えい等への対応 -->
+    <section class="space-y-3">
+      <h2 class="text-xl font-bold">第11条　漏えい等への対応</h2>
+      <p>本サイトは、個人情報の漏えい、滅失、毀損、またはそのおそれを把握した場合、被害拡大防止、原因調査、再発防止、関係者への通知、関係機関への報告等、法令に従い必要な対応を行います。</p>
+    </section>
+
+    <!-- 第12条 国外への情報移転 -->
+    <section class="space-y-3">
+      <h2 class="text-xl font-bold">第12条　国外への情報移転</h2>
+      <p>本サイトが利用する外部サービスのサーバー、運営会社、委託先は、日本国外に所在する場合があります。</p>
+      <p>その場合、本サイトは、利用目的の達成に必要な範囲で情報を取り扱い、適用法令に従い必要な対応を行います。</p>
+    </section>
+
+    <!-- 第13条 未成年のプライバシー -->
+    <section class="space-y-3">
+      <h2 class="text-xl font-bold">第13条　未成年のプライバシー</h2>
+      <p>18歳未満の利用者が本サイトを利用する場合、法定代理人の同意を得るものとします。</p>
+      <p>運営者は、18歳未満の利用者から取得した情報について、必要に応じて法定代理人からの問い合わせに対応します。</p>
+    </section>
+
+    <!-- 第14条 プライバシーポリシーの変更 -->
+    <section class="space-y-3">
+      <h2 class="text-xl font-bold">第14条　プライバシーポリシーの変更</h2>
+      <p>本サイトは、必要に応じて本ポリシーを変更することがあります。</p>
+      <p>重要な変更を行う場合、本サイト上での掲示その他合理的な方法により告知します。</p>
+      <p>変更後のポリシーは、本サイト上に掲載した時点から効力を生じます。</p>
+    </section>
+
   </article>
 </BaseLayout>

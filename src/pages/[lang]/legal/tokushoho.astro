@@ -1,0 +1,69 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import PageHeader from '@/components/PageHeader.astro';
+import { normalizeLang } from '@/lib/i18n';
+import { getPublicCopy } from '@/lib/publicCopy';
+const lang = normalizeLang(Astro.params.lang);
+const copy = getPublicCopy(lang);
+---
+<BaseLayout title={copy.legal.tokushohoTitle} lang={lang} description={copy.legal.tokushohoDescription}>
+  <PageHeader eyebrow={copy.legal.eyebrow} title={copy.legal.tokushohoTitle} description={copy.legal.tokushohoDescription} />
+  <article class="terminal-panel prose-stellar p-6 space-y-6">
+
+    <div class="overflow-x-auto">
+      <table class="w-full text-left border-collapse">
+        <tbody class="divide-y divide-stellar-border">
+          <tr>
+            <th class="py-3 pr-4 align-top font-bold whitespace-nowrap w-1/4">販売事業者</th>
+            <td class="py-3">田村翠</td>
+          </tr>
+          <tr>
+            <th class="py-3 pr-4 align-top font-bold whitespace-nowrap">代表責任者</th>
+            <td class="py-3">田村翠</td>
+          </tr>
+          <tr>
+            <th class="py-3 pr-4 align-top font-bold whitespace-nowrap">所在地</th>
+            <td class="py-3">静岡県浜松市中央区葵西4丁目 17-14</td>
+          </tr>
+          <tr>
+            <th class="py-3 pr-4 align-top font-bold whitespace-nowrap">連絡先</th>
+            <td class="py-3">固定回線が存在しないため、<a href="mailto:shiosaisazanami@gmail.com" class="underline hover:text-stellar-accent">shiosaisazanami@gmail.com</a> をメール窓口とします</td>
+          </tr>
+          <tr>
+            <th class="py-3 pr-4 align-top font-bold whitespace-nowrap">販売価格</th>
+            <td class="py-3">各料金ページに表示</td>
+          </tr>
+          <tr>
+            <th class="py-3 pr-4 align-top font-bold whitespace-nowrap">商品代金以外の必要料金</th>
+            <td class="py-3">インターネット接続料金、通信料金等</td>
+          </tr>
+          <tr>
+            <th class="py-3 pr-4 align-top font-bold whitespace-nowrap">支払方法</th>
+            <td class="py-3">クレジットカード決済</td>
+          </tr>
+          <tr>
+            <th class="py-3 pr-4 align-top font-bold whitespace-nowrap">支払時期</th>
+            <td class="py-3">各決済サービスの定める時期</td>
+          </tr>
+          <tr>
+            <th class="py-3 pr-4 align-top font-bold whitespace-nowrap">サービス提供時期</th>
+            <td class="py-3">決済完了後、すぐに提供</td>
+          </tr>
+          <tr>
+            <th class="py-3 pr-4 align-top font-bold whitespace-nowrap">解約方法</th>
+            <td class="py-3">アカウントページまたは問い合わせ窓口から手続き</td>
+          </tr>
+          <tr>
+            <th class="py-3 pr-4 align-top font-bold whitespace-nowrap">返金・キャンセル</th>
+            <td class="py-3">デジタルサービスの性質上、利用開始後の返金は原則不可。ただし、法令上必要な場合または運営者が認める場合を除く</td>
+          </tr>
+          <tr>
+            <th class="py-3 pr-4 align-top font-bold whitespace-nowrap">動作環境</th>
+            <td class="py-3">最新版の主要ブラウザ、インターネット接続環境</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </article>
+</BaseLayout>
