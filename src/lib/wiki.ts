@@ -416,7 +416,7 @@ const jaPages: WikiPage[] = [
         body: ['Stellarは日本語、英語、フランス語、アフリカーンス語に対応します。翻訳追加手順は現在のi18n構成と一致している必要があります。']
       }
     ],
-    related: ['developer-setup', 'settings-customization', 'home']
+    related: ['terminology-sotho-tswana', 'developer-setup', 'addons-plugins']
   },
   {
     slug: 'addons-plugins',
@@ -439,6 +439,101 @@ const jaPages: WikiPage[] = [
       }
     ],
     related: ['developer-setup', 'qualitative-analysis', 'quantitative-analysis-data-studio']
+  },
+  {
+    slug: 'terminology-sotho-tswana',
+    title: 'Sotho-Tswana系言語の用語集',
+    summary: 'Setswana・Sesotho・Sepedi向けに、Stellarの主要概念とUI用語をどう訳すかの作業用ページ。',
+    category: '開発',
+    updatedAt: '2026-05-24',
+    sections: [
+      {
+        heading: 'このページの目的',
+        body: [
+          'Sotho-Tswana系の3言語（Setswana, Sesotho, Sepedi）で、Stellarの主要概念とUI用語をどう表現するかをまとめる作業用ページです。',
+          'ここで合意した訳語が、locale ファイル（tn / st / nso）、README翻訳、Wiki本体に反映されます。'
+        ]
+      },
+      {
+        heading: '担当',
+        body: ['用語レビューと翻訳のリードは Phenyo Taukobong が担当しています。Setswanaがネイティブ、SesothoとSepediが流暢です。'],
+        bullets: ['Setswana (tn): native', 'Sesotho (st): fluent', 'Sepedi / Northern Sotho (nso): fluent']
+      },
+      {
+        heading: 'コア概念用語',
+        body: ['Stellarの中で意味を持つ用語。これが自然に訳せれば、UI全体も自然になります。'],
+        bullets: [
+          'WikiLink: ノート間の[[link]]、デフォルトで双方向',
+          'Bidirectional link: AからBにリンクするとBもAを認識する関係',
+          'Backlink: 現在のノートを指している他ノートのリスト',
+          'Citation: 外部資料への参照、WikiLinkとは区別',
+          'Citation graph: 引用関係の可視化グラフ',
+          'Library: ユーザーのローカル文献コレクション',
+          'Focus mode: 集中モードのエディタ表示',
+          'Local-first: データがユーザーのデバイスに残る原則',
+          'Offline: ネット接続不要で動作'
+        ]
+      },
+      {
+        heading: '研究ワークフロー用語',
+        body: ['質的分析や文献管理で頻出する用語。'],
+        bullets: [
+          'Annotation: 資料への注釈やコメント',
+          'Tag: 短いラベル',
+          'Theme: コードを束ねる上位カテゴリ',
+          'Code (verb / noun): 質的コーディングの行為とラベル',
+          'Codebook: 使用中のコードのリスト',
+          'Source: 外部資料',
+          'Archival source: 一次資料（手紙、口述、政府文書）',
+          'Framing analysis: フレーミング分析',
+          'Actor mapping: アクターマッピング'
+        ]
+      },
+      {
+        heading: 'UI用語',
+        body: ['ボタンやメニューに使う短いラベル。自然な動詞・名詞の選択が重要。'],
+        bullets: [
+          'Import / Export / Search / Settings / Sidebar',
+          'Sync / Backup / Project / Note',
+          'Citation key (例: @suzman1993、コード部分は英語のまま)',
+          'Markdown / MIT License (固有名詞、英語維持)'
+        ]
+      },
+      {
+        heading: 'レジスターとトーンの方針',
+        body: ['用語ごとの訳語以前に、全体の語調をどう揃えるか。'],
+        bullets: [
+          '学術寄り or 日常寄り — Phenyo判断',
+          '敬体 or 友達口調 — UIの2人称をどう扱うか',
+          'Loanword の許容範囲 — Markdown / PDF / SQLite など',
+          'ボタンの動詞形 — 命令形 / 不定詞 / 名詞',
+          '長さの目安 — 英語の1.4倍以内（UIレイアウトを壊さないため）'
+        ]
+      },
+      {
+        heading: 'Phenyoへの確認事項',
+        body: ['作業を始める前に方針を決めたい項目。'],
+        bullets: [
+          'Sotho-Tswana family — 3言語で1シート共有 or 言語ごとに独立',
+          'WikiLink — 翻訳 / 音訳 / 英語のまま のどれが自然か',
+          '@cite — Latin文字維持（パーサーがASCIIを探す）でOKか',
+          'Citation graph のノード表記 — 西洋式の "Author, Year" でOKか',
+          '数字・日付の慣例 — ISO 8601 と Arabic numeral のままでOKか'
+        ]
+      },
+      {
+        heading: '作業手順',
+        body: ['訳語が決まったら、locale ファイルとREADME翻訳に反映する流れ。'],
+        bullets: [
+          '用語をひとつ選ぶ',
+          '候補訳をこのページに追加（複数候補可）',
+          'コンセンサスが取れたら locales/tn/, locales/st/, locales/nso/ に反映',
+          'README とユーザーガイドの該当箇所も更新',
+          '迷う場合は GitHub Discussions でセカンドオピニオンを求める'
+        ]
+      }
+    ],
+    related: ['translation-contribution', 'developer-setup', 'notes-wikilinks']
   }
 ];
 
@@ -803,7 +898,12 @@ const localizedMeta: Record<Exclude<Lang, 'ja'>, Record<string, { title: string;
     'faq-troubleshooting': { title: 'FAQ and troubleshooting', summary: 'Common fixes for metadata, autosave, graph, backup, language, and Clipper issues.', category: 'Support' },
     'developer-setup': { title: 'Developer setup', summary: 'Node.js, Rust, Tauri, React, SQLite, and development commands.', category: 'Development' },
     'translation-contribution': { title: 'Contributing translations', summary: 'Translation policy and language support notes.', category: 'Development' },
-    'addons-plugins': { title: 'Creating addons and plugins', summary: 'Analysis addons, distributable plugins, manifests, and plugin IDs.', category: 'Development' }
+    'addons-plugins': { title: 'Creating addons and plugins', summary: 'Analysis addons, distributable plugins, manifests, and plugin IDs.', category: 'Development' },
+    'terminology-sotho-tswana': {
+      title: 'Terminology — Sotho-Tswana Family',
+      summary: 'Working page for agreeing on how Stellar concepts and UI terms are expressed in Setswana, Sesotho, and Sepedi.',
+      category: 'Development'
+    }
   },
   fr: {
     home: { title: 'Wiki Stellar', summary: 'Documentation officielle pratique pour installer Stellar, apprendre les bases, résoudre les problèmes et contribuer.', category: 'Vue d’ensemble' },
@@ -825,7 +925,12 @@ const localizedMeta: Record<Exclude<Lang, 'ja'>, Record<string, { title: string;
     'faq-troubleshooting': { title: 'FAQ et dépannage', summary: 'Solutions pour métadonnées, sauvegarde automatique, graphe, sauvegarde, langue et Clipper.', category: 'Support' },
     'developer-setup': { title: 'Configuration développeur', summary: 'Node.js, Rust, Tauri, React, SQLite et commandes de développement.', category: 'Développement' },
     'translation-contribution': { title: 'Contribuer aux traductions', summary: 'Politique de traduction et notes de prise en charge linguistique.', category: 'Développement' },
-    'addons-plugins': { title: 'Créer des extensions et plugins', summary: 'Extensions d’analyse, plugins distribuables, manifests et identifiants de plugin.', category: 'Développement' }
+    'addons-plugins': { title: 'Créer des extensions et plugins', summary: 'Extensions d’analyse, plugins distribuables, manifests et identifiants de plugin.', category: 'Développement' },
+    'terminology-sotho-tswana': {
+      title: 'Terminologie — Famille Sotho-Tswana',
+      summary: 'Page de travail pour s’accorder sur la traduction des concepts et termes d’interface de Stellar en Setswana, Sesotho et Sepedi.',
+      category: 'Développement'
+    }
   },
   af: {
     home: { title: 'Stellar Wiki', summary: 'Amptelike praktiese dokumentasie vir installasie, leer, probleemoplossing en bydraes.', category: 'Oorsig' },
@@ -847,7 +952,12 @@ const localizedMeta: Record<Exclude<Lang, 'ja'>, Record<string, { title: string;
     'faq-troubleshooting': { title: 'FAQ en probleemoplossing', summary: 'Oplossings vir metadata, outostoor, grafiek, rugsteun, taal en Clipper.', category: 'Ondersteuning' },
     'developer-setup': { title: 'Ontwikkelaaropstelling', summary: 'Node.js, Rust, Tauri, React, SQLite en ontwikkelopdragte.', category: 'Ontwikkeling' },
     'translation-contribution': { title: 'Bydra tot vertalings', summary: 'Vertaalbeleid en notas oor taalondersteuning.', category: 'Ontwikkeling' },
-    'addons-plugins': { title: 'Skep byvoegings en plugins', summary: 'Analise-byvoegings, verspreibare plugins, manifests en plugin-ID’s.', category: 'Ontwikkeling' }
+    'addons-plugins': { title: 'Skep byvoegings en plugins', summary: 'Analise-byvoegings, verspreibare plugins, manifests en plugin-ID’s.', category: 'Ontwikkeling' },
+    'terminology-sotho-tswana': {
+      title: 'Terminologie — Sotho-Tswana-familie',
+      summary: 'Werkblad om ooreen te kom oor hoe Stellar se konsepte en koppelvlak-terme in Setswana, Sesotho en Sepedi uitgedruk word.',
+      category: 'Ontwikkeling'
+    }
   }
 };
 
@@ -872,7 +982,14 @@ const localizedGuidance: Record<Exclude<Lang, 'ja'>, Record<string, string[]>> =
     'faq-troubleshooting': ['Fix missing PDF titles manually when metadata is poor.', 'Check WikiLinks, paper links, and filters when the graph is empty.', 'Use cloud backup, local backup, automatic backup, and research packages for data safety.'],
     'developer-setup': ['Use Node.js 22 or later, Rust 1.75 or later, and Tauri CLI.', 'Run npm install, npm run tauri dev, npm run tauri build, and npm run lint.', 'Keep development guidance aligned with the no-AI, local-first direction.'],
     'translation-contribution': ['Stabilize Japanese first, then translate.', 'Keep UI text and Wiki procedures in sync.', 'Check the current i18n structure before adding languages.'],
-    'addons-plugins': ['Local analysis addons start at src/plugins/registerAnalysisAddons.ts.', 'There are qualitative tabs and quantitative method additions.', 'Distributed plugins include stellar-plugin.json and index.js.', 'Use stable alphanumeric and hyphenated plugin IDs.']
+    'addons-plugins': ['Local analysis addons start at src/plugins/registerAnalysisAddons.ts.', 'There are qualitative tabs and quantitative method additions.', 'Distributed plugins include stellar-plugin.json and index.js.', 'Use stable alphanumeric and hyphenated plugin IDs.'],
+    'terminology-sotho-tswana': [
+      'Lead: Phenyo Taukobong (Setswana native, Sesotho and Sepedi fluent).',
+      'Agreed terms propagate to locales/tn/, locales/st/, locales/nso/, the README translations, and the user guide.',
+      'Mark candidate translations as draft; mark consensus translations as final.',
+      'Use this page for terminology debate; use the GitHub repo for code changes.',
+      'No deadline — pick the least painful term first and build from there.'
+    ]
   },
   fr: {
     home: ['Utiliser le Wiki pour les procédures pratiques.', 'Stellar reste local, sans IA, sans abonnement et sous licence MIT.', 'Commencer par l’installation, le démarrage rapide, l’interface, la FAQ et les sauvegardes.'],
@@ -894,7 +1011,14 @@ const localizedGuidance: Record<Exclude<Lang, 'ja'>, Record<string, string[]>> =
     'faq-troubleshooting': ['Corriger les titres PDF manuellement si les métadonnées sont pauvres.', 'Vérifier WikiLinks, liens d’articles et filtres si le graphe est vide.', 'Utiliser sauvegardes cloud, locales, automatiques et paquets de recherche.'],
     'developer-setup': ['Utiliser Node.js 22+, Rust 1.75+ et Tauri CLI.', 'Exécuter npm install, npm run tauri dev, npm run tauri build et npm run lint.', 'Garder la direction sans IA et locale.'],
     'translation-contribution': ['Stabiliser le japonais avant traduction.', 'Synchroniser textes UI et procédures Wiki.', 'Vérifier la structure i18n actuelle avant d’ajouter une langue.'],
-    'addons-plugins': ['Les extensions locales commencent dans src/plugins/registerAnalysisAddons.ts.', 'Deux axes : onglets qualitatifs et méthodes quantitatives.', 'Les plugins distribués contiennent stellar-plugin.json et index.js.', 'Utiliser des IDs stables avec lettres, chiffres et tirets.']
+    'addons-plugins': ['Les extensions locales commencent dans src/plugins/registerAnalysisAddons.ts.', 'Deux axes : onglets qualitatifs et méthodes quantitatives.', 'Les plugins distribués contiennent stellar-plugin.json et index.js.', 'Utiliser des IDs stables avec lettres, chiffres et tirets.'],
+    'terminology-sotho-tswana': [
+      'Responsable : Phenyo Taukobong (Setswana natif, Sesotho et Sepedi courants).',
+      'Les termes validés sont propagés à locales/tn/, locales/st/, locales/nso/, aux traductions du README et au guide utilisateur.',
+      'Marquer les candidats comme brouillon et les consensus comme finaux.',
+      'Cette page sert au débat terminologique ; le code reste dans le repo GitHub.',
+      'Pas d’échéance — commencer par le terme le moins difficile.'
+    ]
   },
   af: {
     home: ['Gebruik die Wiki vir praktiese stappe.', 'Stellar bly plaaslik-eerste, sonder AI, sonder intekening en MIT-gelisensieer.', 'Begin met installasie, vinnige begin, koppelvlak, FAQ en rugsteun.'],
@@ -916,7 +1040,14 @@ const localizedGuidance: Record<Exclude<Lang, 'ja'>, Record<string, string[]>> =
     'faq-troubleshooting': ['Wysig PDF-titels handmatig as metadata swak is.', 'Kontroleer WikiLinks, artikelskakels en filters as die grafiek leeg is.', 'Gebruik wolk-, plaaslike en outomatiese rugsteun plus navorsingspakkette.'],
     'developer-setup': ['Gebruik Node.js 22+, Rust 1.75+ en Tauri CLI.', 'Voer npm install, npm run tauri dev, npm run tauri build en npm run lint uit.', 'Hou ontwikkeling plaaslik-eerste en sonder AI.'],
     'translation-contribution': ['Stabiliseer Japanees eerste en vertaal dan.', 'Hou UI-teks en Wiki-stappe gesinchroniseer.', 'Kontroleer die huidige i18n-struktuur voordat tale bygevoeg word.'],
-    'addons-plugins': ['Plaaslike byvoegings begin by src/plugins/registerAnalysisAddons.ts.', 'Daar is kwalitatiewe tabs en kwantitatiewe metode-byvoegings.', 'Verspreide plugins bevat stellar-plugin.json en index.js.', 'Gebruik stabiele alfanumeriese en koppelteken plugin-ID’s.']
+    'addons-plugins': ['Plaaslike byvoegings begin by src/plugins/registerAnalysisAddons.ts.', 'Daar is kwalitatiewe tabs en kwantitatiewe metode-byvoegings.', 'Verspreide plugins bevat stellar-plugin.json en index.js.', 'Gebruik stabiele alfanumeriese en koppelteken plugin-ID’s.'],
+    'terminology-sotho-tswana': [
+      'Lei: Phenyo Taukobong (Setswana moedertaal, Sesotho en Sepedi vlot).',
+      'Aanvaarde terme word na locales/tn/, locales/st/, locales/nso/, README-vertalings en die gebruikersgids gestuur.',
+      'Merk kandidate as konsep en konsensus-terme as finaal.',
+      'Hierdie bladsy is vir terminologie-besprekings; kode-veranderings bly in die GitHub-repo.',
+      'Geen sperdatum nie — begin met die maklikste term.'
+    ]
   }
 };
 
